@@ -679,6 +679,21 @@ socks = ["socksio (==1.*)"]
 zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
+name = "httpx-retries"
+version = "0.6.0"
+description = "A retry layer for HTTPX."
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+files = [
+    {file = "httpx_retries-0.6.0-py3-none-any.whl", hash = "sha256:d1e52a8f68a5df42de75ab89049d5020b2d0ab2f5f8bceacda008d12aa1257a3"},
+    {file = "httpx_retries-0.6.0.tar.gz", hash = "sha256:3e0b404969a564829d368417964fd21e6b400a10d17c92d29b8bc247ce8186e3"},
+]
+
+[package.dependencies]
+httpx = ">=0.20.0"
+
+[[package]]
 name = "idna"
 version = "3.18"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1695,4 +1710,4 @@ cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and pyt
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14"
-content-hash = "624011bb0267bb24e42705c88b46c35653b82dfcbd1dcf5dd4efc5697a4c8c3b"
+content-hash = "ed5461c7d445ff2bbcb172b4123b1ef719ba8b332723bb5048b5e454ab2539ec"
