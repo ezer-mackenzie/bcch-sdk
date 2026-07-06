@@ -16,6 +16,7 @@ dependencies = [
     "polars (>=1.42.1,<2.0.0)",
     "pandas (>=3.0.3,<4.0.0)",
     "httpx-retries (>=0.6.0,<0.7.0)",
+    "mkdocs (>=1.6.1,<2.0.0)",
 ]
 
 
