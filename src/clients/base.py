@@ -16,7 +16,7 @@ from src.exceptions import InvalidsCredentialsError
 
 
 @dataclass(slots=True)
-class BCChClientBase(metaclass=ABCMeta):
+class BaseClient(metaclass=ABCMeta):
     credentials: Credentials | None = None
 
     base_url: str = "https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx"
