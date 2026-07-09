@@ -1,4 +1,4 @@
-from abc import ABCMeta
+from abc import ABC
 from abc import abstractmethod
 from datetime import datetime, date
 
@@ -14,9 +14,8 @@ from src.types.enums import Frequency
 
 from src.exceptions import InvalidsCredentialsError
 
-
 @dataclass(slots=True)
-class BaseClient(metaclass=ABCMeta):
+class BaseClient(ABC):
     credentials: Credentials | None = None
 
     base_url: str = "https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx"
@@ -31,6 +30,11 @@ class BaseClient(metaclass=ABCMeta):
         if self.credentials is None:
             raise InvalidsCredentialsError("Client credentials must be provided.")
 
+    @property
+    def transport(self):
+        return RetryTransport(retry=self.retry_policy)
+
+class BaseSyncClient(BaseClient):
     @abstractmethod
     def get_series(
         self,
@@ -44,6 +48,17 @@ class BaseClient(metaclass=ABCMeta):
     def search_series(self, frequency: Frequency) -> WebServiceResponse:
         raise NotImplementedError
 
-    @property
-    def transport(self):
-        return RetryTransport(retry=self.retry_policy)
+
+class BaseAsyncClient(BaseClient):
+    @abstractmethod
+    async def get_series(
+        self,
+        time_serie: str,
+        first_date: str | date | datetime | None = None,
+        last_date: str | date | datetime | None = None,
+    ) -> WebServiceResponse:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def search_series(self, frequency: Frequency) -> WebServiceResponse:
+        raise NotImplementedError
