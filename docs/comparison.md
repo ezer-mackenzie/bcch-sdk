@@ -11,7 +11,7 @@ Esta página muestra comparaciones lado a lado (conceptuales y de código) entre
 - Nueva — `src/types/auth.py` + `src/mappers/credentials.py`:
 
   - `InternalCredentials` es un `TypedDict` con `username` y `password`.
-  - `CredentialsMapper.to_query_credentials` transforma un `InternalCredentials` a `{"user": ..., "pass": ...}`. ([src/mappers/credentials.py](src/mappers/credentials.py))
+  - `CredentialsMapper.to_query_credentials` transforma un `InternalCredentials` a `{"user": ..., "pass": ...}`. ([src/mappers/credentials.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/mappers/credentials.py))
 
 **Impacto**: la nueva aproximación separa la lectura de credenciales de su transformación en parámetros HTTP; facilita testing y evita I/O oculto en librerías.
 
@@ -32,7 +32,7 @@ Esta página muestra comparaciones lado a lado (conceptuales y de código) entre
 ## 3) Parámetros HTTP: nombres y mapeos
 
 - Legacy (anterior): `params` incluye clave `"timeseries"` para la lista de series.
-- Nueva: `ParameterBuilder.build_get_series_params` usa `timeseries` también (coincide), pero el API público de Python usa `time_series` como argumento y `TimeSeriesBuilder` normaliza entradas. Ver [src/builders/parameters.py](src/builders/parameters.py) y [src/builders/time_series.py](src/builders/time_series.py).
+- Nueva: `ParameterBuilder.build_get_series_params` usa `timeseries` también (coincide), pero el API público de Python usa `time_series` como argumento y `TimeSeriesBuilder` normaliza entradas. Ver [src/builders/parameters.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py) y [src/builders/time_series.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/time_series.py).
 
 **Nota importante**: la diferencia entre `time_series` (argumento Python) y `timeseries` (clave HTTP) es una decisión intencional para mantener una API Python idiomática mientras se sigue la expectativa del backend.
 

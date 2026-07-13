@@ -1,5 +1,12 @@
 site_name: Banco Central Chile SDK
-site_description: Documentación del SDK (migración desde `bcchapi` a la nueva implementación en `src/`).
+site_description: Documentación del SDK para interactuar con el Banco Central de Chile.
+site_url: https://ezer-mackenzie.github.io/bank-central-chile-sdk/
+repo_url: https://github.com/ezer-mackenzie/bank-central-chile-sdk
+repo_name: ezer-mackenzie/bank-central-chile-sdk
+edit_uri: edit/main/docs/
+docs_dir: docs
+site_dir: site
+strict: true
 nav:
   - Home: index.md
   - Migration Guide: migration.md
@@ -8,10 +15,17 @@ nav:
   - Usage Examples: usage.md
   - Developer Guide: developer_guide.md
   - Comparison (legacy vs src): comparison.md
+  - Comparison Details: comparison_detailed.md
 theme:
-  name: material
-  language: es
+  name: readthedocs
+  locale: es
+  highlightjs: true
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/
+      link: https://github.com/ezer-mackenzie/bank-central-chile-sdk
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true

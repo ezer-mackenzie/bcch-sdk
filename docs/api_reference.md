@@ -8,11 +8,11 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ### Clientes
 
-- `BCChSyncClient` (ver [src/clients/sync_client.py](src/clients/sync_client.py))
+- `BCChSyncClient` (ver [src/clients/sync_client.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/sync_client.py))
   - `get_series(time_series, first_date=None, last_date=None) -> WebServiceResponse`
   - `search_series(frequency) -> WebServiceResponse`
 
-- `BCChAsyncClient` (ver [src/clients/async_client.py](src/clients/async_client.py))
+- `BCChAsyncClient` (ver [src/clients/async_client.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/async_client.py))
   - `async get_series(time_series, first_date=None, last_date=None) -> WebServiceResponse`
   - `async search_series(frequency) -> WebServiceResponse`
 
@@ -32,7 +32,7 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ### Parámetros HTTP y mapeos
 
-- El argumento Python `time_series` se normaliza y finalmente se pasa en la query param `timeseries` (clave del backend). Consulte [src/builders/parameters.py](src/builders/parameters.py).
+- El argumento Python `time_series` se normaliza y finalmente se pasa en la query param `timeseries` (clave del backend). Consulte [src/builders/parameters.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py).
 
 ### Errores que puedes capturar
 
