@@ -1,0 +1,17 @@
+site_name: Banco Central Chile SDK
+site_description: Documentación del SDK (migración desde `bcchapi` a la nueva implementación en `src/`).
+nav:
+  - Home: index.md
+  - Migration Guide: migration.md
+  - API Reference: api_reference.md
+  - Architecture: architecture.md
+  - Usage Examples: usage.md
+  - Developer Guide: developer_guide.md
+  - Comparison (legacy vs src): comparison.md
+theme:
+  name: material
+  language: es
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/
