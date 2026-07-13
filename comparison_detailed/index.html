@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/comparison_detailed/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Comparison Details - Banco Central Chile SDK</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Comparison Details";
+        var mkdocs_page_input_path = "comparison_detailed.md";
+        var mkdocs_page_url = "/bank-central-chile-sdk/comparison_detailed/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Banco Central Chile SDK
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api_reference/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison/">Comparison (legacy vs src)</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Comparison Details</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Banco Central Chile SDK</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Comparison Details</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/comparison_detailed.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="comparacion-profunda-y-guia-practica-implementacion-legacy-src">Comparación profunda y guía práctica (implementación legacy → <code>src</code>)<a class="headerlink" href="#comparacion-profunda-y-guia-practica-implementacion-legacy-src" title="Permanent link">&para;</a></h2>
+<p>Este documento es exhaustivo: explica las piezas de la implementación legacy (código anterior usado como referencia), su propósito y cómo se implementa cada responsabilidad en la nueva estructura <code>src/</code>. Incluye ejemplos de migración, puntos débiles del legacy y mejoras introducidas.</p>
+<hr />
+<h2 id="indice">Índice<a class="headerlink" href="#indice" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>credentials</code> y autenticación</li>
+<li>Manejo de parámetros y nombres (<code>timeseries</code> vs <code>time_series</code>)</li>
+<li>Peticiones HTTP y reintentos</li>
+<li>Validación y parseo de respuestas</li>
+<li>Modelado de datos</li>
+<li>Errores y jerarquía de excepciones</li>
+<li>Concurrencia y SDK</li>
+<li>Tests y cómo cubrir cambios</li>
+<li>Recomendaciones finales y checklist de migración</li>
+</ul>
+<hr />
+<h2 id="credentials-y-autenticacion"><code>credentials</code> y autenticación<a class="headerlink" href="#credentials-y-autenticacion" title="Permanent link">&para;</a></h2>
+<p>Legacy (anterior):</p>
+<ul>
+<li><code>get_credentials()</code> — interacción con el usuario (input + getpass).</li>
+<li><code>read_credentials(file)</code> — lee dos primeras líneas (user, pass) de un archivo.</li>
+</ul>
+<p>Problemas del enfoque legacy:</p>
+<ul>
+<li>Mezcla de I/O con librería; las librerías no deben pedir input al usuario.</li>
+<li>Dificulta testing.</li>
+</ul>
+<p>Nueva aproximación (<code>src/types/auth.py</code> + <code>src/mappers/credentials.py</code>):</p>
+<ul>
+<li><code>InternalCredentials</code> es un <code>TypedDict</code> explícito.</li>
+<li><code>CredentialsMapper.to_query_credentials</code> convierte <code>InternalCredentials</code> a <code>{"user": ..., "pass": ...}</code>.</li>
+</ul>
+<p>Consejos de migración:</p>
+<ol>
+<li>Evita cambiar código que lee credenciales (scripts CLI). Reemplaza su salida por un <code>InternalCredentials</code>.</li>
+<li>Para tests, crea fixtures <code>{"username": "u", "password": "p"}</code> y prueba <code>CredentialsMapper</code>.</li>
+</ol>
+<p>Código relacionado:</p>
+<ul>
+<li><code>src/types/auth.py</code></li>
+<li><code>src/mappers/credentials.py</code></li>
+</ul>
+<hr />
+<h2 id="manejo-de-parametros-y-nombres-timeseries-vs-time_series">Manejo de parámetros y nombres (<code>timeseries</code> vs <code>time_series</code>)<a class="headerlink" href="#manejo-de-parametros-y-nombres-timeseries-vs-time_series" title="Permanent link">&para;</a></h2>
+<p>Observación práctica:</p>
+<ul>
+<li>Legacy usaba la clave HTTP <code>timeseries</code>.</li>
+<li>La API Python en <code>src/</code> expone argumentos idiomáticos <code>time_series</code> y usa <code>ParameterBuilder</code> para producir <code>timeseries</code> en la query.</li>
+</ul>
+<p>Ventajas de esta separación:</p>
+<ul>
+<li>API Python más clara (<code>time_series</code> es más legible).</li>
+<li>Centralización del mapeo en <code>ParameterBuilder</code> evita fugas de nombres en todo el código.</li>
+</ul>
+<p>Archivo clave: <code>src/builders/parameters.py</code></p>
+<p>Ejemplo de uso:</p>
+<pre><code class="language-py">params = ParameterBuilder.build_get_series_params(creds, &quot;SF43718&quot;)
+# params[&quot;timeseries&quot;] == &quot;SF43718&quot;
+</code></pre>
+<p>Recomendación: no cambiar la clave <code>timeseries</code> en las peticiones HTTP salvo que la API cambie; solo normaliza la interfaz Python.</p>
+<hr />
+<h2 id="peticiones-http-y-reintentos">Peticiones HTTP y reintentos<a class="headerlink" href="#peticiones-http-y-reintentos" title="Permanent link">&para;</a></h2>
+<p>Legacy:</p>
+<ul>
+<li>Usaba <code>requests.get</code> sin reintentos ni <code>Timeout</code> configurable.</li>
+</ul>
+<p>Nueva implementación:</p>
+<ul>
+<li><code>httpx.Client</code> / <code>httpx.AsyncClient</code> con <code>Timeout</code> y <code>RetryTransport</code>.</li>
+<li>Reintentos por defecto: 3, backoff 0.5 (configurable en <code>BaseClient.retry_policy</code>).</li>
+</ul>
+<p>Impacto:</p>
+<ul>
+<li>Resiliencia frente a fallos transitorios de red.</li>
+<li>Mayor control del comportamiento en producción.</li>
+</ul>
+<p>Recomendación operacional:</p>
+<ul>
+<li>Exponer <code>timeout</code> y <code>retry_policy</code> a usuarios avanzados a través de la configuración del cliente.</li>
+</ul>
+<hr />
+<h2 id="validacion-y-parseo-de-respuestas">Validación y parseo de respuestas<a class="headerlink" href="#validacion-y-parseo-de-respuestas" title="Permanent link">&para;</a></h2>
+<p>Legacy:</p>
+<ul>
+<li>Parseo directo <code>r.json()</code> y mapeo a <code>WSResponse</code>.</li>
+</ul>
+<p>Nueva:</p>
+<ul>
+<li><code>_validate_response</code> centraliza:</li>
+<li><code>raise_for_status()</code> con mapeo a <code>WebServiceResponseException</code>.</li>
+<li><code>json()</code> parse con captura de <code>ValueError</code> → <code>ResponseParseException</code>.</li>
+<li>Validación a Pydantic <code>WebServiceResponse.model_validate(payload)</code>.</li>
+</ul>
+<p>Beneficios:</p>
+<ul>
+<li>Errores más claros y fáciles de capturar en el cliente que consume el SDK.</li>
+</ul>
+<hr />
+<h2 id="modelado-de-datos">Modelado de datos<a class="headerlink" href="#modelado-de-datos" title="Permanent link">&para;</a></h2>
+<p>Legacy: estructuras simples y <code>pandas</code> helpers dentro de <code>WSResponse</code>.</p>
+<p>Nuevo: Pydantic models con nombres descriptivos y tipos precisos:</p>
+<ul>
+<li><code>Series</code> → <code>id</code>, <code>spanish_description</code>, <code>english_description</code>, <code>observations</code>.</li>
+<li><code>ObservationSeries</code> → <code>index_date</code> (date), <code>value</code> (float), <code>status_code</code>.</li>
+</ul>
+<p>Consecuencia: los consumidores pueden trabajar con objetos tipados y convertir a DataFrame sólo cuando lo necesiten, evitando la dependencia inmediata a <code>pandas</code>.</p>
+<hr />
+<h2 id="errores-y-jerarquia-de-excepciones">Errores y jerarquía de excepciones<a class="headerlink" href="#errores-y-jerarquia-de-excepciones" title="Permanent link">&para;</a></h2>
+<p>Legacy: excepciones planas (<code>InvalidSeries</code>, <code>InvalidCredentials</code>, ...).</p>
+<p>Nuevo: jerarquía que distingue:</p>
+<ul>
+<li>Errores de transporte (<code>TransportException</code>).</li>
+<li>Errores de parseo (<code>ResponseParseException</code>).</li>
+<li>Errores de negocio (<code>InvalidsCredentialsException</code>, <code>InvalidSeriesException</code>, ...).</li>
+</ul>
+<p>Recomendación de manejo en aplicaciones:</p>
+<pre><code class="language-py">try:
+    resp = client.get_series(...)
+except InvalidsCredentialsException:
+    # pedir login o abortar
+except TransportException:
+    # volver a intentar o avisar al usuario
+except ResponseParseException:
+    # aviso y reporte
+</code></pre>
+<hr />
+<h2 id="concurrencia-y-sdk">Concurrencia y SDK<a class="headerlink" href="#concurrencia-y-sdk" title="Permanent link">&para;</a></h2>
+<p>La nueva estructura facilita:</p>
+<ul>
+<li>Ejecución paralela segura de consultas con helpers <code>run_in_threads</code> y <code>gather_async_tasks</code>.</li>
+<li>SDK <code>sync_sdk</code> y <code>async_sdk</code> exponen funciones convenientes para usuarios que sólo quieren obtener series sin manejar clientes directamente.</li>
+</ul>
+<p>Ejemplo conceptual (paralelizar 10 series):</p>
+<pre><code class="language-py">from src.sdk.concurrency import run_in_threads
+from src.sdk.sync_sdk import BCChSDK
+
+sdk = BCChSDK.from_credentials(creds)
+series = [&quot;SF1&quot;,&quot;SF2&quot;,...]
+results = run_in_threads(lambda s: sdk.get_series(s), series)
+</code></pre>
+<hr />
+<h2 id="tests-y-como-cubrir-cambios">Tests y cómo cubrir cambios<a class="headerlink" href="#tests-y-como-cubrir-cambios" title="Permanent link">&para;</a></h2>
+<p>Recomendación de librerías:</p>
+<ul>
+<li><code>pytest</code> para tests generales.</li>
+<li><code>respx</code> para mockear <code>httpx</code> en tests sync/async.</li>
+</ul>
+<p>Casos de prueba esenciales:</p>
+<ul>
+<li><code>ParameterBuilder.build_get_series_params</code> con combinaciones de <code>first_date</code>/<code>last_date</code> y tipos.</li>
+<li><code>TimeSeriesBuilder.to_list</code> con strings, listas, dicts y errores.</li>
+<li>Clientes <code>get_series</code>/<code>search_series</code> simulando códigos backend (p.ej. <code>-50</code>, <code>-1</code>, <code>-5</code>).</li>
+</ul>
+<hr />
+<h2 id="recomendaciones-finales-y-checklist-para-migracion">Recomendaciones finales y checklist para migración<a class="headerlink" href="#recomendaciones-finales-y-checklist-para-migracion" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Reemplazar <code>Session</code> por <code>BCChSyncClient</code> o <code>BCChAsyncClient</code>.</li>
+<li>Pasar credenciales como <code>InternalCredentials</code> (evitar I/O en librería).</li>
+<li>Actualizar excepciones capturadas en el código consumidor.</li>
+<li>Añadir tests que cubran mapeos de parámetros y respuesta.</li>
+<li>Revisar puntos de integración que dependan de <code>pandas</code> si ahora se usan modelos Pydantic.</li>
+</ol>
+<hr />
+<p>Si quieres, puedo generar ejemplos de migración automáticos (scripts) que tomen fragmentos del código legacy y produzcan el equivalente usando <code>src/</code>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../comparison/" class="btn btn-neutral float-left" title="Comparison (legacy vs src)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk" class="fa fa-code-fork" style="color: #fcfcfc"> ezer-mackenzie/bank-central-chile-sdk</a>
+        </span>
+    
+    
+      <span><a href="../comparison/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

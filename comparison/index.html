@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/comparison/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Comparison (legacy vs src) - Banco Central Chile SDK</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Comparison (legacy vs src)";
+        var mkdocs_page_input_path = "comparison.md";
+        var mkdocs_page_url = "/bank-central-chile-sdk/comparison/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Banco Central Chile SDK
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api_reference/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Comparison (legacy vs src)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-inicializacion-y-credenciales">1) Inicialización y credenciales</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-cliente-http-y-transporte">2) Cliente HTTP y transporte</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-parametros-http-nombres-y-mapeos">3) Parámetros HTTP: nombres y mapeos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-respuestas-y-modelos">4) Respuestas y modelos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-errores-y-codigos-de-respuesta">5) Errores y códigos de respuesta</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-concurrencia-y-sdk-de-alto-nivel">6) Concurrencia y SDK de alto nivel</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#7-resumen-de-diferencias-clave-tabla-conceptual">7) Resumen de diferencias clave (tabla conceptual)</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison_detailed/">Comparison Details</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Banco Central Chile SDK</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Comparison (legacy vs src)</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/comparison.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="comparacion-detallada-implementacion-legacy-vs-src-nueva">Comparación detallada: implementación legacy vs <code>src/</code> (nueva)<a class="headerlink" href="#comparacion-detallada-implementacion-legacy-vs-src-nueva" title="Permanent link">&para;</a></h1>
+<p>Esta página muestra comparaciones lado a lado (conceptuales y de código) entre la implementación legacy (código anterior usado como referencia) y sus contrapartes modernas en <code>src/</code>.</p>
+<h2 id="1-inicializacion-y-credenciales">1) Inicialización y credenciales<a class="headerlink" href="#1-inicializacion-y-credenciales" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Legacy (anterior):</p>
+</li>
+<li>
+<p><code>get_credentials()</code> y <code>read_credentials(file)</code> eran funciones de I/O que preguntaban por <code>user</code> y <code>pass</code> o leían un archivo.</p>
+</li>
+<li>
+<p>Nueva — <code>src/types/auth.py</code> + <code>src/mappers/credentials.py</code>:</p>
+</li>
+<li>
+<p><code>InternalCredentials</code> es un <code>TypedDict</code> con <code>username</code> y <code>password</code>.</p>
+</li>
+<li><code>CredentialsMapper.to_query_credentials</code> transforma un <code>InternalCredentials</code> a <code>{"user": ..., "pass": ...}</code>. (<a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/mappers/credentials.py">src/mappers/credentials.py</a>)</li>
+</ul>
+<p><strong>Impacto</strong>: la nueva aproximación separa la lectura de credenciales de su transformación en parámetros HTTP; facilita testing y evita I/O oculto en librerías.</p>
+<h2 id="2-cliente-http-y-transporte">2) Cliente HTTP y transporte<a class="headerlink" href="#2-cliente-http-y-transporte" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Legacy (anterior):</p>
+</li>
+<li>
+<p>Uso directo de <code>requests.get</code> con <code>r = requests.get(self.URL, params=params)</code>.</p>
+</li>
+<li>
+<p>Parseo inmediato <code>r.json()</code> y mapeo a <code>WSResponse</code>.</p>
+</li>
+<li>
+<p>Nueva — <code>src/clients/sync_client.py</code> / <code>src/clients/async_client.py</code>:</p>
+</li>
+<li>
+<p>Uso de <code>httpx.Client</code>/<code>httpx.AsyncClient</code> con soporte para <code>Timeout</code> y <code>RetryTransport</code>.</p>
+</li>
+<li>Centralización de validación en <code>_validate_response</code>, conversiones a modelos <code>WebServiceResponse</code> vía <code>WebServiceResponse.model_validate(payload)</code>.</li>
+</ul>
+<p><strong>Impacto</strong>: mayor robustez en redes, control de tiempo de espera, reintentos configurables y mejor separación de responsabilidades.</p>
+<h2 id="3-parametros-http-nombres-y-mapeos">3) Parámetros HTTP: nombres y mapeos<a class="headerlink" href="#3-parametros-http-nombres-y-mapeos" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Legacy (anterior): <code>params</code> incluye clave <code>"timeseries"</code> para la lista de series.</li>
+<li>Nueva: <code>ParameterBuilder.build_get_series_params</code> usa <code>timeseries</code> también (coincide), pero el API público de Python usa <code>time_series</code> como argumento y <code>TimeSeriesBuilder</code> normaliza entradas. Ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py">src/builders/parameters.py</a> y <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/time_series.py">src/builders/time_series.py</a>.</li>
+</ul>
+<p><strong>Nota importante</strong>: la diferencia entre <code>time_series</code> (argumento Python) y <code>timeseries</code> (clave HTTP) es una decisión intencional para mantener una API Python idiomática mientras se sigue la expectativa del backend.</p>
+<h2 id="4-respuestas-y-modelos">4) Respuestas y modelos<a class="headerlink" href="#4-respuestas-y-modelos" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Legacy (anterior): <code>WSResponse</code>, <code>GSResponse</code>, <code>SSResponse</code> con métodos <code>to_series()</code> y <code>to_df()</code> (devuelven <code>pandas</code> objetos).</li>
+<li>Nueva: Pydantic models (<code>WebServiceResponse</code>, <code>Series</code>, <code>SerieInformation</code>, <code>ObservationSeries</code>) que usan <code>snake_case</code> y tipos concretos (<code>date</code>, <code>float</code>). Esto facilita validación, serialización y la escritura de mappers hacia <code>pandas</code> cuando sea necesario.</li>
+</ul>
+<p><strong>Ejemplo de campo renombrado</strong>: <code>Series['descripEsp']</code> (legacy) → <code>spanish_description</code> (nuevo); <code>Obs[indexDateString]</code> → <code>ObservationSeries.index_date</code>.</p>
+<h2 id="5-errores-y-codigos-de-respuesta">5) Errores y códigos de respuesta<a class="headerlink" href="#5-errores-y-codigos-de-respuesta" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Legacy: comprobaba códigos (<code>Codigo</code>) y lanzaba excepciones legacy (<code>InvalidSeries</code>, <code>InvalidDate</code>, <code>InvalidCredentials</code>).</li>
+<li>Nueva: el cliente convierte la carga en un <code>WebServiceResponse</code> con <code>code</code> y <code>description</code>. Además lanza excepciones específicas para HTTP, parseo y negocio (códigos <code>-50</code>, <code>-1</code> traducidos a <code>InvalidSeriesException</code>, <code>InvalidDateException</code>).</li>
+</ul>
+<p><strong>Recomendación</strong>: capturar las excepciones específicas para poder distinguir problemas de red vs. datos.</p>
+<h2 id="6-concurrencia-y-sdk-de-alto-nivel">6) Concurrencia y SDK de alto nivel<a class="headerlink" href="#6-concurrencia-y-sdk-de-alto-nivel" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Legacy: no hay API asíncrona nativa ni helpers de concurrencia.</li>
+<li>Nueva: <code>src/sdk/</code> expone <code>sync</code> y <code>async</code> SDKs y <code>src/sdk/concurrency.py</code> contiene helpers reutilizables (<code>run_in_threads</code>, <code>gather_async_tasks</code>).</li>
+</ul>
+<p><strong>Beneficio</strong>: usuarios pueden ejecutar múltiples consultas en paralelo sin reescribir el manejo de concurrencia.</p>
+<h2 id="7-resumen-de-diferencias-clave-tabla-conceptual">7) Resumen de diferencias clave (tabla conceptual)<a class="headerlink" href="#7-resumen-de-diferencias-clave-tabla-conceptual" title="Permanent link">&para;</a></h2>
+<ul>
+<li>API pública: <code>Session</code> (legacy) vs <code>BCChSyncClient</code>/<code>BCChAsyncClient</code> (nuevo)</li>
+<li>Transporte: <code>requests</code> vs <code>httpx + retries + timeout</code></li>
+<li>Modelos: estructuras personalizadas + pandas vs Pydantic + mappers</li>
+<li>Errores: excepciones genéricas vs jerarquía específica</li>
+</ul>
+<p>En las siguientes secciones de esta documentación encontrarás ejemplos concretos de migración, fragmentos de código y patrones recomendados.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../developer_guide/" class="btn btn-neutral float-left" title="Developer Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../comparison_detailed/" class="btn btn-neutral float-right" title="Comparison Details">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk" class="fa fa-code-fork" style="color: #fcfcfc"> ezer-mackenzie/bank-central-chile-sdk</a>
+        </span>
+    
+    
+      <span><a href="../developer_guide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../comparison_detailed/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

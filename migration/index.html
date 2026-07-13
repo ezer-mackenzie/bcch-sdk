@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/migration/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Migration Guide - Banco Central Chile SDK</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Migration Guide";
+        var mkdocs_page_input_path = "migration.md";
+        var mkdocs_page_url = "/bank-central-chile-sdk/migration/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Banco Central Chile SDK
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Migration Guide</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api_reference/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison/">Comparison (legacy vs src)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison_detailed/">Comparison Details</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Banco Central Chile SDK</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Migration Guide</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/migration.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="guia-de-migracion-implementacion-legacy-src">Guía de Migración: implementación legacy → <code>src/</code><a class="headerlink" href="#guia-de-migracion-implementacion-legacy-src" title="Permanent link">&para;</a></h1>
+<p>Esta guía documenta las diferencias funcionales y de diseño entre la implementación legacy (código anterior usado como referencia) y la nueva implementación reescrita bajo <code>src/</code>.</p>
+<p>Resumen rápido:</p>
+<ul>
+<li>La implementación legacy ofrecía una clase <code>Session</code> que exponía <code>get</code> y <code>search</code> (métodos sync usando <code>requests</code>).</li>
+<li>La reimplementación en <code>src/</code> separa responsabilidades en:</li>
+<li><code>clients/</code> — clientes sync/async con transporte y validación robusta.</li>
+<li><code>builders/</code> — construcción de parámetros y normalización de entradas.</li>
+<li><code>mappers/</code> y <code>models/</code> — conversión de payloads a modelos tipados (Pydantic).</li>
+<li><code>sdk/</code> — capa pública que ofrece conveniencias y concurrencia.</li>
+</ul>
+<p>Detalles por módulo</p>
+<ul>
+<li>
+<p>Legacy <code>credentials</code> vs <code>src.types.auth</code> + <code>src/mappers/credentials</code></p>
+</li>
+<li>
+<p>Legacy: funciones <code>get_credentials()</code> y <code>read_credentials(file)</code> que devuelven <code>(user, password)</code> leídos desde input o archivo.</p>
+</li>
+<li>Nueva: uso de <code>InternalCredentials</code> (<code>src/types/auth.py</code>) como <code>TypedDict</code> y <code>CredentialsMapper.to_query_credentials</code> (<code>src/mappers/credentials.py</code>) para transformar al dict de query esperado (<code>user</code>, <code>pass</code>).</li>
+<li>
+<p>Razonamiento: tipos explícitos y separación de IO (lectura de credenciales) de mapeo a parámetros de consulta.</p>
+</li>
+<li>
+<p>Legacy <code>exception</code> vs <code>src/exceptions</code></p>
+</li>
+<li>
+<p>Legacy: excepciones simples que heredan de <code>Exception</code> (p. ej. <code>InvalidSeries</code>, <code>InvalidCredentials</code>).</p>
+</li>
+<li>Nueva: jerarquía de excepciones más rica (<code>TransportException</code>, <code>ResponseParseException</code>, <code>InvalidsCredentialsException</code>, <code>InvalidDateException</code>, etc.) que mejoran el control de flujos y diferenciación de fallos.</li>
+<li>
+<p>Razonamiento: distinguir problemas de transporte, parseo y errores de negocio facilita manejo en aplicaciones consumidoras.</p>
+</li>
+<li>
+<p>Legacy <code>webservice.Session</code> vs <code>src/clients/</code> (<code>BCChSyncClient</code> y <code>BCChAsyncClient</code>)</p>
+</li>
+<li>
+<p>Legacy: <code>Session.get(time_series, first_date, last_date)</code> y <code>Session.search(frequency)</code> usando <code>requests.get</code>, parseo JSON directo y conversión con clases <code>WSResponse</code>.</p>
+</li>
+<li>Nueva: clientes sincronous y asíncronos (<code>src/clients/sync_client.py</code> y <code>src/clients/async_client.py</code>) que:<ul>
+<li>Soportan <code>httpx</code> con <code>Timeout</code> y <code>RetryTransport</code>.</li>
+<li>Centralizan validación y parseo en <code>_validate_response</code> retornando <code>WebServiceResponse</code> tipado (<code>src/models/web_service.py</code>).</li>
+<li>Tiran excepciones concretas para códigos de API y errores de transporte.</li>
+</ul>
+</li>
+<li>
+<p>Razonamiento: independencia de la librería de transporte, mejores tiempos de espera configurables y reintentos automáticos.</p>
+</li>
+<li>
+<p>Formato de parámetros HTTP</p>
+</li>
+<li>
+<p>Legacy: construía <code>params</code> con las claves <code>user</code>, <code>pass</code>, <code>firstdate</code>, <code>lastdate</code>, <code>timeseries</code> y <code>function</code>.</p>
+</li>
+<li>Nueva: <code>src/builders/parameters.py</code> encapsula la construcción de parámetros y usa <code>CredentialsMapper</code> además de <code>DateBuilder</code>. La clave usada para las series es <code>timeseries</code> (coincide con legacy).</li>
+<li>
+<p>Importante: la API Python expone <code>time_series</code> como nombre de variable/argumento, y <code>ParameterBuilder</code> mappea a la clave HTTP <code>timeseries</code>.</p>
+</li>
+<li>
+<p>Manejo de respuestas: implementación legacy vs <code>src/models/*</code> + <code>src/mappers/*</code></p>
+</li>
+<li>
+<p>Legacy: <code>WSResponse</code>, <code>GSResponse</code>, <code>SSResponse</code> con métodos para transformar a <code>pandas.Series</code> / <code>pandas.DataFrame</code>.</p>
+</li>
+<li>Nueva: modelos Pydantic (<code>src/models/web_service.py</code>, <code>src/models/series.py</code>, <code>src/models/series_information.py</code>, <code>src/models/observation_series.py</code>) que normalizan nombres de campos (camelCase → snake_case y traducciones más claras, p. ej. <code>descripEsp</code> → <code>spanish_description</code>).</li>
+<li>Razonamiento: modelos tipados mejoran la validación y la interoperabilidad con herramientas de tipado, permitiendo también que mappers generen DataFrames cuando se necesite.</li>
+</ul>
+<p>Migración práctica — pasos recomendados para los usuarios del paquete legacy:</p>
+<ol>
+<li>Reemplace <code>Session</code> por <code>BCChSyncClient</code> o <code>BCChAsyncClient</code>.</li>
+<li>Cambie la lectura de credenciales para usar <code>InternalCredentials</code> o pasar un dict <code>{"username": ..., "password": ...}</code> y deje que la <code>CredentialsMapper</code> haga la transformación.</li>
+<li>Ajuste el nombre del argumento <code>time_series</code> (el SDK lo usa así) — los parámetros HTTP continuarán usando <code>timeseries</code>.</li>
+<li>Actualice su manejo de excepciones para capturar <code>TransportException</code>, <code>InvalidsCredentialsException</code>, <code>ResponseParseException</code> en lugar de las excepciones legacy.</li>
+</ol>
+<p>En la página de comparación (Comparison) se incluyen ejemplos concretos y fragmentos de código lado a lado.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../api_reference/" class="btn btn-neutral float-right" title="API Reference">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk" class="fa fa-code-fork" style="color: #fcfcfc"> ezer-mackenzie/bank-central-chile-sdk</a>
+        </span>
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../api_reference/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/api_reference/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>API Reference - Banco Central Chile SDK</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "API Reference";
+        var mkdocs_page_input_path = "api_reference.md";
+        var mkdocs_page_url = "/bank-central-chile-sdk/api_reference/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Banco Central Chile SDK
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#sdk-publico">SDK público</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#clientes">Clientes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modelos-de-datos-returns">Modelos de datos (returns)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#parametros-http-y-mapeos">Parámetros HTTP y mapeos</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#errores-que-puedes-capturar">Errores que puedes capturar</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison/">Comparison (legacy vs src)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison_detailed/">Comparison Details</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Banco Central Chile SDK</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/api_reference.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="referencia-de-la-api-del-sdk">Referencia de la API del SDK<a class="headerlink" href="#referencia-de-la-api-del-sdk" title="Permanent link">&para;</a></h1>
+<p>Esta página resume la API pública que debe usar cualquier consumidor del SDK.</p>
+<h2 id="sdk-publico">SDK público<a class="headerlink" href="#sdk-publico" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>src/sdk/sync_sdk.py</code> y <code>src/sdk/async_sdk.py</code> exponen las funciones de alto nivel. Estas integran a los clientes y a los helpers de concurrencia.</li>
+</ul>
+<h3 id="clientes">Clientes<a class="headerlink" href="#clientes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>BCChSyncClient</code> (ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/sync_client.py">src/clients/sync_client.py</a>)</li>
+<li><code>get_series(time_series, first_date=None, last_date=None) -&gt; WebServiceResponse</code></li>
+<li>
+<p><code>search_series(frequency) -&gt; WebServiceResponse</code></p>
+</li>
+<li>
+<p><code>BCChAsyncClient</code> (ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/async_client.py">src/clients/async_client.py</a>)</p>
+</li>
+<li><code>async get_series(time_series, first_date=None, last_date=None) -&gt; WebServiceResponse</code></li>
+<li><code>async search_series(frequency) -&gt; WebServiceResponse</code></li>
+</ul>
+<h3 id="modelos-de-datos-returns">Modelos de datos (returns)<a class="headerlink" href="#modelos-de-datos-returns" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>WebServiceResponse</code> (Pydantic):</li>
+<li><code>code: int</code> — código de respuesta del backend.</li>
+<li><code>description: str</code> — descripción textual.</li>
+<li><code>series: Series | None</code> — estructura con observaciones (si corresponde).</li>
+<li>
+<p><code>series_information: list[SerieInformation] | None</code> — catálogo/metadata (si corresponde).</p>
+</li>
+<li>
+<p><code>Series</code>:</p>
+</li>
+<li>
+<p><code>id</code>, <code>spanish_description</code>, <code>english_description</code>, <code>observations</code> (lista de <code>ObservationSeries</code>).</p>
+</li>
+<li>
+<p><code>ObservationSeries</code>:</p>
+</li>
+<li><code>index_date</code> (date), <code>value</code> (float), <code>status_code</code> (str)</li>
+</ul>
+<h3 id="parametros-http-y-mapeos">Parámetros HTTP y mapeos<a class="headerlink" href="#parametros-http-y-mapeos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>El argumento Python <code>time_series</code> se normaliza y finalmente se pasa en la query param <code>timeseries</code> (clave del backend). Consulte <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py">src/builders/parameters.py</a>.</li>
+</ul>
+<h3 id="errores-que-puedes-capturar">Errores que puedes capturar<a class="headerlink" href="#errores-que-puedes-capturar" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>TransportException</code> — problemas de red o inicialización de sesión.</li>
+<li><code>WebServiceResponseException</code> — respuestas HTTP con status != 200.</li>
+<li><code>ResponseParseException</code> — payload JSON inválido.</li>
+<li><code>InvalidsCredentialsException</code>, <code>InvalidSeriesException</code>, <code>InvalidDateException</code>, <code>InvalidFrequencyException</code> — errores de negocio.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../migration/" class="btn btn-neutral float-left" title="Migration Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../architecture/" class="btn btn-neutral float-right" title="Architecture">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk" class="fa fa-code-fork" style="color: #fcfcfc"> ezer-mackenzie/bank-central-chile-sdk</a>
+        </span>
+    
+    
+      <span><a href="../migration/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../architecture/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
