@@ -1,4 +1,3 @@
-import logging
 from collections.abc import Sequence
 
 from typing import overload
@@ -9,20 +8,21 @@ from datetime import datetime, date
 
 import polars
 import pandas
+import logging
 
-from src.types.enums import Frequency
+from ..types.enums import Frequency
 
-from src.exceptions import (
+from ..exceptions import (
     InvalidConfigurationException,
     InvalidSeriesException,
 )
 
-from src.builders.time_series import TimeSeriesBuilder
+from ..builders.time_series import TimeSeriesBuilder
 
-from src.mappers.dataframe import DataFrameMapper
+from ..mappers.dataframe import DataFrameMapper
 
-from src.clients.async_client import BCChAsyncClient
-from src.concurrency import gather_async_tasks
+from ..clients.async_client import BCChAsyncClient
+from ..concurrency import gather_async_tasks
 
 from .base import BaseSDK
 

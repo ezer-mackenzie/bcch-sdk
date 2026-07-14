@@ -1,8 +1,8 @@
 from typing import NotRequired
 
-from src.types.auth import QueryCredentials
+from ..types.auth import QueryCredentials
 
-from src.types.enums import FunctionAPI, Frequency
+from ..types.enums import FunctionAPI, Frequency
 
 
 class GetSeriesParams(QueryCredentials):

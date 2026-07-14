@@ -10,12 +10,12 @@ from dataclasses import dataclass
 import polars
 import pandas
 
-from src.types.enums import Frequency
-from src.types.core import ClientT
-from src.types.core import BCChConfig
+from ..types.enums import Frequency
+from ..types.core import ClientT
+from ..types.core import BCChConfig
 
-from src.clients.async_client import BCChAsyncClient
-from src.clients.sync_client import BCChSyncClient
+from ..clients.async_client import BCChAsyncClient
+from ..clients.sync_client import BCChSyncClient
 
 
 @dataclass(slots=True)

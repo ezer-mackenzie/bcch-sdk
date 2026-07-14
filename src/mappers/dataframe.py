@@ -4,8 +4,8 @@ from typing import overload
 import polars
 import pandas
 
-from src.exceptions import ResponseParseException
-from src.models.web_service import WebServiceResponse
+from ..exceptions import ResponseParseException
+from ..models.web_service import WebServiceResponse
 
 class DataFrameMapper:
     @overload

@@ -8,14 +8,14 @@ from httpx import Client, QueryParams, RequestError
 
 import logging
 
-from src.clients.base import BaseClient
+from .base import BaseClient
 
-from src.builders.parameters import ParameterBuilder
+from ..builders.parameters import ParameterBuilder
 
-from src.models.web_service import WebServiceResponse 
-from src.types.enums import Frequency
+from ..models.web_service import WebServiceResponse 
+from ..types.enums import Frequency
 
-from src.exceptions import (
+from ..exceptions import (
     InvalidsCredentialsException,
     InvalidDateException,
     InvalidFrequencyException,

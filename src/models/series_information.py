@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 from datetime import date
 
-from src.types.enums import Frequency
+from ..types.enums import Frequency
 
 
 class SerieInformation(BaseModel):

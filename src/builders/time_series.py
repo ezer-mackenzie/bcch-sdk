@@ -1,4 +1,4 @@
-from src.exceptions import InvalidSeriesException
+from ..exceptions import InvalidSeriesException
 
 
 class TimeSeriesBuilder:

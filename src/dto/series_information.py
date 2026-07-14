@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.types.enums import Frequency
+from ..types.enums import Frequency
 
 class SerieInformationDTO(BaseModel):
     seriesId: str

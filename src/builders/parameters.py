@@ -1,12 +1,12 @@
 from datetime import datetime, date
 
-from src.types.auth import InternalCredentials
-from src.types.enums import Frequency, FunctionAPI
-from src.types.client import GetSeriesParams, SearchSeriesParams
+from ..types.auth import InternalCredentials
+from ..types.enums import Frequency, FunctionAPI
+from ..types.client import GetSeriesParams, SearchSeriesParams
 
-from src.mappers.credentials import CredentialsMapper
+from ..mappers.credentials import CredentialsMapper
 
-from src.builders.date import DateBuilder
+from ..builders.date import DateBuilder
 
 
 class ParameterBuilder:

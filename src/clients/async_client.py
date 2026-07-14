@@ -6,18 +6,17 @@ from dataclasses import dataclass
 
 import logging
 
-
 from httpx import AsyncClient, QueryParams, RequestError
 
 from .base import BaseAsyncClient
 
-from src.builders.parameters import ParameterBuilder
+from ..builders.parameters import ParameterBuilder
 
-from src.models.web_service import WebServiceResponse
+from ..models.web_service import WebServiceResponse
 
-from src.types.enums import Frequency
+from ..types.enums import Frequency
 
-from src.exceptions import (
+from ..exceptions import (
     InvalidsCredentialsException,
     InvalidDateException,
     InvalidSeriesException,

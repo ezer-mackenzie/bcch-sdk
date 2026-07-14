@@ -1,8 +1,8 @@
-from src.builders.date import DateBuilder
+from ..builders.date import DateBuilder
 
-from src.dto.series_information import SerieInformationDTO
+from ..dto.series_information import SerieInformationDTO
 
-from src.models.series_information import SerieInformation
+from ..models.series_information import SerieInformation
 
 
 class SerieInformationMapper:

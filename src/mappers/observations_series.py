@@ -1,8 +1,8 @@
-from src.builders.date import DateBuilder
+from ..builders.date import DateBuilder
 
-from src.models.observation_series import ObservationSeries
+from ..models.observation_series import ObservationSeries
 
-from src.dto.observation_series import ObservationSeriesDTO
+from ..dto.observation_series import ObservationSeriesDTO
 
 
 class ObservationSeriesMapper:

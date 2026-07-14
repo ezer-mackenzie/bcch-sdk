@@ -1,8 +1,8 @@
-from src.mappers.observations_series import ObservationSeriesMapper
+from ..mappers.observations_series import ObservationSeriesMapper
 
-from src.models.series import Series
+from ..models.series import Series
 
-from src.dto.series import SeriesDTO
+from ..dto.series import SeriesDTO
 
 
 class SeriesMapper:

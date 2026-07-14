@@ -1,4 +1,3 @@
-import logging
 from typing import Callable, overload
 from typing import Literal, Sequence
 
@@ -8,18 +7,19 @@ from dataclasses import dataclass
 
 import polars
 import pandas
+import logging
 
-from src.builders.time_series import TimeSeriesBuilder
+from ..builders.time_series import TimeSeriesBuilder
 
-from src.mappers.dataframe import DataFrameMapper
+from ..mappers.dataframe import DataFrameMapper
 
-from src.clients.sync_client import BCChSyncClient
-from src.models.web_service import WebServiceResponse
-from src.concurrency import run_in_threads
+from ..clients.sync_client import BCChSyncClient
+from ..models.web_service import WebServiceResponse
+from ..concurrency import run_in_threads
 
-from src.types.enums import Frequency
+from ..types.enums import Frequency
 
-from src.exceptions import (
+from ..exceptions import (
     InvalidConfigurationException,
     InvalidSeriesException,
 )

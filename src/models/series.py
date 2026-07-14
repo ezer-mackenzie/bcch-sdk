@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.models.observation_series import ObservationSeries
+from .observation_series import ObservationSeries
 
 class Series(BaseModel):
     id: str

@@ -1,11 +1,11 @@
-from src.mappers.series_information import SerieInformationMapper
-from src.mappers.series import SeriesMapper
+from .series_information import SerieInformationMapper
+from .series import SeriesMapper
 
-from src.models.web_service import WebServiceResponse
-from src.models.series_information import SerieInformation
-from src.models.series import Series
+from ..models.web_service import WebServiceResponse
+from ..models.series_information import SerieInformation
+from ..models.series import Series
 
-from src.dto.web_service import WebServiceResponseDTO
+from ..dto.web_service import WebServiceResponseDTO
 
 
 class WebServiceResponseMapper:

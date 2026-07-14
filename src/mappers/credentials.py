@@ -1,4 +1,4 @@
-from src.types.auth import InternalCredentials, QueryCredentials
+from ..types.auth import InternalCredentials, QueryCredentials
 
 
 class CredentialsMapper:

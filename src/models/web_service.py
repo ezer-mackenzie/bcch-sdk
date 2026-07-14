@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from src.models.series import Series
-from src.models.series_information import SerieInformation
+from .series import Series
+from .series_information import SerieInformation
 
 
 class WebServiceResponse(BaseModel):

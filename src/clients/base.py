@@ -10,16 +10,16 @@ from dataclasses import dataclass, field
 import json
 from pydantic import ValidationError
 
-from src.types.auth import InternalCredentials
-from src.types.enums import Frequency
+from ..types.auth import InternalCredentials
+from ..types.enums import Frequency
 
-from src.dto.web_service import WebServiceResponseDTO
+from ..dto.web_service import WebServiceResponseDTO
 
-from src.mappers.web_service import WebServiceResponseMapper
+from ..mappers.web_service import WebServiceResponseMapper
 
-from src.models.web_service import WebServiceResponse
+from ..models.web_service import WebServiceResponse
 
-from src.exceptions import (
+from ..exceptions import (
     InvalidsCredentialsException,
     WebServiceResponseException,
     ResponseParseException,
