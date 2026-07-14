@@ -5,19 +5,13 @@ from datetime import datetime, date
 from dataclasses import dataclass
 
 import logging
-import json
 
-from pydantic import ValidationError
 
-from httpx import AsyncClient, HTTPStatusError, QueryParams, RequestError, Response
+from httpx import AsyncClient, QueryParams, RequestError
 
 from .base import BaseAsyncClient
 
 from src.builders.parameters import ParameterBuilder
-
-from src.dto.web_service import WebServiceResponseDTO
-
-from src.mappers.web_service import WebServiceResponseMapper
 
 from src.models.web_service import WebServiceResponse
 
@@ -28,9 +22,7 @@ from src.exceptions import (
     InvalidDateException,
     InvalidSeriesException,
     InvalidFrequencyException,
-    WebServiceResponseException,
     TransportException,
-    ResponseParseException,
 )
 
 
@@ -52,32 +44,6 @@ class BCChAsyncClient(BaseAsyncClient):
         logger.debug("Initializing BCChAsyncClient with timeout=%s", self.timeout)
         if self.session is None:
             self.session = AsyncClient(timeout=self.timeout, transport=self.transport)
-
-    async def _validate_response(self, response: Response) -> WebServiceResponse:
-        try:
-            response.raise_for_status()
-        except HTTPStatusError as exc:
-            logger.debug("HTTP status error for %s: %s", response.url, exc)
-            raise WebServiceResponseException(
-                f"Request failed with status code: {response.status_code}"
-            ) from exc
-
-        try:
-            # Banco Central returns JSON encoded as ISO-8859-1.
-            # We parse response.text instead of response.json() to respect the charset.
-            payload = json.loads(response.text)
-            dto = WebServiceResponseDTO.model_validate(payload)
-            return WebServiceResponseMapper.from_api_to_domain(dto)
-
-        except json.JSONDecodeError as exc:
-            raise ResponseParseException(
-                "Failed to decode JSON from the Banco Central API response."
-            ) from exc
-
-        except ValidationError as exc:
-            raise ResponseParseException(
-                "The Banco Central API response does not match the expected schema."
-            ) from exc
 
     async def get_series(
         self,
@@ -106,7 +72,7 @@ class BCChAsyncClient(BaseAsyncClient):
                 self.base_url, params=QueryParams(**params)
             )
 
-            r = await self._validate_response(response)
+            r = self._validate_response(response)
 
             if r.code == -50:
                 raise InvalidSeriesException(
@@ -149,7 +115,20 @@ class BCChAsyncClient(BaseAsyncClient):
             response = await self.session.get(
                 self.base_url, params=QueryParams(**params)
             )
-            r = await self._validate_response(response)
+            r = self._validate_response(response)
+
+            if r.code == -5:
+                raise InvalidsCredentialsException(
+                    "The provided credentials are invalid."
+                )
+
+            if r.code == -1:
+                raise InvalidFrequencyException(
+                    "The requested frequency is invalid for the search operation."
+                )
+
+            return r
+
         except RequestError as exc:
             logger.error(
                 "Transport error while searching frequency %s: %s", frequency, exc
@@ -157,16 +136,6 @@ class BCChAsyncClient(BaseAsyncClient):
             raise TransportException(
                 "A transport error occurred while executing the search request."
             ) from exc
-
-        if r.code == -5:
-            raise InvalidsCredentialsException("The provided credentials are invalid.")
-
-        if r.code == -1:
-            raise InvalidFrequencyException(
-                "The requested frequency is invalid for the search operation."
-            )
-
-        return r
 
     async def __aenter__(self) -> Self:
         if self.session is None:

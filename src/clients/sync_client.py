@@ -1,11 +1,12 @@
-import logging
 from typing import Self
 from types import TracebackType
 from datetime import datetime, date
 
 from dataclasses import dataclass
 
-from httpx import Client, HTTPStatusError, QueryParams, RequestError, Response
+from httpx import Client, QueryParams, RequestError
+
+import logging
 
 from src.clients.base import BaseClient
 
@@ -20,8 +21,6 @@ from src.exceptions import (
     InvalidFrequencyException,
     InvalidSeriesException,
     TransportException,
-    WebServiceResponseException,
-    ResponseParseException
 )
 
 
@@ -35,25 +34,6 @@ class BCChSyncClient(BaseClient):
         logger.debug("Initializing BCChSyncClient with timeout=%s", self.timeout)
         if self.session is None:
             self.session = Client(timeout=self.timeout, transport=self.transport)
-
-    def _validate_response(self, response: Response) -> WebServiceResponse:
-        try:
-            response.raise_for_status()
-        except HTTPStatusError as exc:
-            logger.debug("HTTP status error for %s: %s", response.url, exc)
-            raise WebServiceResponseException(
-                f"Request failed with status code: {response.status_code}"
-            ) from exc
-
-        try:
-            payload = response.json()
-        except ValueError as exc:
-            logger.debug("Invalid JSON response from %s: %s", response.url, exc)
-            raise ResponseParseException(
-                "Failed to decode JSON from the Banco Central API response."
-            ) from exc
-
-        return WebServiceResponse.model_validate(payload)
 
     def get_series(
         self,
