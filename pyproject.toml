@@ -1,5 +1,5 @@
 [project]
-name = "banco-central-chile-sdk"
+name = "bcch-sdk"
 version = "0.1.0"
 description = ""
 authors = [
