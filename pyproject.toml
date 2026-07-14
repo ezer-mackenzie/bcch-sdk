@@ -1,6 +1,6 @@
 [project]
 name = "bcch-sdk"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz",email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
