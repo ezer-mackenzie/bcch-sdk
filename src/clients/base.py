@@ -19,8 +19,10 @@ class BaseClient:
     credentials: InternalCredentials | None = None
 
     base_url: str = "https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx"
-    timeout: Timeout = Timeout(10.0)
-
+    timeout: Timeout = field(
+        default_factory=lambda: Timeout(10.0),
+    )
+    
     retry_policy: Retry = field(
         default_factory=lambda: Retry(total=3, backoff_factor=0.5),
     )
