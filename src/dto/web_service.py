@@ -7,6 +7,6 @@ class WebServiceResponseDTO(BaseModel):
     Codigo: int
     Descripcion: str
     Series: SeriesDTO
-    SeriesInfo: list[SerieInformationDTO]
+    SeriesInfos: list[SerieInformationDTO]
     
     
