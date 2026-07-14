@@ -17,9 +17,9 @@ class WebServiceResponseMapper:
         if dto.Series:
             series = SeriesMapper.from_api_to_domain(dto.Series)
 
-        if dto.SeriesInfo:
+        if dto.SeriesInfos:
             series_information = [
-                SerieInformationMapper.from_api_to_domain(si) for si in dto.SeriesInfo
+                SerieInformationMapper.from_api_to_domain(si) for si in dto.SeriesInfos
             ]
 
         return WebServiceResponse(
