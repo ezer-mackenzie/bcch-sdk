@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from httpx import Timeout
 
@@ -13,4 +13,6 @@ ResponseT = TypeVar("ResponseT")
 @dataclass(frozen=True, repr=False, slots=True)
 class BCChConfig:
     credentials: InternalCredentials | None
-    timeout: Timeout = Timeout(10.0)
+    timeout: Timeout = field(
+        default_factory=lambda: Timeout(10.0),
+    )
