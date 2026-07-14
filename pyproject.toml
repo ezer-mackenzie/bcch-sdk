@@ -6,7 +6,7 @@ authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz",email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "aiohttp (>=3.14.1,<4.0.0)",
     "httpx[brotli,zstd] (>=0.28.1,<0.29.0)",
