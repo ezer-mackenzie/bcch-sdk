@@ -1,15 +1,23 @@
-import logging
 from typing import Self
 from types import TracebackType
 from datetime import datetime, date
 
 from dataclasses import dataclass
 
+import logging
+import json
+
+from pydantic import ValidationError
+
 from httpx import AsyncClient, HTTPStatusError, QueryParams, RequestError, Response
 
 from .base import BaseAsyncClient
 
 from src.builders.parameters import ParameterBuilder
+
+from src.dto.web_service import WebServiceResponseDTO
+
+from src.mappers.web_service import WebServiceResponseMapper
 
 from src.models.web_service import WebServiceResponse
 
@@ -55,14 +63,21 @@ class BCChAsyncClient(BaseAsyncClient):
             ) from exc
 
         try:
-            payload = response.json()
-        except ValueError as exc:
-            logger.debug("Invalid JSON response from %s: %s", response.url, exc)
+            # Banco Central returns JSON encoded as ISO-8859-1.
+            # We parse response.text instead of response.json() to respect the charset.
+            payload = json.loads(response.text)
+            dto = WebServiceResponseDTO.model_validate(payload)
+            return WebServiceResponseMapper.from_api_to_domain(dto)
+
+        except json.JSONDecodeError as exc:
             raise ResponseParseException(
                 "Failed to decode JSON from the Banco Central API response."
             ) from exc
 
-        return WebServiceResponse.model_validate(payload)
+        except ValidationError as exc:
+            raise ResponseParseException(
+                "The Banco Central API response does not match the expected schema."
+            ) from exc
 
     async def get_series(
         self,
@@ -90,7 +105,21 @@ class BCChAsyncClient(BaseAsyncClient):
             response = await self.session.get(
                 self.base_url, params=QueryParams(**params)
             )
+
             r = await self._validate_response(response)
+
+            if r.code == -50:
+                raise InvalidSeriesException(
+                    "The requested series identifier is invalid."
+                )
+
+            if r.code == -1:
+                raise InvalidDateException(
+                    "The requested dates are invalid or outside the supported range."
+                )
+
+            return r
+
         except RequestError as exc:
             logger.error(
                 "Transport error while requesting series %s: %s", time_series, exc
@@ -98,16 +127,6 @@ class BCChAsyncClient(BaseAsyncClient):
             raise TransportException(
                 "A transport error occurred while requesting series data."
             ) from exc
-
-        if r.code == -50:
-            raise InvalidSeriesException("The requested series identifier is invalid.")
-
-        if r.code == -1:
-            raise InvalidDateException(
-                "The requested dates are invalid or outside the supported range."
-            )
-
-        return r
 
     async def search_series(
         self,
