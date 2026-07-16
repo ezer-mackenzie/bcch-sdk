@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
 
+## [0.4.0] - 2026-07-16
+
+### Added
+
+- Added PyPI metadata: license, keywords, project URLs, classifiers, and changelog link.
+- Added sync and async client tests with `httpx.MockTransport`.
+- Covered HTTP status errors, invalid credentials, invalid series, invalid dates, invalid search frequency, and successful response mapping.
+
 ## [0.3.0] - 2026-07-16
 
 ### Changed
@@ -29,12 +37,6 @@ This project follows semantic versioning before `1.0.0` with the same discipline
 ## 1.0.0 Release Path
 
 The next releases should focus on reducing user-facing risk before declaring the API stable.
-
-### 0.4.0
-
-- Add integration-style tests with `httpx.MockTransport` for sync and async clients.
-- Validate HTTP error mapping, transport exceptions, invalid credentials, invalid series, invalid dates, and invalid search frequency.
-- Add a release workflow dry-run checklist before PyPI publication.
 
 ### 0.5.0
 
