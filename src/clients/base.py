@@ -1,7 +1,3 @@
-from abc import ABC
-from abc import abstractmethod
-from datetime import datetime, date
-
 from httpx import Timeout, HTTPStatusError, Response
 from httpx_retries import RetryTransport, Retry
 
@@ -11,7 +7,6 @@ import json
 from pydantic import ValidationError
 
 from ..types.auth import InternalCredentials
-from ..types.enums import Frequency
 
 from ..dto.web_service import WebServiceResponseDTO
 
@@ -73,28 +68,3 @@ class BaseClient:
                 "The Banco Central API response does not match the expected schema."
             ) from exc
 
-
-class BaseSyncClient(BaseClient, ABC):
-    @abstractmethod
-    def get_series(
-        self,
-        time_series: str,
-        first_date: str | date | datetime | None = None,
-        last_date: str | date | datetime | None = None,
-    ) -> WebServiceResponse: ...
-
-    @abstractmethod
-    def search_series(self, frequency: Frequency) -> WebServiceResponse: ...
-
-
-class BaseAsyncClient(BaseClient, ABC):
-    @abstractmethod
-    async def get_series(
-        self,
-        time_series: str,
-        first_date: str | date | datetime | None = None,
-        last_date: str | date | datetime | None = None,
-    ) -> WebServiceResponse: ...
-
-    @abstractmethod
-    async def search_series(self, frequency: Frequency) -> WebServiceResponse: ...
