@@ -24,7 +24,7 @@ from ..exceptions import (
     InvalidSeriesException,
 )
 
-from .base import BaseSyncSDK
+from .base.sync_sdk import BaseSyncSDK
 
 logger = logging.getLogger(__name__)
 

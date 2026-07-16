@@ -24,7 +24,7 @@ from ..mappers.dataframe import DataFrameMapper
 from ..clients.async_client import BCChAsyncClient
 from ..concurrency import gather_async_tasks
 
-from .base import BaseSDK
+from .base.async_sdk import BaseSDK
 
 logger = logging.getLogger(__name__)
 
