@@ -2,7 +2,7 @@ from datetime import datetime, date
 
 from ..types.auth import InternalCredentials
 from ..types.enums import Frequency, FunctionAPI
-from ..types.client import GetSeriesParams, SearchSeriesParams
+from ..types.parameters import GetSeriesParams, SearchSeriesParams
 
 from ..mappers.credentials import CredentialsMapper
 
