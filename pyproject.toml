@@ -6,7 +6,28 @@ authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz",email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
 ]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
+keywords = [
+    "banco-central-chile",
+    "bcch",
+    "central-bank",
+    "economic-data",
+    "siete",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
 dependencies = [
     "httpx[brotli,zstd] (>=0.28.1,<0.29.0)",
     "pydantic (>=2.13.4,<3.0.0)",
@@ -14,6 +35,13 @@ dependencies = [
     "pandas (>=3.0.3,<4.0.0)",
     "httpx-retries (>=0.6.0,<0.7.0)",
 ]
+
+[project.urls]
+Homepage = "https://github.com/ezer-mackenzie/bank-central-chile-sdk"
+Documentation = "https://ezer-mackenzie.github.io/bank-central-chile-sdk/"
+Repository = "https://github.com/ezer-mackenzie/bank-central-chile-sdk"
+Issues = "https://github.com/ezer-mackenzie/bank-central-chile-sdk/issues"
+Changelog = "https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/CHANGELOG.md"
 
 [tool.poetry]
 packages = [{ include = "bcch_sdk", from = "src" }]
