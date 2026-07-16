@@ -2,7 +2,26 @@
 
 All notable changes to this project are documented here.
 
-This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
+This project follows semantic versioning. Breaking public API changes require a major version bump.
+
+## [1.0.0] - 2026-07-16
+
+### Stable
+
+- Declared the SDK stable.
+- Frozen the public import surface documented in the API reference.
+- Kept `pandas` and `polars` as mandatory runtime dependencies for the stable `1.x` line.
+- Kept `SerieInformation` as a compatibility alias of `SeriesInformation`.
+- Marked package metadata as `Production/Stable`.
+
+### Verified
+
+- Full default test suite.
+- Benchmark smoke suite.
+- Ruff linting.
+- Strict MkDocs build.
+- Package build.
+- Clean wheel installation with public API import validation.
 
 ## [0.9.0] - 2026-07-16
 
@@ -97,9 +116,3 @@ This project follows semantic versioning before `1.0.0` with the same discipline
 - CI steps for linting, tests, and package builds.
 - Public API tests for package exports.
 - Response mapping tests for series-only and search-only payloads.
-
-## 1.0.0 Release Path
-
-### 1.0.0
-
-- Mark the package as stable once the public import surface, error hierarchy, response models, and release pipeline are frozen.

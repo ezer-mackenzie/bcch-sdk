@@ -4,7 +4,7 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ## SDK público
 
-La API estable se importa desde `bcch_sdk` y sus subpaquetes públicos. Los módulos `builders`, `dto` y `mappers` son detalles internos y pueden cambiar en releases menores antes de `1.0.0`.
+La API estable se importa desde `bcch_sdk` y sus subpaquetes públicos. Los módulos `builders`, `dto` y `mappers` son detalles internos y no tienen garantía de compatibilidad pública.
 
 ### Imports recomendados
 
@@ -21,19 +21,19 @@ También son públicos:
 - `bcch_sdk.types`: `BCChConfig`, `Frequency`, `InternalCredentials`
 - `bcch_sdk.models`: `WebServiceResponse`, `Series`, `ObservationSeries`, `SeriesInformation`
 
-`SerieInformation` se mantiene como alias compatible de `SeriesInformation` durante la serie `0.x`.
+`SerieInformation` se mantiene como alias compatible de `SeriesInformation`.
 
 ### Versionado
 
 - `bcch_sdk.__version__` expone la versión instalada del paquete.
-- Antes de `1.0.0`, cualquier cambio incompatible en imports públicos debe subir la versión menor.
-- Desde `1.0.0`, cambios incompatibles deben reservarse para una versión mayor.
+- Los cambios incompatibles en imports públicos se reservan para versiones mayores.
+- Cambios compatibles y correcciones usan versiones menores o patch según semver.
 
 ### Dependencias de DataFrame
 
-`pandas` y `polars` son dependencias runtime obligatorias durante la serie `0.x` y el objetivo `1.0.0`, porque las respuestas como DataFrame son parte del contrato principal del SDK.
+`pandas` y `polars` son dependencias runtime obligatorias durante la serie estable `1.x`, porque las respuestas como DataFrame son parte del contrato principal del SDK.
 
-Separarlas en extras (`bcch-sdk[pandas]`, `bcch-sdk[polars]` o similar) queda reservado para una versión futura posterior a la estabilización de la API.
+Separarlas en extras (`bcch-sdk[pandas]`, `bcch-sdk[polars]` o similar) queda reservado para una versión mayor futura.
 
 ### SDKs
 
