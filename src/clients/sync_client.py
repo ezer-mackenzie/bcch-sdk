@@ -8,7 +8,7 @@ from httpx import Client, QueryParams, RequestError
 
 import logging
 
-from .base import BaseClient
+from .base_sync import BaseSyncClient
 
 from ..builders.parameters import ParameterBuilder
 
@@ -27,7 +27,7 @@ from ..exceptions import (
 logger = logging.getLogger(__name__)
 
 @dataclass
-class BCChSyncClient(BaseClient):
+class BCChSyncClient(BaseSyncClient):
     session: Client | None = None
 
     def __post_init__(self) -> None:

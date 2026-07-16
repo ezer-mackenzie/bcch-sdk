@@ -8,7 +8,7 @@ import logging
 
 from httpx import AsyncClient, QueryParams, RequestError
 
-from .base import BaseAsyncClient
+from .base_async import BaseAsyncClient
 
 from ..builders.parameters import ParameterBuilder
 
