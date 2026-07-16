@@ -29,6 +29,12 @@ También son públicos:
 - Antes de `1.0.0`, cualquier cambio incompatible en imports públicos debe subir la versión menor.
 - Desde `1.0.0`, cambios incompatibles deben reservarse para una versión mayor.
 
+### Dependencias de DataFrame
+
+`pandas` y `polars` son dependencias runtime obligatorias durante la serie `0.x` y el objetivo `1.0.0`, porque las respuestas como DataFrame son parte del contrato principal del SDK.
+
+Separarlas en extras (`bcch-sdk[pandas]`, `bcch-sdk[polars]` o similar) queda reservado para una versión futura posterior a la estabilización de la API.
+
 ### SDKs
 
 - `BCChSyncSDK`: capa de alto nivel para consultar una o varias series de forma sincrónica y retornar DataFrames.
