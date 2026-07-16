@@ -1,6 +1,6 @@
 [project]
 name = "bcch-sdk"
-version = "0.6.0"
+version = "0.7.0"
 description = "Python SDK for the Banco Central de Chile SieteRestWS API."
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz",email = "ramirez.ruiz.eliezer.reuven@gmail.com"}

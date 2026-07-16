@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
 
+## [0.7.0] - 2026-07-16
+
+### Documented
+
+- Confirmed `pandas` and `polars` remain mandatory runtime dependencies for the `0.x` and `1.0` release line.
+- Documented that splitting DataFrame libraries into optional extras is deferred until after the stable API is established.
+
 ## [0.6.0] - 2026-07-16
 
 ### Added
@@ -59,10 +66,10 @@ This project follows semantic versioning before `1.0.0` with the same discipline
 
 The next releases should focus on reducing user-facing risk before declaring the API stable.
 
-### 0.7.0
+### 0.8.0
 
-- Decide whether DataFrame dependencies remain mandatory or move behind extras before `1.0.0`.
 - Add tests for installed-wheel imports in a clean virtual environment.
+- Add a release checklist covering tag creation, build artifacts, docs, and PyPI workflow validation.
 
 ### 0.9.0
 

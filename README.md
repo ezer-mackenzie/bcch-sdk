@@ -23,6 +23,11 @@ This repository provides sync and async wrappers over the API, returning data as
 - `pandas`
 - `httpx-retries`
 
+`pandas` and `polars` are runtime dependencies by design for the `0.x` and `1.0`
+release line because DataFrame responses are part of the core SDK contract. They
+may be split into optional extras in a future release after the stable API is
+established.
+
 ## Installation
 
 This project uses a `src/` layout and exposes the `bcch_sdk` package.
