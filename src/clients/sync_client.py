@@ -8,7 +8,7 @@ from httpx import Client, QueryParams, RequestError
 
 import logging
 
-from .base_sync import BaseSyncClient
+from .base.sync_client import BaseSyncClient
 
 from ..builders.parameters import ParameterBuilder
 
