@@ -94,11 +94,6 @@ class BCChSyncSDK(BaseSyncSDK):
                 "No series data was returned for the requested series."
             )
 
-        if len(results) == 0:
-            raise InvalidSeriesException(
-                "No series data was returned for the requested series."
-            )
-
         if polars_response:
             return [(DataFrameMapper.get_series(r)) for r in results]
 
