@@ -12,7 +12,7 @@ import pandas
 
 from ..types.enums import Frequency
 from ..types.core import ClientT
-from ..types.core import BCChConfig
+from ..types.config import BCChConfig
 
 from ..clients.async_client import BCChAsyncClient
 from ..clients.sync_client import BCChSyncClient
