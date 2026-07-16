@@ -7,7 +7,6 @@ from httpx import Timeout
 from .auth import InternalCredentials
 
 ClientT = TypeVar("ClientT")
-ResponseT = TypeVar("ResponseT")
 
 
 @dataclass(frozen=True, repr=False, slots=True)
