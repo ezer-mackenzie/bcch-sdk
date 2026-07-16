@@ -11,6 +11,7 @@ from bcch_sdk import (
     ObservationSeries,
     SerieInformation,
     Series,
+    SeriesInformation,
     WebServiceResponse,
 )
 from bcch_sdk.clients import BCChAsyncClient, BCChSyncClient
@@ -33,7 +34,8 @@ def test_public_package_exports_common_models_and_errors() -> None:
     assert WebServiceResponse is ExportedWebServiceResponse
     assert Series.__name__ == "Series"
     assert ObservationSeries.__name__ == "ObservationSeries"
-    assert SerieInformation.__name__ == "SerieInformation"
+    assert SeriesInformation.__name__ == "SeriesInformation"
+    assert SerieInformation is SeriesInformation
     assert issubclass(InvalidsCredentialsException, InvalidCredentialsException)
 
 

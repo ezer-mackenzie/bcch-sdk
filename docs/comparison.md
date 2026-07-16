@@ -39,7 +39,7 @@ Esta página muestra comparaciones lado a lado (conceptuales y de código) entre
 ## 4) Respuestas y modelos
 
 - Legacy (anterior): `WSResponse`, `GSResponse`, `SSResponse` con métodos `to_series()` y `to_df()` (devuelven `pandas` objetos).
-- Nueva: Pydantic models (`WebServiceResponse`, `Series`, `SerieInformation`, `ObservationSeries`) que usan `snake_case` y tipos concretos (`date`, `float`). Esto facilita validación, serialización y la escritura de mappers hacia `pandas` cuando sea necesario.
+- Nueva: Pydantic models (`WebServiceResponse`, `Series`, `SeriesInformation`, `ObservationSeries`) que usan `snake_case` y tipos concretos (`date`, `float`). Esto facilita validación, serialización y la escritura de mappers hacia `pandas` cuando sea necesario.
 
 **Ejemplo de campo renombrado**: `Series['descripEsp']` (legacy) → `spanish_description` (nuevo); `Obs[indexDateString]` → `ObservationSeries.index_date`.
 

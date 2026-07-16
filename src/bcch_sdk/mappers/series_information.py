@@ -2,13 +2,13 @@ from ..builders.date import DateBuilder
 
 from ..dto.series_information import SerieInformationDTO
 
-from ..models.series_information import SerieInformation
+from ..models.series_information import SeriesInformation
 
 
 class SerieInformationMapper:
     @staticmethod
-    def from_api_to_domain(dto: SerieInformationDTO) -> SerieInformation:
-        return SerieInformation(
+    def from_api_to_domain(dto: SerieInformationDTO) -> SeriesInformation:
+        return SeriesInformation(
             id=dto.seriesId,
             frequency=dto.frequencyCode,
             spanish_title=dto.spanishTitle,

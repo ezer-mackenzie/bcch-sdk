@@ -3,7 +3,7 @@ from typing import Any
 
 from bcch_sdk.models.observation_series import ObservationSeries
 from bcch_sdk.models.series import Series
-from bcch_sdk.models.series_information import SerieInformation
+from bcch_sdk.models.series_information import SeriesInformation
 from bcch_sdk.models.web_service import WebServiceResponse
 from bcch_sdk.types.auth import InternalCredentials
 from bcch_sdk.types.enums import Frequency
@@ -51,7 +51,7 @@ def build_search_response(*, items_count: int = 3) -> WebServiceResponse:
         description="Success",
         series=None,
         series_information=[
-            SerieInformation(
+            SeriesInformation(
                 id=f"SF{index}",
                 frequency=frequencies[index % len(frequencies)],
                 spanish_title=f"Test {index}",

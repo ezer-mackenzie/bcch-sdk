@@ -6,6 +6,7 @@ from .models import (
     ObservationSeries,
     SerieInformation,
     Series,
+    SeriesInformation,
     WebServiceResponse,
 )
 
@@ -31,6 +32,7 @@ __all__ = [
     "InternalCredentials",
     "ObservationSeries",
     "SerieInformation",
+    "SeriesInformation",
     "Series",
     "WebServiceResponse",
     "InvalidsCredentialsException",
