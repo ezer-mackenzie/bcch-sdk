@@ -4,7 +4,33 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ## SDK público
 
-- `src/bcch_sdk/sdk/sync_sdk.py` y `src/bcch_sdk/sdk/async_sdk.py` exponen las funciones de alto nivel. Estas integran a los clientes y a los helpers de concurrencia.
+La API estable se importa desde `bcch_sdk` y sus subpaquetes públicos. Los módulos `builders`, `dto` y `mappers` son detalles internos y pueden cambiar en releases menores antes de `1.0.0`.
+
+### Imports recomendados
+
+```python
+from bcch_sdk import BCChSyncSDK, BCChAsyncSDK
+from bcch_sdk import BCChConfig, Frequency
+from bcch_sdk import InvalidCredentialsException, TransportException
+```
+
+También son públicos:
+
+- `bcch_sdk.clients`: `BCChSyncClient`, `BCChAsyncClient`
+- `bcch_sdk.sdk`: `BCChSyncSDK`, `BCChAsyncSDK`
+- `bcch_sdk.types`: `BCChConfig`, `Frequency`, `InternalCredentials`
+- `bcch_sdk.models`: `WebServiceResponse`, `Series`, `ObservationSeries`, `SerieInformation`
+
+### Versionado
+
+- `bcch_sdk.__version__` expone la versión instalada del paquete.
+- Antes de `1.0.0`, cualquier cambio incompatible en imports públicos debe subir la versión menor.
+- Desde `1.0.0`, cambios incompatibles deben reservarse para una versión mayor.
+
+### SDKs
+
+- `BCChSyncSDK`: capa de alto nivel para consultar una o varias series de forma sincrónica y retornar DataFrames.
+- `BCChAsyncSDK`: capa de alto nivel para consultar una o varias series de forma asíncrona y retornar DataFrames.
 
 ### Clientes
 

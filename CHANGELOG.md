@@ -4,6 +4,16 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
 
+## [0.5.0] - 2026-07-16
+
+### Added
+
+- Added `bcch_sdk.__version__`.
+- Exported common configuration, enum, model, and exception types from the package root.
+- Exported common domain models from `bcch_sdk.models`.
+- Added public API tests for stable imports, version metadata, model exports, and credentials exception compatibility.
+- Documented the supported public import surface and internal modules.
+
 ## [0.4.0] - 2026-07-16
 
 ### Added
@@ -38,11 +48,10 @@ This project follows semantic versioning before `1.0.0` with the same discipline
 
 The next releases should focus on reducing user-facing risk before declaring the API stable.
 
-### 0.5.0
+### 0.6.0
 
-- Stabilize public exports from `bcch_sdk`, `bcch_sdk.types`, `bcch_sdk.clients`, and `bcch_sdk.sdk`.
-- Document which modules are public and which are internal implementation details.
 - Decide whether DataFrame dependencies remain mandatory or move behind extras before `1.0.0`.
+- Add tests for installed-wheel imports in a clean virtual environment.
 
 ### 0.9.0
 
