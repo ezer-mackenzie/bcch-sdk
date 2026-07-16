@@ -1,56 +1,47 @@
 # Roadmap
 
-Este roadmap separa lo que falta para declarar `1.0.0` de las mejoras que conviene dejar para después de estabilizar la API.
+`bcch-sdk` está orientado a estabilidad de API en la serie `1.x`. Esta página documenta qué queda congelado y qué mejoras pueden evaluarse en versiones futuras.
 
-## Antes de 0.9.0
+## Estable en 1.x
 
-- Validar que CI instala el wheel en un entorno limpio.
-- Mantener `pandas` y `polars` como dependencias runtime obligatorias.
-- Mantener `SerieInformation` como alias compatible de `SeriesInformation`.
-- Revisar que los ejemplos de MkDocs usen solamente imports públicos.
-- Confirmar que `README.md`, `CHANGELOG.md` y la referencia de API describen el mismo contrato.
-
-## 0.9.0 Release Candidate
-
-`0.9.0` debe funcionar como candidata final antes de `1.0.0`.
-
-Validaciones esperadas:
-
-- `poetry check`
-- `poetry run ruff check .`
-- `poetry run pytest -q`
-- `poetry run pytest -q -m benchmark --benchmark-disable`
-- `poetry run mkdocs build --strict`
-- `poetry build`
-- instalación del wheel en un entorno limpio
-
-El objetivo de `0.9.0` es encontrar problemas de empaquetado, documentación o API pública antes de congelar compatibilidad.
-
-## 1.0.0
-
-La versión `1.0.0` debe congelar:
+La serie `1.x` mantiene estable:
 
 - Imports públicos desde `bcch_sdk`.
 - Excepciones públicas.
 - Modelos públicos de respuesta.
 - Contrato de DataFrames.
-- Política de dependencias runtime.
-- Flujo de release con tags y build validado.
+- Dependencias runtime principales.
+- Flujo de release con tags, build y validación de wheel.
 
-## Post 1.0.0
+## Cambios compatibles
 
-Estas mejoras son valiosas, pero no deberían bloquear `1.0.0`.
+Pueden entrar en versiones menores o patch:
 
-### Cache opcional
+- Nuevos ejemplos de documentación.
+- Nuevos modelos o helpers públicos que no rompan imports existentes.
+- Mejoras internas de transporte, logging o parsing.
+- Más cobertura de tests.
+- Correcciones de errores.
 
-El cache debe ser opt-in, no comportamiento por defecto.
+## Cambios reservados para versión mayor
+
+Requieren una versión mayor:
+
+- Remover imports públicos.
+- Cambiar tipos de retorno de métodos públicos.
+- Hacer opcionales dependencias que hoy forman parte del contrato principal.
+- Cambiar la jerarquía pública de excepciones de forma incompatible.
+
+## Cache opcional
+
+El cache sigue siendo una mejora futura recomendable, pero debe ser opt-in.
 
 Motivos:
 
 - Las series económicas pueden corregirse o actualizarse.
 - Un TTL incorrecto puede entregar datos vencidos.
 - Las credenciales viajan en parámetros de request y no deben filtrarse en claves de cache visibles.
-- La API pública de cache necesita diseño propio para no romper compatibilidad después.
+- La API pública de cache necesita diseño propio para preservar compatibilidad.
 
 Diseño recomendado:
 
@@ -77,7 +68,7 @@ sdk = BCChSyncSDK(
 )
 ```
 
-### Dependencias DataFrame opcionales
+## Dependencias DataFrame opcionales
 
 Separar `pandas` y `polars` en extras puede reducir peso de instalación, pero requiere rediseñar imports, errores y contrato de retorno.
 
@@ -87,7 +78,7 @@ Posibles extras futuros:
 - `bcch-sdk[polars]`
 - `bcch-sdk[dataframe]`
 
-### Integraciones adicionales
+## Integraciones adicionales
 
 - Exportar a CSV/Parquet desde helpers opcionales.
 - Documentar recetas para notebooks.

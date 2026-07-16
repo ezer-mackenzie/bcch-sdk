@@ -1,6 +1,6 @@
 # DataFrames
 
-El SDK considera `pandas` y `polars` parte del contrato principal. Por eso ambas librerías son dependencias runtime obligatorias en la serie `0.x` y en el objetivo `1.0.0`.
+El SDK considera `pandas` y `polars` parte del contrato principal. Por eso ambas librerías son dependencias runtime obligatorias en la serie estable `1.x`.
 
 ## Respuesta por defecto
 
@@ -83,4 +83,4 @@ Ejemplo conceptual:
 
 ## Decisión de dependencias
 
-Separar `pandas` y `polars` en extras opcionales queda reservado para una versión futura posterior a `1.0.0`. Hacerlo ahora implicaría cambiar imports, errores y contratos de respuesta mientras la API todavía está madurando.
+Separar `pandas` y `polars` en extras opcionales queda reservado para una versión mayor futura. Ese cambio requiere rediseñar imports, errores y contratos de respuesta.

@@ -49,7 +49,7 @@ git push origin vX.Y.Z
 Si necesitas subir varios tags:
 
 ```bash
-git push origin v0.3.0 v0.4.0 v0.5.0 v0.6.0 v0.7.0 v0.8.0 v0.8.1 v0.9.0
+git push origin v0.3.0 v0.4.0 v0.5.0 v0.6.0 v0.7.0 v0.8.0 v0.8.1 v0.9.0 v1.0.0
 ```
 
 ## Publicación
@@ -63,9 +63,9 @@ Antes de publicar el release:
 - Revisar que el release de GitHub apunte al tag correcto.
 - Copiar el resumen de `CHANGELOG.md` correspondiente a la versión.
 
-## Criterio para 1.0.0
+## Criterio para releases estables
 
-Publicar `1.0.0` solo cuando:
+Publicar una versión estable solo cuando:
 
 - La superficie pública de imports esté congelada.
 - La jerarquía de excepciones esté documentada.
