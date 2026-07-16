@@ -1,12 +1,8 @@
-from typing import TypeVar
-
 from dataclasses import dataclass, field
 
 from httpx import Timeout
 
 from .auth import InternalCredentials
-
-ClientT = TypeVar("ClientT")
 
 
 @dataclass(frozen=True, repr=False, slots=True)
