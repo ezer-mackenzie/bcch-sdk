@@ -17,6 +17,7 @@ nav:
   - Architecture: architecture.md
   - Developer Guide: developer_guide.md
   - Release Checklist: release_checklist.md
+  - Roadmap: roadmap.md
   - Comparison (legacy vs src): comparison.md
   - Comparison Details: comparison_detailed.md
 theme:
