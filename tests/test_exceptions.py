@@ -1,6 +1,6 @@
 import unittest
 
-from src.exceptions import (
+from bcch_sdk.exceptions import (
     BCChSDKBaseException,
     InvalidConfigurationException,
     InvalidCredentialsException,

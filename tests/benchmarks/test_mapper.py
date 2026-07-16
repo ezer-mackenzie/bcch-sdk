@@ -4,11 +4,11 @@ import pytest
 
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from src.mappers.credentials import CredentialsMapper
-from src.builders.parameters import ParameterBuilder
+from bcch_sdk.mappers.credentials import CredentialsMapper
+from bcch_sdk.builders.parameters import ParameterBuilder
 
-from src.types.auth import QueryCredentials
-from src.types.parameters import GetSeriesParams
+from bcch_sdk.types.auth import QueryCredentials
+from bcch_sdk.types.parameters import GetSeriesParams
 
 from tests.factories import DUMMY_CREDENTIALS
 

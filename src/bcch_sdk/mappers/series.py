@@ -1,4 +1,4 @@
-from ..mappers.observations_series import ObservationSeriesMapper
+from .observations_series import ObservationSeriesMapper
 
 from ..models.series import Series
 

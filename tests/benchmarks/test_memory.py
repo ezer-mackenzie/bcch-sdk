@@ -2,7 +2,7 @@ import tracemalloc
 
 import pytest
 
-from src.mappers.dataframe import DataFrameMapper
+from bcch_sdk.mappers.dataframe import DataFrameMapper
 
 from tests.factories import build_search_response, build_series_response
 

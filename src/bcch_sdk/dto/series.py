@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from ..dto.observation_series import ObservationSeriesDTO
+from .observation_series import ObservationSeriesDTO
 
 
 class SeriesDTO(BaseModel):

@@ -6,7 +6,7 @@ from ..types.parameters import GetSeriesParams, SearchSeriesParams
 
 from ..mappers.credentials import CredentialsMapper
 
-from ..builders.date import DateBuilder
+from .date import DateBuilder
 
 
 class ParameterBuilder:

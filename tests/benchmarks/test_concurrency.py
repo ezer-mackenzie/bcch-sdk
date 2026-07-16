@@ -8,13 +8,13 @@ import polars
 import pytest
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from src.clients.async_client import BCChAsyncClient
-from src.clients.sync_client import BCChSyncClient
-from src.models.web_service import WebServiceResponse
-from src.sdk.async_sdk import BCChAsyncSDK
-from src.sdk.sync_sdk import BCChSyncSDK
-from src.types.config import BCChConfig
-from src.types.enums import Frequency
+from bcch_sdk.clients.async_client import BCChAsyncClient
+from bcch_sdk.clients.sync_client import BCChSyncClient
+from bcch_sdk.models.web_service import WebServiceResponse
+from bcch_sdk.sdk.async_sdk import BCChAsyncSDK
+from bcch_sdk.sdk.sync_sdk import BCChSyncSDK
+from bcch_sdk.types.config import BCChConfig
+from bcch_sdk.types.enums import Frequency
 
 from tests.factories import DUMMY_CREDENTIALS, build_series_response
 

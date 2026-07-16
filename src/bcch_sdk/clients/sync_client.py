@@ -16,7 +16,7 @@ from ..models.web_service import WebServiceResponse
 from ..types.enums import Frequency
 
 from ..exceptions import (
-    InvalidsCredentialsException,
+    InvalidCredentialsException,
     InvalidDateException,
     InvalidFrequencyException,
     InvalidSeriesException,
@@ -45,7 +45,7 @@ class BCChSyncClient(BaseSyncClient):
             raise TransportException("HTTP client session is not initialized.")
 
         if self.credentials is None:
-            raise InvalidsCredentialsException("Client credentials must be provided.")
+            raise InvalidCredentialsException("Client credentials must be provided.")
 
         params = ParameterBuilder.build_get_series_params(
             self.credentials,
@@ -81,7 +81,7 @@ class BCChSyncClient(BaseSyncClient):
             raise TransportException("HTTP client session is not initialized.")
 
         if self.credentials is None:
-            raise InvalidsCredentialsException("Client credentials must be provided.")
+            raise InvalidCredentialsException("Client credentials must be provided.")
 
         params = ParameterBuilder.build_search_params(self.credentials, frequency)
 
@@ -98,7 +98,7 @@ class BCChSyncClient(BaseSyncClient):
             ) from exc
 
         if r.code == -5:
-            raise InvalidsCredentialsException("The provided credentials are invalid.")
+            raise InvalidCredentialsException("The provided credentials are invalid.")
 
         if r.code == -1:
             raise InvalidFrequencyException(
@@ -110,7 +110,7 @@ class BCChSyncClient(BaseSyncClient):
     def __enter__(self) -> Self:
         if self.session is None:
             logger.debug("Opening sync client session in context manager")
-            self.session = Client(timeout=self.timeout)
+            self.session = Client(timeout=self.timeout, transport=self.transport)
 
         return self
 

@@ -1,12 +1,12 @@
 from datetime import date, timedelta
 from typing import Any
 
-from src.models.observation_series import ObservationSeries
-from src.models.series import Series
-from src.models.series_information import SerieInformation
-from src.models.web_service import WebServiceResponse
-from src.types.auth import InternalCredentials
-from src.types.enums import Frequency
+from bcch_sdk.models.observation_series import ObservationSeries
+from bcch_sdk.models.series import Series
+from bcch_sdk.models.series_information import SerieInformation
+from bcch_sdk.models.web_service import WebServiceResponse
+from bcch_sdk.types.auth import InternalCredentials
+from bcch_sdk.types.enums import Frequency
 
 
 DUMMY_CREDENTIALS: InternalCredentials = {

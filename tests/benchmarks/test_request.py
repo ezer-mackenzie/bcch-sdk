@@ -6,9 +6,9 @@ from httpx import AsyncClient, Client, MockTransport, Request, Response
 import pytest
 from pytest_benchmark.fixture import BenchmarkFixture
 
-from src.clients.async_client import BCChAsyncClient
-from src.clients.sync_client import BCChSyncClient
-from src.models.web_service import WebServiceResponse
+from bcch_sdk.clients.async_client import BCChAsyncClient
+from bcch_sdk.clients.sync_client import BCChSyncClient
+from bcch_sdk.models.web_service import WebServiceResponse
 
 from tests.factories import DUMMY_CREDENTIALS, build_api_series_payload
 

@@ -15,7 +15,7 @@ from ...mappers.web_service import WebServiceResponseMapper
 from ...models.web_service import WebServiceResponse
 
 from ...exceptions import (
-    InvalidsCredentialsException,
+    InvalidCredentialsException,
     WebServiceResponseException,
     ResponseParseException,
 )
@@ -36,7 +36,7 @@ class BaseClient:
 
     def __post_init__(self):
         if self.credentials is None:
-            raise InvalidsCredentialsException("Client credentials must be provided.")
+            raise InvalidCredentialsException("Client credentials must be provided.")
 
     @property
     def transport(self):
@@ -67,4 +67,3 @@ class BaseClient:
             raise ResponseParseException(
                 "The Banco Central API response does not match the expected schema."
             ) from exc
-

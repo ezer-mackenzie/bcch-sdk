@@ -17,7 +17,7 @@ from ..models.web_service import WebServiceResponse
 from ..types.enums import Frequency
 
 from ..exceptions import (
-    InvalidsCredentialsException,
+    InvalidCredentialsException,
     InvalidDateException,
     InvalidSeriesException,
     InvalidFrequencyException,
@@ -54,7 +54,7 @@ class BCChAsyncClient(BaseAsyncClient):
             raise TransportException("HTTP client session is not initialized.")
 
         if self.credentials is None:
-            raise InvalidsCredentialsException("Client credentials must be provided.")
+            raise InvalidCredentialsException("Client credentials must be provided.")
 
         params = ParameterBuilder.build_get_series_params(
             self.credentials,
@@ -103,7 +103,7 @@ class BCChAsyncClient(BaseAsyncClient):
             )
 
         if self.credentials is None:
-            raise InvalidsCredentialsException("Client credentials must be provided.")
+            raise InvalidCredentialsException("Client credentials must be provided.")
 
         params = ParameterBuilder.build_search_params(self.credentials, frequency)
 
@@ -117,7 +117,7 @@ class BCChAsyncClient(BaseAsyncClient):
             r = self._validate_response(response)
 
             if r.code == -5:
-                raise InvalidsCredentialsException(
+                raise InvalidCredentialsException(
                     "The provided credentials are invalid."
                 )
 
@@ -139,7 +139,7 @@ class BCChAsyncClient(BaseAsyncClient):
     async def __aenter__(self) -> Self:
         if self.session is None:
             logger.debug("Opening async client session in context manager")
-            self.session = AsyncClient(timeout=self.timeout)
+            self.session = AsyncClient(timeout=self.timeout, transport=self.transport)
 
         return self
 

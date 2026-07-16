@@ -2,10 +2,10 @@ import pandas
 import polars
 import pytest
 
-from src.exceptions import ResponseParseException
-from src.mappers.dataframe import DataFrameMapper
-from src.models.series import Series
-from src.models.web_service import WebServiceResponse
+from bcch_sdk.exceptions import ResponseParseException
+from bcch_sdk.mappers.dataframe import DataFrameMapper
+from bcch_sdk.models.series import Series
+from bcch_sdk.models.web_service import WebServiceResponse
 
 from tests.factories import build_search_response, build_series_response
 
