@@ -2,7 +2,7 @@ from .series_information import SerieInformationMapper
 from .series import SeriesMapper
 
 from ..models.web_service import WebServiceResponse
-from ..models.series_information import SerieInformation
+from ..models.series_information import SeriesInformation
 from ..models.series import Series
 
 from ..dto.web_service import WebServiceResponseDTO
@@ -12,7 +12,7 @@ class WebServiceResponseMapper:
     @classmethod
     def from_api_to_domain(cls, dto: WebServiceResponseDTO) -> WebServiceResponse:
         series: Series | None = None
-        series_information: list[SerieInformation] | None = None
+        series_information: list[SeriesInformation] | None = None
 
         if dto.Series:
             series = SeriesMapper.from_api_to_domain(dto.Series)

@@ -19,7 +19,9 @@ También son públicos:
 - `bcch_sdk.clients`: `BCChSyncClient`, `BCChAsyncClient`
 - `bcch_sdk.sdk`: `BCChSyncSDK`, `BCChAsyncSDK`
 - `bcch_sdk.types`: `BCChConfig`, `Frequency`, `InternalCredentials`
-- `bcch_sdk.models`: `WebServiceResponse`, `Series`, `ObservationSeries`, `SerieInformation`
+- `bcch_sdk.models`: `WebServiceResponse`, `Series`, `ObservationSeries`, `SeriesInformation`
+
+`SerieInformation` se mantiene como alias compatible de `SeriesInformation` durante la serie `0.x`.
 
 ### Versionado
 
@@ -48,7 +50,7 @@ También son públicos:
   - `code: int` — código de respuesta del backend.
   - `description: str` — descripción textual.
   - `series: Series | None` — estructura con observaciones (si corresponde).
-  - `series_information: list[SerieInformation] | None` — catálogo/metadata (si corresponde).
+  - `series_information: list[SeriesInformation] | None` — catálogo/metadata (si corresponde).
 
 - `Series`:
   - `id`, `spanish_description`, `english_description`, `observations` (lista de `ObservationSeries`).
