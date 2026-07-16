@@ -1,5 +1,13 @@
+from ._version import __version__
 from .sdk.async_sdk import BCChAsyncSDK
 from .sdk.sync_sdk import BCChSyncSDK
+from .types import BCChConfig, Frequency, InternalCredentials
+from .models import (
+    ObservationSeries,
+    SerieInformation,
+    Series,
+    WebServiceResponse,
+)
 
 from .exceptions import (
     InvalidsCredentialsException,
@@ -15,8 +23,16 @@ from .exceptions import (
 )
 
 __all__ = [
+    "__version__",
     "BCChSyncSDK",
     "BCChAsyncSDK",
+    "BCChConfig",
+    "Frequency",
+    "InternalCredentials",
+    "ObservationSeries",
+    "SerieInformation",
+    "Series",
+    "WebServiceResponse",
     "InvalidsCredentialsException",
     "InvalidDateException",
     "InvalidSeriesException",
