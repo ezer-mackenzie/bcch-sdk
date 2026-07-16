@@ -31,3 +31,10 @@ jobs:
 
       - name: Build package
         run: poetry build
+
+      - name: Validate wheel install
+        run: |
+          python -m venv /tmp/bcch-sdk-wheel-test
+          /tmp/bcch-sdk-wheel-test/bin/python -m pip install --upgrade pip
+          /tmp/bcch-sdk-wheel-test/bin/python -m pip install dist/*.whl
+          /tmp/bcch-sdk-wheel-test/bin/python -c "import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"

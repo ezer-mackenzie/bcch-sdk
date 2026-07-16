@@ -9,11 +9,14 @@ site_dir: site
 strict: true
 nav:
   - Home: index.md
+  - Quickstart: quickstart.md
+  - DataFrames: dataframes.md
+  - Usage Examples: usage.md
   - Migration Guide: migration.md
   - API Reference: api_reference.md
   - Architecture: architecture.md
-  - Usage Examples: usage.md
   - Developer Guide: developer_guide.md
+  - Release Checklist: release_checklist.md
   - Comparison (legacy vs src): comparison.md
   - Comparison Details: comparison_detailed.md
 theme:

@@ -4,6 +4,19 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
 
+## [0.8.0] - 2026-07-16
+
+### Added
+
+- Added CI validation that installs the built wheel in a clean virtual environment and imports the public API.
+- Added Quickstart documentation with sync, async, search, and error handling examples.
+- Added DataFrames documentation covering `polars`, `pandas`, multiple series, and the dependency policy.
+- Added a release checklist for local validation, wheel installation, tags, pushes, and PyPI publication.
+
+### Changed
+
+- Expanded MkDocs navigation and rewrote usage examples around the stable `bcch_sdk` public API.
+
 ## [0.7.0] - 2026-07-16
 
 ### Documented
@@ -65,11 +78,6 @@ This project follows semantic versioning before `1.0.0` with the same discipline
 ## 1.0.0 Release Path
 
 The next releases should focus on reducing user-facing risk before declaring the API stable.
-
-### 0.8.0
-
-- Add tests for installed-wheel imports in a clean virtual environment.
-- Add a release checklist covering tag creation, build artifacts, docs, and PyPI workflow validation.
 
 ### 0.9.0
 
