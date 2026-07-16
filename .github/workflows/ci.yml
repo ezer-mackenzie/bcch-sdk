@@ -23,7 +23,11 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Run lint
+        run: poetry run ruff check .
 
-      # Omitted Temporaly
-      # - name: Run tests
-      #   run: poetry run pytest -q
+      - name: Run tests
+        run: poetry run pytest -q
+
+      - name: Build package
+        run: poetry build
