@@ -88,7 +88,7 @@ class BCChSyncSDK(BaseSyncSDK):
                 max_workers=min(8, len(series)),
             )
 
-        if len(results) == 0:
+        if not results:
             logger.warning("No series data returned for requested series list")
             raise InvalidSeriesException(
                 "No series data was returned for the requested series."
