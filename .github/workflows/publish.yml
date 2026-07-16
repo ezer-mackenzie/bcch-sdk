@@ -15,20 +15,27 @@ jobs:
       
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install build twine
+          pip install build
 
       - name: Build package
         run: python -m build
+
+      - name: Validate wheel install
+        run: |
+          python -m venv /tmp/bcch-sdk-publish-test
+          /tmp/bcch-sdk-publish-test/bin/python -m pip install --upgrade pip
+          /tmp/bcch-sdk-publish-test/bin/python -m pip install dist/*.whl
+          /tmp/bcch-sdk-publish-test/bin/python -c "import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"
 
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1

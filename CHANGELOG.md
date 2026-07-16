@@ -4,6 +4,18 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
 
+## [0.9.0] - 2026-07-16
+
+### Changed
+
+- Prepared the package as the release candidate for `1.0.0`.
+- Hardened the PyPI publish workflow by validating built wheel installation before upload.
+- Aligned publish workflow actions with the CI workflow.
+
+### Verified
+
+- Full test suite, benchmark smoke run, strict MkDocs build, package build, and clean wheel installation.
+
 ## [0.8.1] - 2026-07-16
 
 ### Fixed
@@ -87,14 +99,6 @@ This project follows semantic versioning before `1.0.0` with the same discipline
 - Response mapping tests for series-only and search-only payloads.
 
 ## 1.0.0 Release Path
-
-The next releases should focus on reducing user-facing risk before declaring the API stable.
-
-### 0.9.0
-
-- Publish as a release candidate.
-- Run the full test suite, benchmark suite, strict docs build, and package build from a clean environment.
-- Validate installation from the built wheel in a fresh virtual environment.
 
 ### 1.0.0
 
