@@ -4,15 +4,15 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ## SDK público
 
-- `src/sdk/sync_sdk.py` y `src/sdk/async_sdk.py` exponen las funciones de alto nivel. Estas integran a los clientes y a los helpers de concurrencia.
+- `src/bcch_sdk/sdk/sync_sdk.py` y `src/bcch_sdk/sdk/async_sdk.py` exponen las funciones de alto nivel. Estas integran a los clientes y a los helpers de concurrencia.
 
 ### Clientes
 
-- `BCChSyncClient` (ver [src/clients/sync_client.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/sync_client.py))
+- `BCChSyncClient` (ver [src/bcch_sdk/clients/sync_client.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/clients/sync_client.py))
   - `get_series(time_series, first_date=None, last_date=None) -> WebServiceResponse`
   - `search_series(frequency) -> WebServiceResponse`
 
-- `BCChAsyncClient` (ver [src/clients/async_client.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/async_client.py))
+- `BCChAsyncClient` (ver [src/bcch_sdk/clients/async_client.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/clients/async_client.py))
   - `async get_series(time_series, first_date=None, last_date=None) -> WebServiceResponse`
   - `async search_series(frequency) -> WebServiceResponse`
 
@@ -32,11 +32,11 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ### Parámetros HTTP y mapeos
 
-- El argumento Python `time_series` se normaliza y finalmente se pasa en la query param `timeseries` (clave del backend). Consulte [src/builders/parameters.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py).
+- El argumento Python `time_series` se normaliza y finalmente se pasa en la query param `timeseries` (clave del backend). Consulte [src/bcch_sdk/builders/parameters.py](https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/builders/parameters.py).
 
 ### Errores que puedes capturar
 
 - `TransportException` — problemas de red o inicialización de sesión.
 - `WebServiceResponseException` — respuestas HTTP con status != 200.
 - `ResponseParseException` — payload JSON inválido.
-- `InvalidsCredentialsException`, `InvalidSeriesException`, `InvalidDateException`, `InvalidFrequencyException` — errores de negocio.
+- `InvalidCredentialsException`, `InvalidSeriesException`, `InvalidDateException`, `InvalidFrequencyException` — errores de negocio.

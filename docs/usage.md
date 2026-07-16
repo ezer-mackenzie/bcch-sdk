@@ -5,8 +5,8 @@
 Ejemplo mínimo con `BCChSyncClient`:
 
 ```python
-from src.types.auth import InternalCredentials
-from src.clients.sync_client import BCChSyncClient
+from bcch_sdk.types.auth import InternalCredentials
+from bcch_sdk.clients.sync_client import BCChSyncClient
 
 creds: InternalCredentials = {"username": "mi_user", "password": "mi_pass"}
 
@@ -19,8 +19,8 @@ print(resp.series)
 
 ```python
 import asyncio
-from src.types.auth import InternalCredentials
-from src.clients.async_client import BCChAsyncClient
+from bcch_sdk.types.auth import InternalCredentials
+from bcch_sdk.clients.async_client import BCChAsyncClient
 
 async def main():
     creds: InternalCredentials = {"username": "mi_user", "password": "mi_pass"}

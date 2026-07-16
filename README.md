@@ -16,8 +16,7 @@ This repository provides sync and async wrappers over the API, returning data as
 
 ## Requirements
 
-- Python 3.14+
-- `aiohttp`
+- Python 3.12+
 - `httpx[brotli,zstd]`
 - `pydantic`
 - `polars`
@@ -26,7 +25,7 @@ This repository provides sync and async wrappers over the API, returning data as
 
 ## Installation
 
-This project is structured for development in a `src/` layout.
+This project uses a `src/` layout and exposes the `bcch_sdk` package.
 
 Use Poetry if available:
 
@@ -37,7 +36,7 @@ poetry install
 Or install the runtime dependencies manually:
 
 ```bash
-python -m pip install aiohttp httpx[brotli,zstd] pydantic polars pandas httpx-retries
+python -m pip install httpx[brotli,zstd] pydantic polars pandas httpx-retries
 ```
 
 If you want to run code from the repository directly, make sure the `src/` folder is on `PYTHONPATH`:
@@ -54,8 +53,8 @@ Import the SDK classes and configure the client using `BCChConfig`.
 
 ```python
 from httpx import Timeout
-from src.types.core import BCChConfig
-from src.sdk.sync_sdk import BCChSyncSDK
+from bcch_sdk import BCChSyncSDK
+from bcch_sdk.types import BCChConfig
 
 config = BCChConfig(
     credentials={"username": "your_user", "password": "your_pass"},
@@ -79,8 +78,8 @@ print(series_data)
 ```python
 import asyncio
 from httpx import Timeout
-from src.types.core import BCChConfig
-from src.sdk.async_sdk import BCChAsyncSDK
+from bcch_sdk import BCChAsyncSDK
+from bcch_sdk.types import BCChConfig
 
 async def main() -> None:
     config = BCChConfig(
@@ -105,7 +104,7 @@ asyncio.run(main())
 ### Search series example
 
 ```python
-from src.types.enums import Frequency
+from bcch_sdk.types import Frequency
 
 result = sdk.search_series(Frequency.MONTHLY, polars_response=False)
 print(result)
@@ -113,7 +112,7 @@ print(result)
 
 ## Configuration
 
-The main configuration object is `BCChConfig` from `src.types.core`.
+The main configuration object is `BCChConfig` from `bcch_sdk.types.config`.
 
 - `credentials`: a typed dict with `username` and `password`
 - `timeout`: an `httpx.Timeout` object
@@ -143,4 +142,3 @@ See `SECURITY.md` for security reporting and vulnerability handling.
 ## Code of Conduct
 
 See `CODE_OF_CONDUCT.md` for community expectations.
-

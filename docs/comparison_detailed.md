@@ -30,7 +30,7 @@ Problemas del enfoque legacy:
 - Mezcla de I/O con librería; las librerías no deben pedir input al usuario.
 - Dificulta testing.
 
-Nueva aproximación (`src/types/auth.py` + `src/mappers/credentials.py`):
+Nueva aproximación (`src/bcch_sdk/types/auth.py` + `bcch_sdk/mappers/credentials.py`):
 
 - `InternalCredentials` es un `TypedDict` explícito.
 - `CredentialsMapper.to_query_credentials` convierte `InternalCredentials` a `{"user": ..., "pass": ...}`.
@@ -42,8 +42,8 @@ Consejos de migración:
 
 Código relacionado:
 
-- `src/types/auth.py`
-- `src/mappers/credentials.py`
+- `src/bcch_sdk/types/auth.py`
+- `bcch_sdk/mappers/credentials.py`
 
 ---
 
@@ -59,7 +59,7 @@ Ventajas de esta separación:
 - API Python más clara (`time_series` es más legible).
 - Centralización del mapeo en `ParameterBuilder` evita fugas de nombres en todo el código.
 
-Archivo clave: `src/builders/parameters.py`
+Archivo clave: `src/bcch_sdk/builders/parameters.py`
 
 Ejemplo de uso:
 
@@ -134,14 +134,14 @@ Nuevo: jerarquía que distingue:
 
 - Errores de transporte (`TransportException`).
 - Errores de parseo (`ResponseParseException`).
-- Errores de negocio (`InvalidsCredentialsException`, `InvalidSeriesException`, ...).
+- Errores de negocio (`InvalidCredentialsException`, `InvalidSeriesException`, ...).
 
 Recomendación de manejo en aplicaciones:
 
 ```py
 try:
     resp = client.get_series(...)
-except InvalidsCredentialsException:
+except InvalidCredentialsException:
     # pedir login o abortar
 except TransportException:
     # volver a intentar o avisar al usuario
@@ -161,8 +161,8 @@ La nueva estructura facilita:
 Ejemplo conceptual (paralelizar 10 series):
 
 ```py
-from src.sdk.concurrency import run_in_threads
-from src.sdk.sync_sdk import BCChSDK
+from bcch_sdk.sdk.concurrency import run_in_threads
+from bcch_sdk.sdk.sync_sdk import BCChSDK
 
 sdk = BCChSDK.from_credentials(creds)
 series = ["SF1","SF2",...]

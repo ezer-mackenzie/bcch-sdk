@@ -27,7 +27,7 @@ Esta sección describe la organización del código, decisiones de diseño y pat
 
 ## Concurrencia
 
-- `src/sdk/concurrency.py` exporta `run_in_threads` y `gather_async_tasks` para evitar duplicación de patrones concurrency.
+- `src/bcch_sdk/sdk/concurrency.py` exporta `run_in_threads` y `gather_async_tasks` para evitar duplicación de patrones concurrency.
 
 ## Modelos y nomenclatura
 
