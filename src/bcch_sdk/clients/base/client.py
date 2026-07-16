@@ -4,6 +4,7 @@ from httpx_retries import RetryTransport, Retry
 from dataclasses import dataclass, field
 
 import json
+import logging
 from pydantic import ValidationError
 
 from ...types.auth import InternalCredentials
@@ -19,6 +20,8 @@ from ...exceptions import (
     WebServiceResponseException,
     ResponseParseException,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -46,7 +49,7 @@ class BaseClient:
         try:
             response.raise_for_status()
         except HTTPStatusError as exc:
-            # logger.debug("HTTP status error for %s: %s", response.url, exc) TODO: create logger
+            logger.debug("HTTP status error for %s: %s", response.url, exc)
             raise WebServiceResponseException(
                 f"Request failed with status code: {response.status_code}"
             ) from exc

@@ -4,6 +4,17 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning before `1.0.0` with the same discipline as stable releases: breaking import or API changes get a minor version bump, and compatible fixes get patch releases.
 
+## [0.8.1] - 2026-07-16
+
+### Fixed
+
+- Replaced the remaining HTTP status logging TODO with module-level debug logging.
+
+### Added
+
+- Added a MkDocs roadmap page for `0.9.0`, `1.0.0`, and post-`1.0.0` improvements.
+- Documented cache as a future opt-in feature rather than a pre-`1.0.0` requirement.
+
 ## [0.8.0] - 2026-07-16
 
 ### Added
