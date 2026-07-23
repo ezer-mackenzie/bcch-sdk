@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/release_checklist/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Release Checklist - Banco Central Chile SDK</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Release Checklist";
+        var mkdocs_page_input_path = "release_checklist.md";
+        var mkdocs_page_url = "/bank-central-chile-sdk/release_checklist/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Banco Central Chile SDK
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api_reference/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Release Checklist</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#antes-de-cambiar-la-version">Antes de cambiar la versión</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#validacion-local">Validación local</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#validacion-del-wheel">Validación del wheel</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#commit-y-tag">Commit y tag</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#push">Push</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#publicacion">Publicación</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#criterio-para-releases-estables">Criterio para releases estables</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../roadmap/">Roadmap</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison/">Comparison (legacy vs src)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../comparison_detailed/">Comparison Details</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Banco Central Chile SDK</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Release Checklist</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/release_checklist.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="release-checklist">Release Checklist<a class="headerlink" href="#release-checklist" title="Permanent link">&para;</a></h1>
+<p>Esta checklist resume el flujo recomendado antes de publicar una versión.</p>
+<h2 id="antes-de-cambiar-la-version">Antes de cambiar la versión<a class="headerlink" href="#antes-de-cambiar-la-version" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Revisar que <code>git status --short</code> esté limpio o que los cambios pendientes pertenezcan al release.</li>
+<li>Confirmar el siguiente número de versión según semver.</li>
+<li>Actualizar <code>CHANGELOG.md</code> con fecha, cambios y notas de compatibilidad.</li>
+<li>Actualizar documentación si cambia cualquier import, comportamiento o dependencia.</li>
+</ul>
+<h2 id="validacion-local">Validación local<a class="headerlink" href="#validacion-local" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">poetry check
+poetry run ruff check .
+poetry run pytest -q
+poetry run pytest -q -m benchmark --benchmark-disable
+poetry run mkdocs build --strict
+poetry build
+</code></pre>
+<h2 id="validacion-del-wheel">Validación del wheel<a class="headerlink" href="#validacion-del-wheel" title="Permanent link">&para;</a></h2>
+<p>El wheel debe poder instalarse en un entorno limpio.</p>
+<pre><code class="language-bash">python -m venv /tmp/bcch-sdk-wheel-test
+/tmp/bcch-sdk-wheel-test/bin/python -m pip install --upgrade pip
+/tmp/bcch-sdk-wheel-test/bin/python -m pip install dist/*.whl
+/tmp/bcch-sdk-wheel-test/bin/python -c &quot;import bcch_sdk; print(bcch_sdk.__version__)&quot;
+</code></pre>
+<h2 id="commit-y-tag">Commit y tag<a class="headerlink" href="#commit-y-tag" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">git add -A
+git commit -m &quot;chore: release vX.Y.Z&quot;
+git tag -a vX.Y.Z -m &quot;Release vX.Y.Z&quot;
+</code></pre>
+<h2 id="push">Push<a class="headerlink" href="#push" title="Permanent link">&para;</a></h2>
+<pre><code class="language-bash">git push origin main
+git push origin vX.Y.Z
+</code></pre>
+<p>Si necesitas subir varios tags:</p>
+<pre><code class="language-bash">git push origin v0.3.0 v0.4.0 v0.5.0 v0.6.0 v0.7.0 v0.8.0 v0.8.1 v0.9.0 v1.0.0
+</code></pre>
+<h2 id="publicacion">Publicación<a class="headerlink" href="#publicacion" title="Permanent link">&para;</a></h2>
+<p>El workflow de publicación se ejecuta cuando se publica un GitHub Release.</p>
+<p>Antes de publicar el release:</p>
+<ul>
+<li>Confirmar que CI está verde para el commit taggeado.</li>
+<li>Confirmar que MkDocs construye con <code>--strict</code>.</li>
+<li>Revisar que el release de GitHub apunte al tag correcto.</li>
+<li>Copiar el resumen de <code>CHANGELOG.md</code> correspondiente a la versión.</li>
+</ul>
+<h2 id="criterio-para-releases-estables">Criterio para releases estables<a class="headerlink" href="#criterio-para-releases-estables" title="Permanent link">&para;</a></h2>
+<p>Publicar una versión estable solo cuando:</p>
+<ul>
+<li>La superficie pública de imports esté congelada.</li>
+<li>La jerarquía de excepciones esté documentada.</li>
+<li>Los modelos de respuesta públicos estén documentados.</li>
+<li>El wheel haya sido validado desde un entorno limpio.</li>
+<li>La CI ejecute lint, tests, build y validación de wheel.</li>
+<li>La documentación esté desplegable sin warnings.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../developer_guide/" class="btn btn-neutral float-left" title="Developer Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../roadmap/" class="btn btn-neutral float-right" title="Roadmap">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk" class="fa fa-code-fork" style="color: #fcfcfc"> ezer-mackenzie/bank-central-chile-sdk</a>
+        </span>
+    
+    
+      <span><a href="../developer_guide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../roadmap/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

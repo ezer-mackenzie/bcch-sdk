@@ -43,6 +43,18 @@
                 <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Migration Guide</a>
     <ul class="current">
@@ -58,11 +70,15 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                <li class="toctree-l1"><a class="reference internal" href="../release_checklist/">Release Checklist</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../roadmap/">Roadmap</a>
                 </li>
               </ul>
               <ul>
@@ -111,34 +127,34 @@
 <p>Detalles por módulo</p>
 <ul>
 <li>
-<p>Legacy <code>credentials</code> vs <code>src.types.auth</code> + <code>src/mappers/credentials</code></p>
+<p>Legacy <code>credentials</code> vs <code>bcch_sdk.types.auth</code> + <code>bcch_sdk/mappers/credentials</code></p>
 </li>
 <li>
 <p>Legacy: funciones <code>get_credentials()</code> y <code>read_credentials(file)</code> que devuelven <code>(user, password)</code> leídos desde input o archivo.</p>
 </li>
-<li>Nueva: uso de <code>InternalCredentials</code> (<code>src/types/auth.py</code>) como <code>TypedDict</code> y <code>CredentialsMapper.to_query_credentials</code> (<code>src/mappers/credentials.py</code>) para transformar al dict de query esperado (<code>user</code>, <code>pass</code>).</li>
+<li>Nueva: uso de <code>InternalCredentials</code> (<code>src/bcch_sdk/types/auth.py</code>) como <code>TypedDict</code> y <code>CredentialsMapper.to_query_credentials</code> (<code>bcch_sdk/mappers/credentials.py</code>) para transformar al dict de query esperado (<code>user</code>, <code>pass</code>).</li>
 <li>
 <p>Razonamiento: tipos explícitos y separación de IO (lectura de credenciales) de mapeo a parámetros de consulta.</p>
 </li>
 <li>
-<p>Legacy <code>exception</code> vs <code>src/exceptions</code></p>
+<p>Legacy <code>exception</code> vs <code>src/bcch_sdk/exceptions</code></p>
 </li>
 <li>
 <p>Legacy: excepciones simples que heredan de <code>Exception</code> (p. ej. <code>InvalidSeries</code>, <code>InvalidCredentials</code>).</p>
 </li>
-<li>Nueva: jerarquía de excepciones más rica (<code>TransportException</code>, <code>ResponseParseException</code>, <code>InvalidsCredentialsException</code>, <code>InvalidDateException</code>, etc.) que mejoran el control de flujos y diferenciación de fallos.</li>
+<li>Nueva: jerarquía de excepciones más rica (<code>TransportException</code>, <code>ResponseParseException</code>, <code>InvalidCredentialsException</code>, <code>InvalidDateException</code>, etc.) que mejoran el control de flujos y diferenciación de fallos.</li>
 <li>
 <p>Razonamiento: distinguir problemas de transporte, parseo y errores de negocio facilita manejo en aplicaciones consumidoras.</p>
 </li>
 <li>
-<p>Legacy <code>webservice.Session</code> vs <code>src/clients/</code> (<code>BCChSyncClient</code> y <code>BCChAsyncClient</code>)</p>
+<p>Legacy <code>webservice.Session</code> vs <code>src/bcch_sdk/clients/</code> (<code>BCChSyncClient</code> y <code>BCChAsyncClient</code>)</p>
 </li>
 <li>
 <p>Legacy: <code>Session.get(time_series, first_date, last_date)</code> y <code>Session.search(frequency)</code> usando <code>requests.get</code>, parseo JSON directo y conversión con clases <code>WSResponse</code>.</p>
 </li>
-<li>Nueva: clientes sincronous y asíncronos (<code>src/clients/sync_client.py</code> y <code>src/clients/async_client.py</code>) que:<ul>
+<li>Nueva: clientes sincronous y asíncronos (<code>src/bcch_sdk/clients/sync_client.py</code> y <code>src/bcch_sdk/clients/async_client.py</code>) que:<ul>
 <li>Soportan <code>httpx</code> con <code>Timeout</code> y <code>RetryTransport</code>.</li>
-<li>Centralizan validación y parseo en <code>_validate_response</code> retornando <code>WebServiceResponse</code> tipado (<code>src/models/web_service.py</code>).</li>
+<li>Centralizan validación y parseo en <code>_validate_response</code> retornando <code>WebServiceResponse</code> tipado (<code>src/bcch_sdk/models/web_service.py</code>).</li>
 <li>Tiran excepciones concretas para códigos de API y errores de transporte.</li>
 </ul>
 </li>
@@ -151,17 +167,17 @@
 <li>
 <p>Legacy: construía <code>params</code> con las claves <code>user</code>, <code>pass</code>, <code>firstdate</code>, <code>lastdate</code>, <code>timeseries</code> y <code>function</code>.</p>
 </li>
-<li>Nueva: <code>src/builders/parameters.py</code> encapsula la construcción de parámetros y usa <code>CredentialsMapper</code> además de <code>DateBuilder</code>. La clave usada para las series es <code>timeseries</code> (coincide con legacy).</li>
+<li>Nueva: <code>src/bcch_sdk/builders/parameters.py</code> encapsula la construcción de parámetros y usa <code>CredentialsMapper</code> además de <code>DateBuilder</code>. La clave usada para las series es <code>timeseries</code> (coincide con legacy).</li>
 <li>
 <p>Importante: la API Python expone <code>time_series</code> como nombre de variable/argumento, y <code>ParameterBuilder</code> mappea a la clave HTTP <code>timeseries</code>.</p>
 </li>
 <li>
-<p>Manejo de respuestas: implementación legacy vs <code>src/models/*</code> + <code>src/mappers/*</code></p>
+<p>Manejo de respuestas: implementación legacy vs <code>src/bcch_sdk/models/*</code> + <code>bcch_sdk/mappers/*</code></p>
 </li>
 <li>
 <p>Legacy: <code>WSResponse</code>, <code>GSResponse</code>, <code>SSResponse</code> con métodos para transformar a <code>pandas.Series</code> / <code>pandas.DataFrame</code>.</p>
 </li>
-<li>Nueva: modelos Pydantic (<code>src/models/web_service.py</code>, <code>src/models/series.py</code>, <code>src/models/series_information.py</code>, <code>src/models/observation_series.py</code>) que normalizan nombres de campos (camelCase → snake_case y traducciones más claras, p. ej. <code>descripEsp</code> → <code>spanish_description</code>).</li>
+<li>Nueva: modelos Pydantic (<code>src/bcch_sdk/models/web_service.py</code>, <code>src/bcch_sdk/models/series.py</code>, <code>src/bcch_sdk/models/series_information.py</code>, <code>src/bcch_sdk/models/observation_series.py</code>) que normalizan nombres de campos (camelCase → snake_case y traducciones más claras, p. ej. <code>descripEsp</code> → <code>spanish_description</code>).</li>
 <li>Razonamiento: modelos tipados mejoran la validación y la interoperabilidad con herramientas de tipado, permitiendo también que mappers generen DataFrames cuando se necesite.</li>
 </ul>
 <p>Migración práctica — pasos recomendados para los usuarios del paquete legacy:</p>
@@ -169,14 +185,14 @@
 <li>Reemplace <code>Session</code> por <code>BCChSyncClient</code> o <code>BCChAsyncClient</code>.</li>
 <li>Cambie la lectura de credenciales para usar <code>InternalCredentials</code> o pasar un dict <code>{"username": ..., "password": ...}</code> y deje que la <code>CredentialsMapper</code> haga la transformación.</li>
 <li>Ajuste el nombre del argumento <code>time_series</code> (el SDK lo usa así) — los parámetros HTTP continuarán usando <code>timeseries</code>.</li>
-<li>Actualice su manejo de excepciones para capturar <code>TransportException</code>, <code>InvalidsCredentialsException</code>, <code>ResponseParseException</code> en lugar de las excepciones legacy.</li>
+<li>Actualice su manejo de excepciones para capturar <code>TransportException</code>, <code>InvalidCredentialsException</code>, <code>ResponseParseException</code> en lugar de las excepciones legacy.</li>
 </ol>
 <p>En la página de comparación (Comparison) se incluyen ejemplos concretos y fragmentos de código lado a lado.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../usage/" class="btn btn-neutral float-left" title="Usage Examples"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../api_reference/" class="btn btn-neutral float-right" title="API Reference">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -204,7 +220,7 @@
         </span>
     
     
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../usage/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../api_reference/" style="color: #fcfcfc">Next &raquo;</a></span>

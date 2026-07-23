@@ -44,6 +44,18 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
                 </li>
               </ul>
@@ -52,6 +64,14 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#sdk-publico">SDK público</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#imports-recomendados">Imports recomendados</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#versionado">Versionado</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dependencias-de-dataframe">Dependencias de DataFrame</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sdks">SDKs</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#clientes">Clientes</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#modelos-de-datos-returns">Modelos de datos (returns)</a>
@@ -70,11 +90,15 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                <li class="toctree-l1"><a class="reference internal" href="../release_checklist/">Release Checklist</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../roadmap/">Roadmap</a>
                 </li>
               </ul>
               <ul>
@@ -112,18 +136,43 @@
                 <h1 id="referencia-de-la-api-del-sdk">Referencia de la API del SDK<a class="headerlink" href="#referencia-de-la-api-del-sdk" title="Permanent link">&para;</a></h1>
 <p>Esta página resume la API pública que debe usar cualquier consumidor del SDK.</p>
 <h2 id="sdk-publico">SDK público<a class="headerlink" href="#sdk-publico" title="Permanent link">&para;</a></h2>
+<p>La API estable se importa desde <code>bcch_sdk</code> y sus subpaquetes públicos. Los módulos <code>builders</code>, <code>dto</code> y <code>mappers</code> son detalles internos y no tienen garantía de compatibilidad pública.</p>
+<h3 id="imports-recomendados">Imports recomendados<a class="headerlink" href="#imports-recomendados" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">from bcch_sdk import BCChSyncSDK, BCChAsyncSDK
+from bcch_sdk import BCChConfig, Frequency
+from bcch_sdk import InvalidCredentialsException, TransportException
+</code></pre>
+<p>También son públicos:</p>
 <ul>
-<li><code>src/sdk/sync_sdk.py</code> y <code>src/sdk/async_sdk.py</code> exponen las funciones de alto nivel. Estas integran a los clientes y a los helpers de concurrencia.</li>
+<li><code>bcch_sdk.clients</code>: <code>BCChSyncClient</code>, <code>BCChAsyncClient</code></li>
+<li><code>bcch_sdk.sdk</code>: <code>BCChSyncSDK</code>, <code>BCChAsyncSDK</code></li>
+<li><code>bcch_sdk.types</code>: <code>BCChConfig</code>, <code>Frequency</code>, <code>InternalCredentials</code></li>
+<li><code>bcch_sdk.models</code>: <code>WebServiceResponse</code>, <code>Series</code>, <code>ObservationSeries</code>, <code>SeriesInformation</code></li>
+</ul>
+<p><code>SerieInformation</code> se mantiene como alias compatible de <code>SeriesInformation</code>.</p>
+<h3 id="versionado">Versionado<a class="headerlink" href="#versionado" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>bcch_sdk.__version__</code> expone la versión instalada del paquete.</li>
+<li>Los cambios incompatibles en imports públicos se reservan para versiones mayores.</li>
+<li>Cambios compatibles y correcciones usan versiones menores o patch según semver.</li>
+</ul>
+<h3 id="dependencias-de-dataframe">Dependencias de DataFrame<a class="headerlink" href="#dependencias-de-dataframe" title="Permanent link">&para;</a></h3>
+<p><code>pandas</code> y <code>polars</code> son dependencias runtime obligatorias durante la serie estable <code>1.x</code>, porque las respuestas como DataFrame son parte del contrato principal del SDK.</p>
+<p>Separarlas en extras (<code>bcch-sdk[pandas]</code>, <code>bcch-sdk[polars]</code> o similar) queda reservado para una versión mayor futura.</p>
+<h3 id="sdks">SDKs<a class="headerlink" href="#sdks" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>BCChSyncSDK</code>: capa de alto nivel para consultar una o varias series de forma sincrónica y retornar DataFrames.</li>
+<li><code>BCChAsyncSDK</code>: capa de alto nivel para consultar una o varias series de forma asíncrona y retornar DataFrames.</li>
 </ul>
 <h3 id="clientes">Clientes<a class="headerlink" href="#clientes" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>BCChSyncClient</code> (ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/sync_client.py">src/clients/sync_client.py</a>)</li>
+<li><code>BCChSyncClient</code> (ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/clients/sync_client.py">src/bcch_sdk/clients/sync_client.py</a>)</li>
 <li><code>get_series(time_series, first_date=None, last_date=None) -&gt; WebServiceResponse</code></li>
 <li>
 <p><code>search_series(frequency) -&gt; WebServiceResponse</code></p>
 </li>
 <li>
-<p><code>BCChAsyncClient</code> (ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/clients/async_client.py">src/clients/async_client.py</a>)</p>
+<p><code>BCChAsyncClient</code> (ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/clients/async_client.py">src/bcch_sdk/clients/async_client.py</a>)</p>
 </li>
 <li><code>async get_series(time_series, first_date=None, last_date=None) -&gt; WebServiceResponse</code></li>
 <li><code>async search_series(frequency) -&gt; WebServiceResponse</code></li>
@@ -135,7 +184,7 @@
 <li><code>description: str</code> — descripción textual.</li>
 <li><code>series: Series | None</code> — estructura con observaciones (si corresponde).</li>
 <li>
-<p><code>series_information: list[SerieInformation] | None</code> — catálogo/metadata (si corresponde).</p>
+<p><code>series_information: list[SeriesInformation] | None</code> — catálogo/metadata (si corresponde).</p>
 </li>
 <li>
 <p><code>Series</code>:</p>
@@ -150,14 +199,14 @@
 </ul>
 <h3 id="parametros-http-y-mapeos">Parámetros HTTP y mapeos<a class="headerlink" href="#parametros-http-y-mapeos" title="Permanent link">&para;</a></h3>
 <ul>
-<li>El argumento Python <code>time_series</code> se normaliza y finalmente se pasa en la query param <code>timeseries</code> (clave del backend). Consulte <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py">src/builders/parameters.py</a>.</li>
+<li>El argumento Python <code>time_series</code> se normaliza y finalmente se pasa en la query param <code>timeseries</code> (clave del backend). Consulte <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/builders/parameters.py">src/bcch_sdk/builders/parameters.py</a>.</li>
 </ul>
 <h3 id="errores-que-puedes-capturar">Errores que puedes capturar<a class="headerlink" href="#errores-que-puedes-capturar" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>TransportException</code> — problemas de red o inicialización de sesión.</li>
 <li><code>WebServiceResponseException</code> — respuestas HTTP con status != 200.</li>
 <li><code>ResponseParseException</code> — payload JSON inválido.</li>
-<li><code>InvalidsCredentialsException</code>, <code>InvalidSeriesException</code>, <code>InvalidDateException</code>, <code>InvalidFrequencyException</code> — errores de negocio.</li>
+<li><code>InvalidCredentialsException</code>, <code>InvalidSeriesException</code>, <code>InvalidDateException</code>, <code>InvalidFrequencyException</code> — errores de negocio.</li>
 </ul>
               
             </div>

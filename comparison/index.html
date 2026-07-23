@@ -44,6 +44,18 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
                 </li>
               </ul>
@@ -56,11 +68,15 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                <li class="toctree-l1"><a class="reference internal" href="../release_checklist/">Release Checklist</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../roadmap/">Roadmap</a>
                 </li>
               </ul>
               <ul class="current">
@@ -122,12 +138,12 @@
 <p><code>get_credentials()</code> y <code>read_credentials(file)</code> eran funciones de I/O que preguntaban por <code>user</code> y <code>pass</code> o leían un archivo.</p>
 </li>
 <li>
-<p>Nueva — <code>src/types/auth.py</code> + <code>src/mappers/credentials.py</code>:</p>
+<p>Nueva — <code>src/bcch_sdk/types/auth.py</code> + <code>bcch_sdk/mappers/credentials.py</code>:</p>
 </li>
 <li>
 <p><code>InternalCredentials</code> es un <code>TypedDict</code> con <code>username</code> y <code>password</code>.</p>
 </li>
-<li><code>CredentialsMapper.to_query_credentials</code> transforma un <code>InternalCredentials</code> a <code>{"user": ..., "pass": ...}</code>. (<a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/mappers/credentials.py">src/mappers/credentials.py</a>)</li>
+<li><code>CredentialsMapper.to_query_credentials</code> transforma un <code>InternalCredentials</code> a <code>{"user": ..., "pass": ...}</code>. (<a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/bcch_sdk/mappers/credentials.py">bcch_sdk/mappers/credentials.py</a>)</li>
 </ul>
 <p><strong>Impacto</strong>: la nueva aproximación separa la lectura de credenciales de su transformación en parámetros HTTP; facilita testing y evita I/O oculto en librerías.</p>
 <h2 id="2-cliente-http-y-transporte">2) Cliente HTTP y transporte<a class="headerlink" href="#2-cliente-http-y-transporte" title="Permanent link">&para;</a></h2>
@@ -142,7 +158,7 @@
 <p>Parseo inmediato <code>r.json()</code> y mapeo a <code>WSResponse</code>.</p>
 </li>
 <li>
-<p>Nueva — <code>src/clients/sync_client.py</code> / <code>src/clients/async_client.py</code>:</p>
+<p>Nueva — <code>src/bcch_sdk/clients/sync_client.py</code> / <code>src/bcch_sdk/clients/async_client.py</code>:</p>
 </li>
 <li>
 <p>Uso de <code>httpx.Client</code>/<code>httpx.AsyncClient</code> con soporte para <code>Timeout</code> y <code>RetryTransport</code>.</p>
@@ -153,13 +169,13 @@
 <h2 id="3-parametros-http-nombres-y-mapeos">3) Parámetros HTTP: nombres y mapeos<a class="headerlink" href="#3-parametros-http-nombres-y-mapeos" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Legacy (anterior): <code>params</code> incluye clave <code>"timeseries"</code> para la lista de series.</li>
-<li>Nueva: <code>ParameterBuilder.build_get_series_params</code> usa <code>timeseries</code> también (coincide), pero el API público de Python usa <code>time_series</code> como argumento y <code>TimeSeriesBuilder</code> normaliza entradas. Ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/parameters.py">src/builders/parameters.py</a> y <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/builders/time_series.py">src/builders/time_series.py</a>.</li>
+<li>Nueva: <code>ParameterBuilder.build_get_series_params</code> usa <code>timeseries</code> también (coincide), pero el API público de Python usa <code>time_series</code> como argumento y <code>TimeSeriesBuilder</code> normaliza entradas. Ver <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/builders/parameters.py">src/bcch_sdk/builders/parameters.py</a> y <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/src/bcch_sdk/builders/time_series.py">src/bcch_sdk/builders/time_series.py</a>.</li>
 </ul>
 <p><strong>Nota importante</strong>: la diferencia entre <code>time_series</code> (argumento Python) y <code>timeseries</code> (clave HTTP) es una decisión intencional para mantener una API Python idiomática mientras se sigue la expectativa del backend.</p>
 <h2 id="4-respuestas-y-modelos">4) Respuestas y modelos<a class="headerlink" href="#4-respuestas-y-modelos" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Legacy (anterior): <code>WSResponse</code>, <code>GSResponse</code>, <code>SSResponse</code> con métodos <code>to_series()</code> y <code>to_df()</code> (devuelven <code>pandas</code> objetos).</li>
-<li>Nueva: Pydantic models (<code>WebServiceResponse</code>, <code>Series</code>, <code>SerieInformation</code>, <code>ObservationSeries</code>) que usan <code>snake_case</code> y tipos concretos (<code>date</code>, <code>float</code>). Esto facilita validación, serialización y la escritura de mappers hacia <code>pandas</code> cuando sea necesario.</li>
+<li>Nueva: Pydantic models (<code>WebServiceResponse</code>, <code>Series</code>, <code>SeriesInformation</code>, <code>ObservationSeries</code>) que usan <code>snake_case</code> y tipos concretos (<code>date</code>, <code>float</code>). Esto facilita validación, serialización y la escritura de mappers hacia <code>pandas</code> cuando sea necesario.</li>
 </ul>
 <p><strong>Ejemplo de campo renombrado</strong>: <code>Series['descripEsp']</code> (legacy) → <code>spanish_description</code> (nuevo); <code>Obs[indexDateString]</code> → <code>ObservationSeries.index_date</code>.</p>
 <h2 id="5-errores-y-codigos-de-respuesta">5) Errores y códigos de respuesta<a class="headerlink" href="#5-errores-y-codigos-de-respuesta" title="Permanent link">&para;</a></h2>
@@ -171,7 +187,7 @@
 <h2 id="6-concurrencia-y-sdk-de-alto-nivel">6) Concurrencia y SDK de alto nivel<a class="headerlink" href="#6-concurrencia-y-sdk-de-alto-nivel" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Legacy: no hay API asíncrona nativa ni helpers de concurrencia.</li>
-<li>Nueva: <code>src/sdk/</code> expone <code>sync</code> y <code>async</code> SDKs y <code>src/sdk/concurrency.py</code> contiene helpers reutilizables (<code>run_in_threads</code>, <code>gather_async_tasks</code>).</li>
+<li>Nueva: <code>src/bcch_sdk/sdk/</code> expone <code>sync</code> y <code>async</code> SDKs y <code>src/bcch_sdk/sdk/concurrency.py</code> contiene helpers reutilizables (<code>run_in_threads</code>, <code>gather_async_tasks</code>).</li>
 </ul>
 <p><strong>Beneficio</strong>: usuarios pueden ejecutar múltiples consultas en paralelo sin reescribir el manejo de concurrencia.</p>
 <h2 id="7-resumen-de-diferencias-clave-tabla-conceptual">7) Resumen de diferencias clave (tabla conceptual)<a class="headerlink" href="#7-resumen-de-diferencias-clave-tabla-conceptual" title="Permanent link">&para;</a></h2>
@@ -186,7 +202,7 @@
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../developer_guide/" class="btn btn-neutral float-left" title="Developer Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../roadmap/" class="btn btn-neutral float-left" title="Roadmap"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../comparison_detailed/" class="btn btn-neutral float-right" title="Comparison Details">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -214,7 +230,7 @@
         </span>
     
     
-      <span><a href="../developer_guide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../roadmap/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../comparison_detailed/" style="color: #fcfcfc">Next &raquo;</a></span>

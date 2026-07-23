@@ -2,34 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/api_reference/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/architecture/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/comparison/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/comparison_detailed/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
+    </url>
+    <url>
+         <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/dataframes/</loc>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/developer_guide/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/migration/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
+    </url>
+    <url>
+         <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/quickstart/</loc>
+         <lastmod>2026-07-23</lastmod>
+    </url>
+    <url>
+         <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/release_checklist/</loc>
+         <lastmod>2026-07-23</lastmod>
+    </url>
+    <url>
+         <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/roadmap/</loc>
+         <lastmod>2026-07-23</lastmod>
     </url>
     <url>
          <loc>https://ezer-mackenzie.github.io/bank-central-chile-sdk/usage/</loc>
-         <lastmod>2026-07-13</lastmod>
+         <lastmod>2026-07-23</lastmod>
     </url>
 </urlset>

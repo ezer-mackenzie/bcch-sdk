@@ -44,6 +44,36 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Usage Examples</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#sdk-sincronico-con-polars">SDK sincrónico con polars</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sdk-sincronico-con-pandas">SDK sincrónico con pandas</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#varias-series">Varias series</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#busqueda-de-catalogo">Búsqueda de catálogo</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cliente-directo">Cliente directo</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cliente-asincrono-directo">Cliente asíncrono directo</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manejo-de-errores">Manejo de errores</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#timeouts">Timeouts</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
                 </li>
               </ul>
@@ -55,20 +85,16 @@
                 <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Usage Examples</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#uso-rapido-sincronico">Uso rápido (sincrónico)</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#uso-asincrono">Uso asíncrono</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#uso-del-sdk-para-multiples-series-paralelo">Uso del SDK para múltiples series (paralelo)</a>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                <li class="toctree-l1"><a class="reference internal" href="../release_checklist/">Release Checklist</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../roadmap/">Roadmap</a>
                 </li>
               </ul>
               <ul>
@@ -103,40 +129,139 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="ejemplos-de-uso-y-quickstart">Ejemplos de Uso y Quickstart<a class="headerlink" href="#ejemplos-de-uso-y-quickstart" title="Permanent link">&para;</a></h1>
-<h2 id="uso-rapido-sincronico">Uso rápido (sincrónico)<a class="headerlink" href="#uso-rapido-sincronico" title="Permanent link">&para;</a></h2>
-<p>Ejemplo mínimo con <code>BCChSyncClient</code>:</p>
-<pre><code class="language-python">from src.types.auth import InternalCredentials
-from src.clients.sync_client import BCChSyncClient
+                <h1 id="ejemplos-de-uso">Ejemplos de Uso<a class="headerlink" href="#ejemplos-de-uso" title="Permanent link">&para;</a></h1>
+<p>Esta página reúne patrones comunes. Para una primera instalación, revisa primero el <a href="../quickstart/">Quickstart</a>.</p>
+<h2 id="sdk-sincronico-con-polars">SDK sincrónico con polars<a class="headerlink" href="#sdk-sincronico-con-polars" title="Permanent link">&para;</a></h2>
+<p><code>polars</code> es la respuesta por defecto.</p>
+<pre><code class="language-python">from bcch_sdk import BCChConfig, BCChSyncSDK
 
-creds: InternalCredentials = {&quot;username&quot;: &quot;mi_user&quot;, &quot;password&quot;: &quot;mi_pass&quot;}
+sdk = BCChSyncSDK(
+    configuration=BCChConfig(
+        credentials={&quot;username&quot;: &quot;tu_usuario&quot;, &quot;password&quot;: &quot;tu_password&quot;}
+    )
+)
 
-client = BCChSyncClient(credentials=creds)
-resp = client.get_series(&quot;SF43718&quot;, first_date=&quot;2020-01-01&quot;, last_date=&quot;2023-01-01&quot;)
-print(resp.series)
+frames = sdk.get_series(
+    time_series=&quot;SF43718&quot;,
+    first_date=&quot;2024-01-01&quot;,
+    last_date=&quot;2024-01-31&quot;,
+)
+
+frame = frames[0]
+print(frame)
 </code></pre>
-<h2 id="uso-asincrono">Uso asíncrono<a class="headerlink" href="#uso-asincrono" title="Permanent link">&para;</a></h2>
-<pre><code class="language-python">import asyncio
-from src.types.auth import InternalCredentials
-from src.clients.async_client import BCChAsyncClient
+<h2 id="sdk-sincronico-con-pandas">SDK sincrónico con pandas<a class="headerlink" href="#sdk-sincronico-con-pandas" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">frames = sdk.get_series(
+    time_series=&quot;SF43718&quot;,
+    first_date=&quot;2024-01-01&quot;,
+    last_date=&quot;2024-01-31&quot;,
+    polars_response=False,
+)
 
-async def main():
-    creds: InternalCredentials = {&quot;username&quot;: &quot;mi_user&quot;, &quot;password&quot;: &quot;mi_pass&quot;}
-    async with BCChAsyncClient(credentials=creds) as client:
-        resp = await client.get_series(&quot;SF43718&quot;)
-        print(resp.series)
+frame = frames[0]
+print(frame.head())
+</code></pre>
+<h2 id="varias-series">Varias series<a class="headerlink" href="#varias-series" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">series = {
+    &quot;uf&quot;: &quot;F073.UFF.PRE.Z.D&quot;,
+    &quot;dolar&quot;: &quot;F073.TCO.PRE.Z.D&quot;,
+}
+
+frames = sdk.get_series(
+    time_series=series,
+    first_date=&quot;2024-01-01&quot;,
+    last_date=&quot;2024-01-31&quot;,
+)
+
+for name, frame in zip(series, frames):
+    print(name, frame.shape)
+</code></pre>
+<h2 id="busqueda-de-catalogo">Búsqueda de catálogo<a class="headerlink" href="#busqueda-de-catalogo" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">from bcch_sdk import Frequency
+
+daily_catalog = sdk.search_series(Frequency.DAILY)
+monthly_catalog = sdk.search_series(Frequency.MONTHLY, polars_response=False)
+
+print(daily_catalog)
+print(monthly_catalog.head())
+</code></pre>
+<h2 id="cliente-directo">Cliente directo<a class="headerlink" href="#cliente-directo" title="Permanent link">&para;</a></h2>
+<p>Los clientes directos retornan modelos de dominio, no DataFrames. Son útiles si necesitas controlar el mapeo tú mismo.</p>
+<pre><code class="language-python">from bcch_sdk.clients import BCChSyncClient
+
+with BCChSyncClient(
+    credentials={&quot;username&quot;: &quot;tu_usuario&quot;, &quot;password&quot;: &quot;tu_password&quot;}
+) as client:
+    response = client.get_series(
+        &quot;SF43718&quot;,
+        first_date=&quot;2024-01-01&quot;,
+        last_date=&quot;2024-01-31&quot;,
+    )
+
+print(response.code)
+print(response.series)
+</code></pre>
+<h2 id="cliente-asincrono-directo">Cliente asíncrono directo<a class="headerlink" href="#cliente-asincrono-directo" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">import asyncio
+
+from bcch_sdk.clients import BCChAsyncClient
+
+
+async def main() -&gt; None:
+    async with BCChAsyncClient(
+        credentials={&quot;username&quot;: &quot;tu_usuario&quot;, &quot;password&quot;: &quot;tu_password&quot;}
+    ) as client:
+        response = await client.get_series(&quot;SF43718&quot;)
+        print(response.series)
+
 
 asyncio.run(main())
 </code></pre>
-<h2 id="uso-del-sdk-para-multiples-series-paralelo">Uso del SDK para múltiples series (paralelo)<a class="headerlink" href="#uso-del-sdk-para-multiples-series-paralelo" title="Permanent link">&para;</a></h2>
-<p>La capa <code>sdk</code> y <code>concurrency</code> ofrece helpers para ejecutar múltiples consultas en paralelo sin reescribir la gestión de hilos/asíncrona.</p>
-<p>Consulta la sección de <code>sdk/</code> para ejemplos más avanzados y patrones de agregación de resultados.</p>
+<h2 id="manejo-de-errores">Manejo de errores<a class="headerlink" href="#manejo-de-errores" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">from bcch_sdk import (
+    InvalidCredentialsException,
+    InvalidDateException,
+    InvalidFrequencyException,
+    InvalidSeriesException,
+    ResponseParseException,
+    TransportException,
+    WebServiceResponseException,
+)
+
+try:
+    frames = sdk.get_series(&quot;SF43718&quot;, first_date=&quot;2024-01-01&quot;)
+except InvalidCredentialsException:
+    print(&quot;Credenciales inválidas.&quot;)
+except InvalidSeriesException:
+    print(&quot;Serie inválida o no disponible.&quot;)
+except InvalidDateException:
+    print(&quot;Fecha inválida o fuera de rango.&quot;)
+except InvalidFrequencyException:
+    print(&quot;Frecuencia inválida para búsqueda.&quot;)
+except WebServiceResponseException:
+    print(&quot;El servicio respondió con un estado HTTP inesperado.&quot;)
+except ResponseParseException:
+    print(&quot;La respuesta no pudo convertirse al modelo esperado.&quot;)
+except TransportException:
+    print(&quot;Error de red o transporte.&quot;)
+</code></pre>
+<h2 id="timeouts">Timeouts<a class="headerlink" href="#timeouts" title="Permanent link">&para;</a></h2>
+<p>Puedes pasar un <code>httpx.Timeout</code> personalizado en la configuración.</p>
+<pre><code class="language-python">from httpx import Timeout
+
+config = BCChConfig(
+    credentials={&quot;username&quot;: &quot;tu_usuario&quot;, &quot;password&quot;: &quot;tu_password&quot;},
+    timeout=Timeout(20.0),
+)
+
+sdk = BCChSyncSDK(configuration=config)
+</code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../architecture/" class="btn btn-neutral float-left" title="Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../developer_guide/" class="btn btn-neutral float-right" title="Developer Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../dataframes/" class="btn btn-neutral float-left" title="DataFrames"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../migration/" class="btn btn-neutral float-right" title="Migration Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -163,10 +288,10 @@ asyncio.run(main())
         </span>
     
     
-      <span><a href="../architecture/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../dataframes/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../developer_guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../migration/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

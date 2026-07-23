@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/architecture/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://ezer-mackenzie.github.io/bank-central-chile-sdk/dataframes/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Architecture - Banco Central Chile SDK</title>
+    <title>DataFrames - Banco Central Chile SDK</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Architecture";
-        var mkdocs_page_input_path = "architecture.md";
-        var mkdocs_page_url = "/bank-central-chile-sdk/architecture/";
+        var mkdocs_page_name = "DataFrames";
+        var mkdocs_page_input_path = "dataframes.md";
+        var mkdocs_page_url = "/bank-central-chile-sdk/dataframes/";
       </script>
     
     <!--[if lt IE 9]>
@@ -47,8 +47,20 @@
                 <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">DataFrames</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#respuesta-por-defecto">Respuesta por defecto</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#respuesta-con-pandas">Respuesta con pandas</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#multiples-series">Múltiples series</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#forma-de-los-datos">Forma de los datos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision-de-dependencias">Decisión de dependencias</a>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -63,22 +75,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="../api_reference/">API Reference</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Architecture</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#principales-paquetes-en-src">Principales paquetes en src/</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#diseno-de-transportabilidad">Diseño de transportabilidad</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#logging-y-telemetria">Logging y Telemetría</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#timeout-y-reintentos">Timeout y reintentos</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#concurrencia">Concurrencia</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#modelos-y-nomenclatura">Modelos y nomenclatura</a>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
                 </li>
               </ul>
               <ul>
@@ -115,9 +113,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Architecture</li>
+      <li class="breadcrumb-item active">DataFrames</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/architecture.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
+          <a href="https://github.com/ezer-mackenzie/bank-central-chile-sdk/edit/main/docs/dataframes.md">Edit on ezer-mackenzie/bank-central-chile-sdk</a>
     </li>
   </ul>
   <hr/>
@@ -125,46 +123,88 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="arquitectura-y-diseno">Arquitectura y Diseño<a class="headerlink" href="#arquitectura-y-diseno" title="Permanent link">&para;</a></h1>
-<p>Esta sección describe la organización del código, decisiones de diseño y patrones usados en la reimplementación.</p>
-<h2 id="principales-paquetes-en-src">Principales paquetes en <code>src/</code><a class="headerlink" href="#principales-paquetes-en-src" title="Permanent link">&para;</a></h2>
+                <h1 id="dataframes">DataFrames<a class="headerlink" href="#dataframes" title="Permanent link">&para;</a></h1>
+<p>El SDK considera <code>pandas</code> y <code>polars</code> parte del contrato principal. Por eso ambas librerías son dependencias runtime obligatorias en la serie estable <code>1.x</code>.</p>
+<h2 id="respuesta-por-defecto">Respuesta por defecto<a class="headerlink" href="#respuesta-por-defecto" title="Permanent link">&para;</a></h2>
+<p>Por defecto, <code>get_series</code> y <code>search_series</code> retornan <code>polars.DataFrame</code>.</p>
+<pre><code class="language-python">from bcch_sdk import BCChConfig, BCChSyncSDK
+
+sdk = BCChSyncSDK(
+    configuration=BCChConfig(
+        credentials={&quot;username&quot;: &quot;tu_usuario&quot;, &quot;password&quot;: &quot;tu_password&quot;}
+    )
+)
+
+frames = sdk.get_series(&quot;SF43718&quot;)
+
+print(type(frames[0]))
+</code></pre>
+<h2 id="respuesta-con-pandas">Respuesta con pandas<a class="headerlink" href="#respuesta-con-pandas" title="Permanent link">&para;</a></h2>
+<p>Usa <code>polars_response=False</code> para solicitar <code>pandas.DataFrame</code>.</p>
+<pre><code class="language-python">frames = sdk.get_series(
+    &quot;SF43718&quot;,
+    first_date=&quot;2024-01-01&quot;,
+    last_date=&quot;2024-01-31&quot;,
+    polars_response=False,
+)
+
+print(type(frames[0]))
+</code></pre>
+<p>La misma opción está disponible en <code>search_series</code>.</p>
+<pre><code class="language-python">from bcch_sdk import Frequency
+
+catalog = sdk.search_series(
+    Frequency.MONTHLY,
+    polars_response=False,
+)
+</code></pre>
+<h2 id="multiples-series">Múltiples series<a class="headerlink" href="#multiples-series" title="Permanent link">&para;</a></h2>
+<p>Cuando pides varias series, el SDK retorna una lista de DataFrames en el mismo orden solicitado.</p>
+<pre><code class="language-python">frames = sdk.get_series(
+    [&quot;SF43718&quot;, &quot;F073.TCO.PRE.Z.D&quot;],
+    first_date=&quot;2024-01-01&quot;,
+    last_date=&quot;2024-01-31&quot;,
+)
+
+for frame in frames:
+    print(frame.columns)
+</code></pre>
+<p>También puedes pasar una cadena separada por comas.</p>
+<pre><code class="language-python">frames = sdk.get_series(&quot;SF43718,F073.TCO.PRE.Z.D&quot;)
+</code></pre>
+<h2 id="forma-de-los-datos">Forma de los datos<a class="headerlink" href="#forma-de-los-datos" title="Permanent link">&para;</a></h2>
+<p>Para una serie, el DataFrame tiene:</p>
 <ul>
-<li><code>clients/</code>: clientes HTTP sync y async, con gestión de <code>Timeout</code> y <code>RetryTransport</code>.</li>
-<li><code>builders/</code>: funciones puras que construyen parámetros, normalizan fechas y series.</li>
-<li><code>mappers/</code>: adaptadores entre <code>Internal</code> y <code>Query</code> representations o para transformar payloads a objetos/DF.</li>
-<li><code>models/</code>: modelos Pydantic que describen respuestas y sub-objetos con nombres idiomáticos.</li>
-<li><code>sdk/</code>: capa pública (convenience) que utiliza clientes, builders y concurrency helpers para ofrecer una API simple.</li>
+<li><code>date</code>: fecha de observación.</li>
+<li>una columna con el identificador de la serie.</li>
 </ul>
-<h2 id="diseno-de-transportabilidad">Diseño de transportabilidad<a class="headerlink" href="#diseno-de-transportabilidad" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Separación de responsabilidades: los clientes se encargan únicamente de transporte y validación de respuestas; los mappers y builders se encargan de la transformación de datos.</li>
-<li>Uso de <code>httpx</code> para permitir sync y async con paridad de comportamientos.</li>
-</ul>
-<h2 id="logging-y-telemetria">Logging y Telemetría<a class="headerlink" href="#logging-y-telemetria" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Cada módulo define <code>logger = logging.getLogger(__name__)</code> y emite <code>debug/info/warning/error</code> apropiadamente.</li>
-<li>No hay handlers globales en la biblioteca — el consumidor configura logging.</li>
-</ul>
-<h2 id="timeout-y-reintentos">Timeout y reintentos<a class="headerlink" href="#timeout-y-reintentos" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>BCChConfig</code> y <code>BaseClient</code> exponen <code>Timeout</code> y <code>Retry</code> configurables.</li>
-<li>Valores por defecto: timeout 10s y retry total 3 con backoff 0.5.</li>
-</ul>
-<h2 id="concurrencia">Concurrencia<a class="headerlink" href="#concurrencia" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>src/bcch_sdk/sdk/concurrency.py</code> exporta <code>run_in_threads</code> y <code>gather_async_tasks</code> para evitar duplicación de patrones concurrency.</li>
-</ul>
-<h2 id="modelos-y-nomenclatura">Modelos y nomenclatura<a class="headerlink" href="#modelos-y-nomenclatura" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Los modelos Pydantic usan <code>snake_case</code> y nombres explícitos: <code>spanish_description</code>, <code>english_description</code>, <code>index_date</code>, <code>value</code>.</li>
-<li>Esto simplifica el mapping desde el payload JSON original y facilita el uso desde código Python.</li>
-</ul>
+<p>Ejemplo conceptual:</p>
+<table>
+<thead>
+<tr>
+<th>date</th>
+<th style="text-align: right;">SF43718</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024-01-01</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr>
+<td>2024-01-02</td>
+<td style="text-align: right;">1.1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="decision-de-dependencias">Decisión de dependencias<a class="headerlink" href="#decision-de-dependencias" title="Permanent link">&para;</a></h2>
+<p>Separar <code>pandas</code> y <code>polars</code> en extras opcionales queda reservado para una versión mayor futura. Ese cambio requiere rediseñar imports, errores y contratos de respuesta.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../api_reference/" class="btn btn-neutral float-left" title="API Reference"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../developer_guide/" class="btn btn-neutral float-right" title="Developer Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../quickstart/" class="btn btn-neutral float-left" title="Quickstart"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../usage/" class="btn btn-neutral float-right" title="Usage Examples">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -191,10 +231,10 @@
         </span>
     
     
-      <span><a href="../api_reference/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../developer_guide/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../usage/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

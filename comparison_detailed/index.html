@@ -44,6 +44,18 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dataframes/">DataFrames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../migration/">Migration Guide</a>
                 </li>
               </ul>
@@ -56,11 +68,15 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage Examples</a>
+                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../developer_guide/">Developer Guide</a>
+                <li class="toctree-l1"><a class="reference internal" href="../release_checklist/">Release Checklist</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../roadmap/">Roadmap</a>
                 </li>
               </ul>
               <ul>
@@ -124,7 +140,7 @@
 <li>Mezcla de I/O con librería; las librerías no deben pedir input al usuario.</li>
 <li>Dificulta testing.</li>
 </ul>
-<p>Nueva aproximación (<code>src/types/auth.py</code> + <code>src/mappers/credentials.py</code>):</p>
+<p>Nueva aproximación (<code>src/bcch_sdk/types/auth.py</code> + <code>bcch_sdk/mappers/credentials.py</code>):</p>
 <ul>
 <li><code>InternalCredentials</code> es un <code>TypedDict</code> explícito.</li>
 <li><code>CredentialsMapper.to_query_credentials</code> convierte <code>InternalCredentials</code> a <code>{"user": ..., "pass": ...}</code>.</li>
@@ -136,8 +152,8 @@
 </ol>
 <p>Código relacionado:</p>
 <ul>
-<li><code>src/types/auth.py</code></li>
-<li><code>src/mappers/credentials.py</code></li>
+<li><code>src/bcch_sdk/types/auth.py</code></li>
+<li><code>bcch_sdk/mappers/credentials.py</code></li>
 </ul>
 <hr />
 <h2 id="manejo-de-parametros-y-nombres-timeseries-vs-time_series">Manejo de parámetros y nombres (<code>timeseries</code> vs <code>time_series</code>)<a class="headerlink" href="#manejo-de-parametros-y-nombres-timeseries-vs-time_series" title="Permanent link">&para;</a></h2>
@@ -151,7 +167,7 @@
 <li>API Python más clara (<code>time_series</code> es más legible).</li>
 <li>Centralización del mapeo en <code>ParameterBuilder</code> evita fugas de nombres en todo el código.</li>
 </ul>
-<p>Archivo clave: <code>src/builders/parameters.py</code></p>
+<p>Archivo clave: <code>src/bcch_sdk/builders/parameters.py</code></p>
 <p>Ejemplo de uso:</p>
 <pre><code class="language-py">params = ParameterBuilder.build_get_series_params(creds, &quot;SF43718&quot;)
 # params[&quot;timeseries&quot;] == &quot;SF43718&quot;
@@ -210,12 +226,12 @@
 <ul>
 <li>Errores de transporte (<code>TransportException</code>).</li>
 <li>Errores de parseo (<code>ResponseParseException</code>).</li>
-<li>Errores de negocio (<code>InvalidsCredentialsException</code>, <code>InvalidSeriesException</code>, ...).</li>
+<li>Errores de negocio (<code>InvalidCredentialsException</code>, <code>InvalidSeriesException</code>, ...).</li>
 </ul>
 <p>Recomendación de manejo en aplicaciones:</p>
 <pre><code class="language-py">try:
     resp = client.get_series(...)
-except InvalidsCredentialsException:
+except InvalidCredentialsException:
     # pedir login o abortar
 except TransportException:
     # volver a intentar o avisar al usuario
@@ -230,8 +246,8 @@ except ResponseParseException:
 <li>SDK <code>sync_sdk</code> y <code>async_sdk</code> exponen funciones convenientes para usuarios que sólo quieren obtener series sin manejar clientes directamente.</li>
 </ul>
 <p>Ejemplo conceptual (paralelizar 10 series):</p>
-<pre><code class="language-py">from src.sdk.concurrency import run_in_threads
-from src.sdk.sync_sdk import BCChSDK
+<pre><code class="language-py">from bcch_sdk.sdk.concurrency import run_in_threads
+from bcch_sdk.sdk.sync_sdk import BCChSDK
 
 sdk = BCChSDK.from_credentials(creds)
 series = [&quot;SF1&quot;,&quot;SF2&quot;,...]
