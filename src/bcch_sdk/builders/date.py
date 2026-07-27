@@ -22,4 +22,9 @@ class DateBuilder:
 
     @staticmethod
     def to_date(value: str) -> date:
-        return datetime.strptime(value, "%d-%m-%Y").date()
+        # The API always returns DD-MM-YYYY. This keeps calendar validation while
+        # avoiding the generic and considerably slower strptime parser per row.
+        if len(value) != 10 or value[2] != "-" or value[5] != "-":
+            raise ValueError(f"time data {value!r} does not match format '%d-%m-%Y'")
+
+        return date.fromisoformat(f"{value[6:10]}-{value[3:5]}-{value[0:2]}")

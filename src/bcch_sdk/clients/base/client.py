@@ -9,10 +9,6 @@ from pydantic import ValidationError
 
 from ...types.auth import InternalCredentials
 
-from ...dto.web_service import WebServiceResponseDTO
-
-from ...mappers.web_service import WebServiceResponseMapper
-
 from ...models.web_service import WebServiceResponse
 
 from ...exceptions import (
@@ -58,8 +54,7 @@ class BaseClient:
             # Banco Central returns JSON encoded as ISO-8859-1.
             # We parse response.text instead of response.json() to respect the charset.
             payload = json.loads(response.text)
-            dto = WebServiceResponseDTO.model_validate(payload)
-            return WebServiceResponseMapper.from_api_to_domain(dto)
+            return WebServiceResponse.model_validate(payload)
 
         except json.JSONDecodeError as exc:
             raise ResponseParseException(

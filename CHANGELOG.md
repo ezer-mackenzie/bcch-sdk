@@ -4,6 +4,25 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning. Breaking public API changes require a major version bump.
 
+## [1.0.1] - 2026-07-27
+
+### Performance
+
+- Validated API payloads directly into domain models, removing the intermediate DTO-to-model conversion from the client response path.
+- Replaced per-observation generic date parsing with a validated fast path for the API's `DD-MM-YYYY` format.
+- Built series-search DataFrames by columns instead of creating an intermediate dictionary for every result.
+
+### Compatibility
+
+- Preserved the existing public models, DTOs, mappers, DataFrame schemas, and sync and async client behavior.
+- Kept DTO and mapper modules available for existing internal integrations.
+
+### Verified
+
+- Full default test suite.
+- Benchmark smoke suite.
+- Ruff linting.
+
 ## [1.0.0] - 2026-07-16
 
 ### Stable
