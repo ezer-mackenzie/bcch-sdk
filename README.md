@@ -1,5 +1,12 @@
 # Banco Central Chile SDK
 
+[![CI](https://github.com/ezer-mackenzie/bcch-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ezer-mackenzie/bcch-sdk/actions/workflows/ci.yml)
+[![Codecov](https://codecov.io/gh/ezer-mackenzie/bcch-sdk/branch/main/graph/badge.svg)](https://codecov.io/gh/ezer-mackenzie/bcch-sdk)
+[![Documentation](https://github.com/ezer-mackenzie/bcch-sdk/actions/workflows/mkdocs.yml/badge.svg)](https://ezer-mackenzie.github.io/bcch-sdk/)
+[![PyPI](https://img.shields.io/pypi/v/bcch-sdk.svg)](https://pypi.org/project/bcch-sdk/)
+[![Python](https://img.shields.io/pypi/pyversions/bcch-sdk.svg)](https://pypi.org/project/bcch-sdk/)
+[![License](https://img.shields.io/pypi/l/bcch-sdk.svg)](https://github.com/ezer-mackenzie/bcch-sdk/blob/main/LICENSE)
+
 A Python client library for the Banco Central de Chile SieteRestWS API.
 
 This repository provides sync and async wrappers over the API, returning data as `pandas.DataFrame` or `polars.DataFrame` and managing retries, timeout configuration, and error handling.
