@@ -1,6 +1,21 @@
 
 # Guía de Migración: implementación legacy → `src/`
 
+## Migración de v1 a v2
+
+v2 mantiene los clientes, modelos y métodos principales, pero introduce dos
+cambios incompatibles:
+
+1. Instale el backend de DataFrame explícitamente:
+   `bcch-sdk[polars]`, `bcch-sdk[pandas]` o `bcch-sdk[dataframe]`.
+2. Reemplace `SerieInformation` por `SeriesInformation` e
+   `InvalidsCredentialsException` por `InvalidCredentialsException`.
+
+Una instalación base (`pip install bcch-sdk`) permite usar
+`BCChSyncClient`/`BCChAsyncClient` y los modelos Pydantic. Invocar el SDK de
+alto nivel sin el extra requerido produce
+`MissingDataFrameDependencyException` con una instrucción de instalación.
+
 Esta guía documenta las diferencias funcionales y de diseño entre la implementación legacy (código anterior usado como referencia) y la nueva implementación reescrita bajo `src/`.
 
 Resumen rápido:

@@ -28,14 +28,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: pip
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install mkdocs
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Install documentation dependencies
+        run: poetry install --only docs
 
       - name: Build documentation
-        run: mkdocs build --strict
+        run: poetry run mkdocs build --strict
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

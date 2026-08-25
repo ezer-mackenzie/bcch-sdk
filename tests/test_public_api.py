@@ -7,9 +7,8 @@ from bcch_sdk import (
     BCChSyncSDK,
     Frequency,
     InvalidCredentialsException,
-    InvalidsCredentialsException,
+    MissingDataFrameDependencyException,
     ObservationSeries,
-    SerieInformation,
     Series,
     SeriesInformation,
     WebServiceResponse,
@@ -35,8 +34,13 @@ def test_public_package_exports_common_models_and_errors() -> None:
     assert Series.__name__ == "Series"
     assert ObservationSeries.__name__ == "ObservationSeries"
     assert SeriesInformation.__name__ == "SeriesInformation"
-    assert SerieInformation is SeriesInformation
-    assert issubclass(InvalidsCredentialsException, InvalidCredentialsException)
+    assert InvalidCredentialsException.__name__ == "InvalidCredentialsException"
+    assert issubclass(
+        MissingDataFrameDependencyException,
+        bcch_sdk.InvalidConfigurationException,
+    )
+    assert not hasattr(bcch_sdk, "SerieInformation")
+    assert not hasattr(bcch_sdk, "InvalidsCredentialsException")
 
 
 def test_public_version_matches_installed_distribution() -> None:

@@ -14,7 +14,8 @@ Esta sección está dirigida a contribuyentes y desarrolladores que modifican el
 
 ## Tests
 
-- Añadir pruebas unitarias para builders, mappers y clientes. Para clientes, usar `respx` (sync/async) para mockear respuestas `httpx`.
+- Añadir pruebas unitarias para builders, mappers y clientes. Para clientes, usar
+  `httpx.MockTransport` para simular respuestas sync/async sin red.
 
 Ejemplo de test para `ParameterBuilder` (esqueleto):
 

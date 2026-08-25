@@ -1,6 +1,13 @@
 # DataFrames
 
-El SDK considera `pandas` y `polars` parte del contrato principal. Por eso ambas librerías son dependencias runtime obligatorias en la serie estable `1.x`.
+Desde v2, `pandas` y `polars` son extras opcionales. Instale sólo el backend que
+utilice:
+
+```bash
+pip install "bcch-sdk[polars]"
+pip install "bcch-sdk[pandas]"
+pip install "bcch-sdk[dataframe]"
+```
 
 ## Respuesta por defecto
 
@@ -83,4 +90,6 @@ Ejemplo conceptual:
 
 ## Decisión de dependencias
 
-Separar `pandas` y `polars` en extras opcionales queda reservado para una versión mayor futura. Ese cambio requiere rediseñar imports, errores y contratos de respuesta.
+Si se solicita un backend no instalado, el SDK lanza
+`MissingDataFrameDependencyException` con el comando del extra correspondiente.
+Los clientes de bajo nivel pueden usarse sin instalar ningún backend.

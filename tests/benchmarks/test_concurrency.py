@@ -123,13 +123,17 @@ def test_sync_sdk_pandas(benchmark: BenchmarkFixture) -> None:
 @pytest.mark.benchmark
 def test_async_sdk_polars(benchmark: BenchmarkFixture) -> None:
     sdk = BenchmarkAsyncSDK(create_config())
+    runner = asyncio.Runner()
 
     async def get_series() -> Sequence[polars.DataFrame]:
         return await sdk.get_series(SERIES, "2024-01-01", "2024-01-02")
 
-    result = cast(
-        Sequence[polars.DataFrame], benchmark(lambda: asyncio.run(get_series()))
-    )
+    try:
+        result = cast(
+            Sequence[polars.DataFrame], benchmark(lambda: runner.run(get_series()))
+        )
+    finally:
+        runner.close()
     assert len(result) == len(SERIES)
     assert all(isinstance(frame, polars.DataFrame) for frame in result)
 
@@ -137,6 +141,7 @@ def test_async_sdk_polars(benchmark: BenchmarkFixture) -> None:
 @pytest.mark.benchmark
 def test_async_sdk_pandas(benchmark: BenchmarkFixture) -> None:
     sdk = BenchmarkAsyncSDK(create_config())
+    runner = asyncio.Runner()
 
     async def get_series() -> Sequence[pandas.DataFrame]:
         return await sdk.get_series(
@@ -146,8 +151,11 @@ def test_async_sdk_pandas(benchmark: BenchmarkFixture) -> None:
             polars_response=False,
         )
 
-    result = cast(
-        Sequence[pandas.DataFrame], benchmark(lambda: asyncio.run(get_series()))
-    )
+    try:
+        result = cast(
+            Sequence[pandas.DataFrame], benchmark(lambda: runner.run(get_series()))
+        )
+    finally:
+        runner.close()
     assert len(result) == len(SERIES)
     assert all(isinstance(frame, pandas.DataFrame) for frame in result)

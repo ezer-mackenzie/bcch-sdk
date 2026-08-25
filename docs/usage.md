@@ -6,6 +6,10 @@ Esta página reúne patrones comunes. Para una primera instalación, revisa prim
 
 `polars` es la respuesta por defecto.
 
+```bash
+pip install "bcch-sdk[polars]"
+```
+
 ```python
 from bcch_sdk import BCChConfig, BCChSyncSDK
 
@@ -26,6 +30,10 @@ print(frame)
 ```
 
 ## SDK sincrónico con pandas
+
+```bash
+pip install "bcch-sdk[pandas]"
+```
 
 ```python
 frames = sdk.get_series(

@@ -30,6 +30,3 @@ class SeriesInformation(BaseModel):
         if isinstance(value, str) and len(value) == 10 and value[2] == "-":
             return DateBuilder.to_date(value)
         return value
-
-
-SerieInformation = SeriesInformation

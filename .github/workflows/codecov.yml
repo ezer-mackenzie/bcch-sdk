@@ -1,16 +1,15 @@
 name: Upload coverage
 
 on:
-  workflow_call:
-    secrets:
-      CODECOV_TOKEN:
-        description: Codecov repository upload token
-        required: false
+  workflow_call: {}
 
 jobs:
   upload:
     name: Upload report to Codecov
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -24,7 +23,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          use_oidc: true
           files: coverage.xml
           flags: unit-tests
           name: bcch-sdk

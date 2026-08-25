@@ -31,6 +31,7 @@ Thank you for your interest in contributing to this project. Contributions are w
 - Keep tests readable and precise.
 - Prefer direct validation of API behavior, error conditions, and expected output.
 - Run `poetry run pytest -q` for the default test suite.
+- Run `poetry run mypy` to validate public and internal type contracts.
 - Run `poetry run pre-commit run --all-files` before opening a pull request.
 
 ## Documentation

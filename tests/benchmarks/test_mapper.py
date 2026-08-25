@@ -42,14 +42,16 @@ def test_parameter_builder_performance(benchmark: BenchmarkFixture) -> None:
 
 
 @pytest.mark.benchmark
+@pytest.mark.parametrize("observations", [100, 10_000])
 def test_web_service_response_model_performance(
     benchmark: BenchmarkFixture,
+    observations: int,
 ) -> None:
     payload = build_api_series_payload()
-    observations = payload["Series"]["Obs"]
-    payload["Series"]["Obs"] = observations * 10_000
+    observation_template = payload["Series"]["Obs"]
+    payload["Series"]["Obs"] = observation_template * observations
 
     result = benchmark(WebServiceResponse.model_validate, payload)
 
     assert result.series is not None
-    assert len(result.series.observations) == 10_000
+    assert len(result.series.observations) == observations

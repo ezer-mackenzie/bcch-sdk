@@ -19,6 +19,10 @@ Esta sección describe la organización del código, decisiones de diseño y pat
 
 - Cada módulo define `logger = logging.getLogger(__name__)` y emite `debug/info/warning/error` apropiadamente.
 - No hay handlers globales en la biblioteca — el consumidor configura logging.
+- El SDK nunca registra los parámetros HTTP porque contienen credenciales. La
+  API del Banco Central exige credenciales en la query string y HTTPX registra
+  URLs completas en nivel `INFO`; en producción configure el logger `httpx` en
+  `WARNING` o superior para impedir que esos secretos lleguen a los logs.
 
 ## Timeout y reintentos
 

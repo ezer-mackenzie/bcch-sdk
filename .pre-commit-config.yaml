@@ -3,6 +3,7 @@ repos:
     rev: v0.15.20
     hooks:
       - id: ruff-check
+      - id: ruff-format
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -13,3 +14,14 @@ repos:
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy
+        language: system
+        pass_filenames: false
+        types: [python]

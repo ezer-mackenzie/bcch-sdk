@@ -39,16 +39,20 @@ def test_sync_client_request_performance(benchmark: BenchmarkFixture) -> None:
 @pytest.mark.benchmark
 def test_async_client_request_performance(benchmark: BenchmarkFixture) -> None:
     transport = MockTransport(build_response)
+    client = BCChAsyncClient(
+        credentials=DUMMY_CREDENTIALS,
+        session=AsyncClient(transport=transport),
+    )
+    runner = asyncio.Runner()
 
     async def get_series() -> WebServiceResponse:
-        client = BCChAsyncClient(
-            credentials=DUMMY_CREDENTIALS,
-            session=AsyncClient(transport=transport),
-        )
-        async with client:
-            return await client.get_series("SF1")
+        return await client.get_series("SF1")
 
-    result = cast(WebServiceResponse, benchmark(lambda: asyncio.run(get_series())))
+    try:
+        result = cast(WebServiceResponse, benchmark(lambda: runner.run(get_series())))
+    finally:
+        runner.run(client.session.aclose())
+        runner.close()
 
     assert result.series is not None
     assert result.series.id == "SF1"

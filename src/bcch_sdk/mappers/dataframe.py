@@ -1,12 +1,17 @@
+from __future__ import annotations
+
 from datetime import date
-from typing import Literal, overload
+from typing import TYPE_CHECKING, Literal, cast, overload
 
-import polars
-import pandas
+if TYPE_CHECKING:
+    import pandas
+    import polars
 
+from ..dataframe_backends import load_pandas, load_polars
 from ..exceptions import ResponseParseException
 from ..models.web_service import WebServiceResponse
 from ..types.enums import Frequency
+
 
 class DataFrameMapper:
     @overload
@@ -50,17 +55,15 @@ class DataFrameMapper:
         values = [obs.value for obs in series.observations]
 
         if polars_response:
-            return polars.DataFrame(
-                {
-                    "date": dates,
-                    series.id: values,
-                }
+            polars_module = load_polars()
+            return cast(
+                "polars.DataFrame",
+                polars_module.DataFrame({"date": dates, series.id: values}),
             )
-        return pandas.DataFrame(
-            {
-                "date": dates,
-                series.id: values,
-            }
+        pandas_module = load_pandas()
+        return cast(
+            "pandas.DataFrame",
+            pandas_module.DataFrame({"date": dates, series.id: values}),
         )
 
     @overload
@@ -111,6 +114,8 @@ class DataFrameMapper:
         }
 
         if polars_response:
-            return polars.DataFrame(columns)
+            polars_module = load_polars()
+            return cast("polars.DataFrame", polars_module.DataFrame(columns))
 
-        return pandas.DataFrame(columns)
+        pandas_module = load_pandas()
+        return cast("pandas.DataFrame", pandas_module.DataFrame(columns))

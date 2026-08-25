@@ -22,12 +22,6 @@ class CustomExceptionTests(unittest.TestCase):
 
         self.assertEqual(str(exc), "Invalid credentials were provided.")
 
-    def test_legacy_credentials_alias_is_preserved(self) -> None:
-        exc = InvalidCredentialsException()
-
-        self.assertIsInstance(exc, InvalidCredentialsException)
-        self.assertEqual(str(exc), "Invalid credentials were provided.")
-
     def test_configuration_exception_has_default_message(self) -> None:
         exc = InvalidConfigurationException()
 

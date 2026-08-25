@@ -1,6 +1,6 @@
 [project]
 name = "bcch-sdk"
-version = "1.0.1"
+version = "2.0.0"
 description = "Python SDK for the Banco Central de Chile SieteRestWS API."
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz",email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
@@ -31,32 +31,39 @@ classifiers = [
 dependencies = [
     "httpx[brotli,zstd] (>=0.28.1,<0.29.0)",
     "pydantic (>=2.13.4,<3.0.0)",
-    "polars (>=1.42.1,<2.0.0)",
-    "pandas (>=3.0.3,<4.0.0)",
     "httpx-retries (>=0.6.0,<0.7.0)",
 ]
 
+[project.optional-dependencies]
+pandas = ["pandas>=3.0.3,<4.0.0"]
+polars = ["polars>=1.42.1,<2.0.0"]
+dataframe = [
+    "pandas>=3.0.3,<4.0.0",
+    "polars>=1.42.1,<2.0.0",
+]
+
 [project.urls]
-Homepage = "https://github.com/ezer-mackenzie/bank-central-chile-sdk"
-Documentation = "https://ezer-mackenzie.github.io/bank-central-chile-sdk/"
-Repository = "https://github.com/ezer-mackenzie/bank-central-chile-sdk"
-Issues = "https://github.com/ezer-mackenzie/bank-central-chile-sdk/issues"
-Changelog = "https://github.com/ezer-mackenzie/bank-central-chile-sdk/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/ezer-mackenzie/bcch-sdk"
+Documentation = "https://ezer-mackenzie.github.io/bcch-sdk/"
+Repository = "https://github.com/ezer-mackenzie/bcch-sdk"
+Issues = "https://github.com/ezer-mackenzie/bcch-sdk/issues"
+Changelog = "https://github.com/ezer-mackenzie/bcch-sdk/blob/main/CHANGELOG.md"
 
 [tool.poetry]
 packages = [{ include = "bcch_sdk", from = "src" }]
 
 [tool.poetry.group.dev.dependencies]
+mypy = ">=2.3.1,<3.0.0"
 pre-commit = ">=4.0.0,<5.0.0"
 ruff = ">=0.15.20,<0.16.0"
 
 [tool.poetry.group.test.dependencies]
+pandas = ">=3.0.3,<4.0.0"
+polars = ">=1.42.1,<2.0.0"
 pytest = ">=8.0.0,<9.0.0"
 pytest-cov = ">=6.0.0,<8.0.0"
 pytest-asyncio = ">=1.4.0,<2.0.0"
 pytest-benchmark = ">=5.2.3,<6.0.0"
-respx = ">=0.23.1,<0.24.0"
-aioresponses = ">=0.7.9,<0.8.0"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = ">=1.6.1,<2.0.0"
@@ -79,6 +86,16 @@ exclude_also = [
     "if __name__ == .__main__.:",
     "@(abc\\.)?abstractmethod",
 ]
+
+[tool.mypy]
+python_version = "3.12"
+packages = ["bcch_sdk"]
+strict = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = ["pandas", "pandas.*"]
+ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

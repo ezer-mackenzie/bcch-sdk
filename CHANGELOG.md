@@ -4,6 +4,46 @@ All notable changes to this project are documented here.
 
 This project follows semantic versioning. Breaking public API changes require a major version bump.
 
+## [2.0.0] - 2026-08-25
+
+### Breaking
+
+- Moved Pandas and Polars out of the base installation. Install
+  `bcch-sdk[pandas]`, `bcch-sdk[polars]`, or `bcch-sdk[dataframe]` according to
+  the required backend.
+- Removed the deprecated `SerieInformation` alias; use `SeriesInformation`.
+- Removed the deprecated `InvalidsCredentialsException` alias; use
+  `InvalidCredentialsException`.
+
+### Security
+
+- Removed SDK logging of HTTP query parameters and sanitized transport/status
+  errors so credentials are not emitted by `bcch_sdk` loggers.
+- Documented the required `httpx` logger level because the upstream client can
+  log complete query-string URLs at `INFO`.
+
+### Fixed
+
+- Preserved caller-owned sync and async HTTP sessions and made internally owned
+  sessions reusable across context-manager entries.
+- Rejected empty normalized series, empty credentials, reversed date ranges,
+  invalid runtime frequencies, and unknown API error codes consistently.
+- Corrected sync/async base contracts and `BCChAsyncSDK` inheritance.
+
+### Added
+
+- Added configurable `BCChConfig.max_concurrency` with a default of 8.
+- Added strict mypy validation, Python 3.12–3.14 CI, OIDC Codecov uploads,
+  Dependabot, scheduled benchmarks, and regression-oriented tests.
+- Increased line/branch coverage to 92%.
+
+### Changed
+
+- Removed unused DTO conversion code and unused HTTP mocking dependencies.
+- Normalized Ruff formatting and corrected canonical repository URLs.
+- Expanded benchmarks to cover 100 and 10,000 row workloads, reusable async
+  event loops, and bounded Python-allocation checks.
+
 ## [1.0.1] - 2026-07-27
 
 ### Performance

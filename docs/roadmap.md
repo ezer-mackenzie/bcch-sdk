@@ -1,10 +1,10 @@
 # Roadmap
 
-`bcch-sdk` está orientado a estabilidad de API en la serie `1.x`. Esta página documenta qué queda congelado y qué mejoras pueden evaluarse en versiones futuras.
+`bcch-sdk` está orientado a estabilidad de API en la serie `2.x`. Esta página documenta qué queda congelado y qué mejoras pueden evaluarse en versiones futuras.
 
-## Estable en 1.x
+## Estable en 2.x
 
-La serie `1.x` mantiene estable:
+La serie `2.x` mantiene estable:
 
 - Imports públicos desde `bcch_sdk`.
 - Excepciones públicas.
@@ -70,9 +70,7 @@ sdk = BCChSyncSDK(
 
 ## Dependencias DataFrame opcionales
 
-Separar `pandas` y `polars` en extras puede reducir peso de instalación, pero requiere rediseñar imports, errores y contrato de retorno.
-
-Posibles extras futuros:
+Desde v2 están disponibles los extras:
 
 - `bcch-sdk[pandas]`
 - `bcch-sdk[polars]`

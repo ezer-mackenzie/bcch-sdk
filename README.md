@@ -9,6 +9,7 @@ This repository provides sync and async wrappers over the API, returning data as
 - Synchronous and asynchronous SDK layers
 - Built-in HTTP retries using `httpx-retries`
 - Configurable `httpx.Timeout`
+- Configurable sync/async concurrency limit
 - `get_series(...)` and `search_series(...)`
 - Output as `pandas.DataFrame` or `polars.DataFrame`
 - Standard `logging` integration using `logging.getLogger(__name__)`
@@ -19,13 +20,10 @@ This repository provides sync and async wrappers over the API, returning data as
 - Python 3.12+
 - `httpx[brotli,zstd]`
 - `pydantic`
-- `polars`
-- `pandas`
 - `httpx-retries`
 
-`pandas` and `polars` are runtime dependencies by design for the stable `1.x`
-release line because DataFrame responses are part of the core SDK contract. They
-may be split into optional extras in a future major release.
+Pandas and Polars are optional in v2. Install only the backend your application
+uses.
 
 ## Installation
 
@@ -37,10 +35,18 @@ Use Poetry if available:
 poetry install
 ```
 
+For an installed package, choose an extra:
+
+```bash
+python -m pip install "bcch-sdk[polars]"
+python -m pip install "bcch-sdk[pandas]"
+python -m pip install "bcch-sdk[dataframe]"  # both backends
+```
+
 Or install the runtime dependencies manually:
 
 ```bash
-python -m pip install httpx[brotli,zstd] pydantic polars pandas httpx-retries
+python -m pip install httpx[brotli,zstd] pydantic httpx-retries
 ```
 
 If you want to run code from the repository directly, make sure the `src/` folder is on `PYTHONPATH`:
@@ -63,6 +69,7 @@ from bcch_sdk.types import BCChConfig
 config = BCChConfig(
     credentials={"username": "your_user", "password": "your_pass"},
     timeout=Timeout(10.0),
+    max_concurrency=8,
 )
 
 sdk = BCChSyncSDK(configuration=config)
@@ -117,6 +124,19 @@ print(result)
 ## Configuration
 
 The main configuration object is `BCChConfig` from `bcch_sdk.types.config`.
+
+`max_concurrency` controls both the maximum thread workers used by the sync SDK
+and in-flight tasks used by the async SDK. It defaults to 8 and must be greater
+than zero.
+
+The Banco Central API requires credentials in its query string. The SDK does
+not log query parameters, but HTTPX logs complete request URLs at `INFO`; keep
+the `httpx` logger at `WARNING` or higher in production.
+
+Requesting a DataFrame backend that is not installed raises
+`MissingDataFrameDependencyException` with the corresponding installation
+command. The low-level sync/async clients and Pydantic models work with the base
+installation and do not require either DataFrame library.
 
 - `credentials`: a typed dict with `username` and `password`
 - `timeout`: an `httpx.Timeout` object

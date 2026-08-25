@@ -14,12 +14,6 @@ class InvalidCredentialsException(BCChSDKBaseException):
     default_message = "Invalid credentials were provided."
 
 
-class InvalidsCredentialsException(InvalidCredentialsException):
-    """Backward-compatible alias for invalid credentials errors."""
-
-    pass
-
-
 class InvalidSeriesException(BCChSDKBaseException):
     """Raised when the provided series identifier is invalid."""
 
@@ -44,10 +38,18 @@ class InvalidConfigurationException(BCChSDKBaseException):
     default_message = "SDK configuration is missing or incomplete."
 
 
+class MissingDataFrameDependencyException(InvalidConfigurationException):
+    """Raised when a requested optional DataFrame backend is unavailable."""
+
+    default_message = "The requested optional DataFrame backend is not installed."
+
+
 class TransportException(BCChSDKBaseException):
     """Raised when a transport or network error occurs."""
 
-    default_message = "A transport error occurred while contacting the Banco Central API."
+    default_message = (
+        "A transport error occurred while contacting the Banco Central API."
+    )
 
 
 class ResponseParseException(BCChSDKBaseException):

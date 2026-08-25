@@ -11,6 +11,9 @@ do not introduce a parallel DTO representation. Mappers are reserved for
 transformations that produce a genuinely different representation, such as
 query credentials or DataFrames.
 
+Pandas and Polars are optional v2 extras. Keep imports lazy so the base package
+and low-level clients remain usable without either DataFrame backend.
+
 ## Working agreements
 
 - Keep public APIs typed and preserve synchronous and asynchronous behavior.
@@ -26,6 +29,7 @@ the checks relevant to it:
 
 ```bash
 poetry run ruff check .
+poetry run mypy
 poetry run pytest -q
 poetry build
 poetry run mkdocs build --strict
@@ -40,8 +44,8 @@ dataframe mapping, requests, or performance-sensitive code.
 The main CI workflow lints, tests, builds, and validates the wheel. Its test
 step creates `coverage.xml` and uploads it as the `coverage-report` artifact.
 Only after that job succeeds, `.github/workflows/codecov.yml` downloads the
-artifact and uploads it to Codecov. The repository secret `CODECOV_TOKEN` must
-be configured for authenticated uploads.
+artifact and uploads it to Codecov using GitHub OIDC authentication. The caller
+and reusable workflow must retain `id-token: write` permission.
 
 ## Commits
 

@@ -4,14 +4,12 @@ from .sdk.sync_sdk import BCChSyncSDK
 from .types import BCChConfig, Frequency, InternalCredentials
 from .models import (
     ObservationSeries,
-    SerieInformation,
     Series,
     SeriesInformation,
     WebServiceResponse,
 )
 
 from .exceptions import (
-    InvalidsCredentialsException,
     InvalidDateException,
     InvalidSeriesException,
     InvalidFrequencyException,
@@ -21,6 +19,7 @@ from .exceptions import (
     BCChSDKBaseException,
     InvalidConfigurationException,
     InvalidCredentialsException,
+    MissingDataFrameDependencyException,
 )
 
 __all__ = [
@@ -31,11 +30,9 @@ __all__ = [
     "Frequency",
     "InternalCredentials",
     "ObservationSeries",
-    "SerieInformation",
     "SeriesInformation",
     "Series",
     "WebServiceResponse",
-    "InvalidsCredentialsException",
     "InvalidDateException",
     "InvalidSeriesException",
     "InvalidFrequencyException",
@@ -45,4 +42,5 @@ __all__ = [
     "BCChSDKBaseException",
     "InvalidConfigurationException",
     "InvalidCredentialsException",
+    "MissingDataFrameDependencyException",
 ]

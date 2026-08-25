@@ -12,7 +12,7 @@ jobs:
     environment: pypi
     permissions:
       id-token: write
-      
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
           python -m venv /tmp/bcch-sdk-publish-test
           /tmp/bcch-sdk-publish-test/bin/python -m pip install --upgrade pip
           /tmp/bcch-sdk-publish-test/bin/python -m pip install dist/*.whl
-          /tmp/bcch-sdk-publish-test/bin/python -c "import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"
+          /tmp/bcch-sdk-publish-test/bin/python -c "import importlib.util; import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; assert importlib.util.find_spec('pandas') is None; assert importlib.util.find_spec('polars') is None; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"
 
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1

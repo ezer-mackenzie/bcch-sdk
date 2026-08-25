@@ -176,7 +176,7 @@ results = run_in_threads(lambda s: sdk.get_series(s), series)
 Recomendación de librerías:
 
 - `pytest` para tests generales.
-- `respx` para mockear `httpx` en tests sync/async.
+- `httpx.MockTransport` para simular `httpx` en tests sync/async.
 
 Casos de prueba esenciales:
 

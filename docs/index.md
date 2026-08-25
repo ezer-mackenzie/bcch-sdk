@@ -24,7 +24,7 @@ Bienvenido a la documentación del SDK para acceder al SieteRestWS del Banco Cen
 
 - Paquete importable: `bcch_sdk`.
 - Versión pública: `bcch_sdk.__version__`.
-- Dependencias DataFrame obligatorias: `pandas` y `polars`.
-- Compatibilidad en la serie `1.x`: los cambios incompatibles se reservan para versiones mayores.
+- Backends DataFrame opcionales mediante extras: `pandas`, `polars` o ambos.
+- Compatibilidad v2: clientes y modelos funcionan con la instalación base.
 
 La documentación está escrita en español para acompañar el contexto del Banco Central de Chile y los ejemplos locales.

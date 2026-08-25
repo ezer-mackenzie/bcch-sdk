@@ -5,8 +5,12 @@ Esta guía muestra el camino recomendado para empezar con `bcch-sdk`.
 ## Instalación
 
 ```bash
-python -m pip install bcch-sdk
+python -m pip install "bcch-sdk[polars]"
 ```
+
+Use `bcch-sdk[pandas]` if you only need Pandas, or `bcch-sdk[dataframe]` to
+install both backends. The base `bcch-sdk` package provides clients and models
+without DataFrame dependencies.
 
 Para desarrollo local desde el repositorio:
 

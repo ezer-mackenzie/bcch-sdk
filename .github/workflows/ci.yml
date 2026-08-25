@@ -10,6 +10,10 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.12', '3.13', '3.14']
 
     steps:
       - name: Checkout repository
@@ -18,7 +22,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
+          cache: pip
 
       - name: Install Poetry
         run: pipx install poetry
@@ -27,7 +32,20 @@ jobs:
         run: poetry install
 
       - name: Run lint
+        if: matrix.python-version == '3.12'
         run: poetry run ruff check .
+
+      - name: Check formatting
+        if: matrix.python-version == '3.12'
+        run: poetry run ruff format --check .
+
+      - name: Run type checking
+        if: matrix.python-version == '3.12'
+        run: poetry run mypy
+
+      - name: Validate package metadata
+        if: matrix.python-version == '3.12'
+        run: poetry check --strict
 
       - name: Run tests with coverage
         run: >-
@@ -37,6 +55,7 @@ jobs:
           --cov-report=xml:coverage.xml
 
       - name: Store coverage report
+        if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
@@ -45,18 +64,24 @@ jobs:
           retention-days: 1
 
       - name: Build package
+        if: matrix.python-version == '3.12'
         run: poetry build
 
       - name: Validate wheel install
+        if: matrix.python-version == '3.12'
         run: |
           python -m venv /tmp/bcch-sdk-wheel-test
           /tmp/bcch-sdk-wheel-test/bin/python -m pip install --upgrade pip
           /tmp/bcch-sdk-wheel-test/bin/python -m pip install dist/*.whl
-          /tmp/bcch-sdk-wheel-test/bin/python -c "import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"
+          /tmp/bcch-sdk-wheel-test/bin/python -c "import importlib.util; import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; assert importlib.util.find_spec('pandas') is None; assert importlib.util.find_spec('polars') is None; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"
+
+      - name: Build documentation
+        if: matrix.python-version == '3.12'
+        run: poetry run mkdocs build --strict
 
   codecov:
     needs: test
     permissions:
       contents: read
+      id-token: write
     uses: ./.github/workflows/codecov.yml
-    secrets: inherit
