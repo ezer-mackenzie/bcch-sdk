@@ -1,14 +1,17 @@
+from __future__ import annotations
+
 from collections.abc import Sequence
 
-from typing import overload
-from typing import Literal
+from typing import TYPE_CHECKING, Literal, overload
 
 from dataclasses import dataclass
 from datetime import datetime, date
 
-import polars
-import pandas
 import logging
+
+if TYPE_CHECKING:
+    import pandas
+    import polars
 
 from ..types.enums import Frequency
 
@@ -24,13 +27,13 @@ from ..mappers.dataframe import DataFrameMapper
 from ..clients.async_client import BCChAsyncClient
 from ..concurrency import gather_async_tasks
 
-from .base.async_sdk import BaseSDK
+from .base.async_sdk import BaseAsyncSDK
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
-class BCChAsyncSDK(BaseSDK[BCChAsyncClient]):
+class BCChAsyncSDK(BaseAsyncSDK):
     def client(self) -> BCChAsyncClient:
         if self.configuration is None:
             raise InvalidConfigurationException(
@@ -76,6 +79,8 @@ class BCChAsyncSDK(BaseSDK[BCChAsyncClient]):
         polars_response: bool = True,
     ) -> Sequence[polars.DataFrame | pandas.DataFrame]:
         series: list[str] = TimeSeriesBuilder.to_list(time_series)
+        if self.configuration is None:
+            raise InvalidConfigurationException("SDK configuration is required.")
 
         async with self.client() as client:
             logger.info("Fetching %d series asynchronously", len(series))
@@ -88,7 +93,8 @@ class BCChAsyncSDK(BaseSDK[BCChAsyncClient]):
                         last_date,
                     )
                     for serie in series
-                ]
+                ],
+                max_concurrency=self.configuration.max_concurrency,
             )
 
         if not results:
@@ -124,7 +130,9 @@ class BCChAsyncSDK(BaseSDK[BCChAsyncClient]):
         *,
         polars_response: bool = True,
     ) -> polars.DataFrame | pandas.DataFrame:
-        logger.info("Searching series information asynchronously for frequency %s", frequency)
+        logger.info(
+            "Searching series information asynchronously for frequency %s", frequency
+        )
 
         async with self.client() as client:
             result = await client.search_series(frequency)

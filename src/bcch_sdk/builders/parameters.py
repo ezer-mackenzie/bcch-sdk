@@ -1,5 +1,9 @@
 from datetime import datetime, date
 
+from ..exceptions import (
+    InvalidDateException,
+    InvalidSeriesException,
+)
 from ..types.auth import InternalCredentials
 from ..types.enums import Frequency, FunctionAPI
 from ..types.parameters import GetSeriesParams, SearchSeriesParams
@@ -18,17 +22,34 @@ class ParameterBuilder:
         first_date: str | date | datetime | None = None,
         last_date: str | date | datetime | None = None,
     ) -> GetSeriesParams:
+        normalized_series = time_series.strip()
+        if not normalized_series:
+            raise InvalidSeriesException("A non-empty series identifier is required.")
+
+        query_credentials = CredentialsMapper.to_query_credentials(credentials)
         params: GetSeriesParams = {
-            **CredentialsMapper.to_query_credentials(credentials),
-            "timeseries": time_series,
+            "user": query_credentials["user"],
+            "pass": query_credentials["pass"],
+            "timeseries": normalized_series,
             "function": FunctionAPI.GET_SERIES,
         }
 
-        if first_date:
-            params["firstdate"] = DateBuilder.to_string_date(first_date)
+        normalized_first_date: str | None = None
+        normalized_last_date: str | None = None
+        if first_date is not None:
+            normalized_first_date = DateBuilder.to_string_date(first_date)
+            params["firstdate"] = normalized_first_date
 
-        if last_date:
-            params["lastdate"] = DateBuilder.to_string_date(last_date)
+        if last_date is not None:
+            normalized_last_date = DateBuilder.to_string_date(last_date)
+            params["lastdate"] = normalized_last_date
+
+        if (
+            normalized_first_date
+            and normalized_last_date
+            and normalized_first_date > normalized_last_date
+        ):
+            raise InvalidDateException("The first date cannot be after the last date.")
 
         return params
 

@@ -2,7 +2,7 @@ from typing import Self
 from types import TracebackType
 from datetime import datetime, date
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from httpx import Client, QueryParams, RequestError
 
@@ -12,28 +12,29 @@ from .base.sync_client import BaseSyncClient
 
 from ..builders.parameters import ParameterBuilder
 
-from ..models.web_service import WebServiceResponse 
+from ..models.web_service import WebServiceResponse
 from ..types.enums import Frequency
 
-from ..exceptions import (
-    InvalidCredentialsException,
-    InvalidDateException,
-    InvalidFrequencyException,
-    InvalidSeriesException,
-    TransportException,
-)
+from ..exceptions import InvalidCredentialsException, TransportException
 
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class BCChSyncClient(BaseSyncClient):
     session: Client | None = None
+    _owns_session: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         logger.debug("Initializing BCChSyncClient with timeout=%s", self.timeout)
         if self.session is None:
-            self.session = Client(timeout=self.timeout, transport=self.transport)
+            self._open_session()
+
+    def _open_session(self) -> None:
+        self.session = Client(timeout=self.timeout, transport=self.transport)
+        self._owns_session = True
 
     def get_series(
         self,
@@ -55,26 +56,17 @@ class BCChSyncClient(BaseSyncClient):
         )
 
         logger.info("Requesting series %s", time_series)
-        logger.debug("Sync GET params: %s", params)
 
         try:
             response = self.session.get(self.base_url, params=QueryParams(**params))
             r = self._validate_response(response)
-        except RequestError as exc:
-            logger.error("Transport error while requesting series %s: %s", time_series, exc)
+        except RequestError:
+            logger.error("Transport error while requesting series %s", time_series)
             raise TransportException(
                 "A transport error occurred while requesting series data."
-            ) from exc
+            ) from None
 
-        if r.code == -50:
-            raise InvalidSeriesException("The requested series identifier is invalid.")
-
-        if r.code == -1:
-            raise InvalidDateException(
-                "The requested dates are invalid or outside the supported range."
-            )
-
-        return r
+        return self._validate_api_code(r, operation="get_series")
 
     def search_series(self, frequency: Frequency) -> WebServiceResponse:
         if self.session is None:
@@ -86,31 +78,22 @@ class BCChSyncClient(BaseSyncClient):
         params = ParameterBuilder.build_search_params(self.credentials, frequency)
 
         logger.info("Searching series metadata for frequency %s", frequency)
-        logger.debug("Sync search params: %s", params)
 
         try:
             response = self.session.get(self.base_url, params=QueryParams(**params))
             r = self._validate_response(response)
-        except RequestError as exc:
-            logger.error("Transport error while searching frequency %s: %s", frequency, exc)
+        except RequestError:
+            logger.error("Transport error while searching frequency %s", frequency)
             raise TransportException(
                 "A transport error occurred while executing the search request."
-            ) from exc
+            ) from None
 
-        if r.code == -5:
-            raise InvalidCredentialsException("The provided credentials are invalid.")
-
-        if r.code == -1:
-            raise InvalidFrequencyException(
-                "The requested frequency is invalid for the search operation."
-            )
-
-        return r
+        return self._validate_api_code(r, operation="search_series")
 
     def __enter__(self) -> Self:
         if self.session is None:
             logger.debug("Opening sync client session in context manager")
-            self.session = Client(timeout=self.timeout, transport=self.transport)
+            self._open_session()
 
         return self
 
@@ -120,6 +103,8 @@ class BCChSyncClient(BaseSyncClient):
         exc_value: BaseException | None,
         traceback: TracebackType | None,
     ) -> None:
-        if self.session:
+        if self.session and self._owns_session:
             logger.debug("Closing sync client session")
             self.session.close()
+            self.session = None
+            self._owns_session = False

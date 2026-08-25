@@ -141,6 +141,18 @@ def test_sync_sdk_empty_series_input_raises() -> None:
         sdk.get_series([])
 
 
+@pytest.mark.parametrize("value", [",", [""], {"empty": ""}])
+def test_sync_sdk_normalized_empty_series_input_raises(value: object) -> None:
+    sdk = FakeSyncSDK()
+    with pytest.raises(InvalidSeriesException):
+        sdk.get_series(value)  # type: ignore[arg-type]
+
+
+def test_configuration_rejects_invalid_concurrency() -> None:
+    with pytest.raises(InvalidConfigurationException):
+        BCChConfig(credentials=DUMMY_CREDENTIALS, max_concurrency=0)
+
+
 @pytest.mark.asyncio
 async def test_async_sdk_get_series_returns_polars_frames() -> None:
     sdk = FakeAsyncSDK()

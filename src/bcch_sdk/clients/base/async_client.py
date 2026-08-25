@@ -8,6 +8,7 @@ from ...types.enums import Frequency
 
 from .client import BaseClient
 
+
 class BaseAsyncClient(BaseClient, ABC):
     @abstractmethod
     async def get_series(

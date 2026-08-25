@@ -1,13 +1,16 @@
-from typing import Callable, overload
-from typing import Literal, Sequence
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Callable, Literal, Sequence, overload
 
 from datetime import date, datetime
 
 from dataclasses import dataclass
 
-import polars
-import pandas
 import logging
+
+if TYPE_CHECKING:
+    import pandas
+    import polars
 
 from ..builders.time_series import TimeSeriesBuilder
 
@@ -38,7 +41,8 @@ class BCChSyncSDK(BaseSyncSDK):
             )
 
         logger.debug(
-            "Creating BCChSyncClient from SDK with timeout=%s", self.configuration.timeout
+            "Creating BCChSyncClient from SDK with timeout=%s",
+            self.configuration.timeout,
         )
 
         return BCChSyncClient(
@@ -75,6 +79,8 @@ class BCChSyncSDK(BaseSyncSDK):
         polars_response: bool = True,
     ) -> Sequence[polars.DataFrame | pandas.DataFrame]:
         series: list[str] = TimeSeriesBuilder.to_list(time_series)
+        if self.configuration is None:
+            raise InvalidConfigurationException("SDK configuration is required.")
 
         logger.info("Fetching %d series", len(series))
         logger.debug("Requested series identifiers: %s", series)
@@ -85,7 +91,7 @@ class BCChSyncSDK(BaseSyncSDK):
         with self.client() as client:
             results = run_in_threads(
                 [make_task(serie) for serie in series],
-                max_workers=min(8, len(series)),
+                max_workers=min(self.configuration.max_concurrency, len(series)),
             )
 
         if not results:
@@ -105,17 +111,15 @@ class BCChSyncSDK(BaseSyncSDK):
         frequency: Frequency,
         *,
         polars_response: Literal[True] = True,
-    ) -> polars.DataFrame | pandas.DataFrame:
-        ...
-    
-    @overload    
+    ) -> polars.DataFrame: ...
+
+    @overload
     def search_series(
         self,
         frequency: Frequency,
         *,
         polars_response: Literal[False],
-    ) -> polars.DataFrame | pandas.DataFrame:
-            ...
+    ) -> pandas.DataFrame: ...
 
     def search_series(
         self,

@@ -8,12 +8,8 @@ class Frequency(StrEnum):
     MONTHLY = "MONTHLY"
     QUARTERLY = "QUARTERLY"
     ANNUAL = "ANNUAL"
-    
-    """
-    WEEKLY = "WEEKLY"    
-    YEARLY = "YEARLY" 
-    """
-    
+
+
 class FunctionAPI(StrEnum):
     GET_SERIES = "GetSeries"
     SEARCH_SERIES = "SearchSeries"

@@ -24,7 +24,19 @@ def run_in_threads(
 
 async def gather_async_tasks(
     tasks: Sequence[Coroutine[None, None, ResultT]],
+    max_concurrency: int | None = None,
 ) -> list[ResultT]:
     """Gather multiple async tasks and return their results."""
     logger.debug("Gathering %s async tasks", len(tasks))
-    return await asyncio.gather(*tasks)
+    if max_concurrency is None:
+        return await asyncio.gather(*tasks)
+    if max_concurrency < 1:
+        raise ValueError("max_concurrency must be greater than zero")
+
+    semaphore = asyncio.Semaphore(max_concurrency)
+
+    async def run(task: Coroutine[None, None, ResultT]) -> ResultT:
+        async with semaphore:
+            return await task
+
+    return await asyncio.gather(*(run(task) for task in tasks))

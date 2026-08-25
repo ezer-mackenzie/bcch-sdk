@@ -2,11 +2,17 @@ from datetime import datetime, date
 
 from ..exceptions import InvalidDateException
 
+
 class DateBuilder:
     @staticmethod
     def to_string_date(value: str | datetime | date) -> str:
         if isinstance(value, (datetime, date)):
             return value.strftime("%Y-%m-%d")
+
+        if not isinstance(value, str):
+            raise InvalidDateException(
+                "Date values must be strings, dates, or datetimes."
+            )
 
         if not value.strip():
             raise InvalidDateException("Date string cannot be empty.")

@@ -20,10 +20,12 @@ class BaseSDK(Generic[TClient], ABC):
         username: str,
         password: str,
         timeout: Timeout | None = None,
+        max_concurrency: int = 8,
     ) -> Self:
         config = BCChConfig(
             credentials={"username": username, "password": password},
             timeout=timeout or Timeout(10.0),
+            max_concurrency=max_concurrency,
         )
         return cls(configuration=config)
 

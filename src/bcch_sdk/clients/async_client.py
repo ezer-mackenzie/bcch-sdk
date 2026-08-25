@@ -2,7 +2,7 @@ from typing import Self
 from types import TracebackType
 from datetime import datetime, date
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import logging
 
@@ -16,13 +16,7 @@ from ..models.web_service import WebServiceResponse
 
 from ..types.enums import Frequency
 
-from ..exceptions import (
-    InvalidCredentialsException,
-    InvalidDateException,
-    InvalidSeriesException,
-    InvalidFrequencyException,
-    TransportException,
-)
+from ..exceptions import InvalidCredentialsException, TransportException
 
 
 logger = logging.getLogger(__name__)
@@ -38,18 +32,24 @@ class BCChAsyncClient(BaseAsyncClient):
     """
 
     session: AsyncClient | None = None
+    _owns_session: bool = field(default=False, init=False, repr=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
+        super().__post_init__()
         logger.debug("Initializing BCChAsyncClient with timeout=%s", self.timeout)
         if self.session is None:
-            self.session = AsyncClient(timeout=self.timeout, transport=self.transport)
+            self._open_session()
+
+    def _open_session(self) -> None:
+        self.session = AsyncClient(timeout=self.timeout, transport=self.transport)
+        self._owns_session = True
 
     async def get_series(
         self,
         time_series: str,
         first_date: str | date | datetime | None = None,
         last_date: str | date | datetime | None = None,
-    ):
+    ) -> WebServiceResponse:
         if self.session is None:
             raise TransportException("HTTP client session is not initialized.")
 
@@ -64,7 +64,6 @@ class BCChAsyncClient(BaseAsyncClient):
         )
 
         logger.info("Requesting async series %s", time_series)
-        logger.debug("Async GET params: %s", params)
 
         try:
             response = await self.session.get(
@@ -73,25 +72,13 @@ class BCChAsyncClient(BaseAsyncClient):
 
             r = self._validate_response(response)
 
-            if r.code == -50:
-                raise InvalidSeriesException(
-                    "The requested series identifier is invalid."
-                )
+            return self._validate_api_code(r, operation="get_series")
 
-            if r.code == -1:
-                raise InvalidDateException(
-                    "The requested dates are invalid or outside the supported range."
-                )
-
-            return r
-
-        except RequestError as exc:
-            logger.error(
-                "Transport error while requesting series %s: %s", time_series, exc
-            )
+        except RequestError:
+            logger.error("Transport error while requesting series %s", time_series)
             raise TransportException(
                 "A transport error occurred while requesting series data."
-            ) from exc
+            ) from None
 
     async def search_series(
         self,
@@ -108,7 +95,6 @@ class BCChAsyncClient(BaseAsyncClient):
         params = ParameterBuilder.build_search_params(self.credentials, frequency)
 
         logger.info("Searching async series metadata for frequency %s", frequency)
-        logger.debug("Async search params: %s", params)
 
         try:
             response = await self.session.get(
@@ -116,30 +102,18 @@ class BCChAsyncClient(BaseAsyncClient):
             )
             r = self._validate_response(response)
 
-            if r.code == -5:
-                raise InvalidCredentialsException(
-                    "The provided credentials are invalid."
-                )
+            return self._validate_api_code(r, operation="search_series")
 
-            if r.code == -1:
-                raise InvalidFrequencyException(
-                    "The requested frequency is invalid for the search operation."
-                )
-
-            return r
-
-        except RequestError as exc:
-            logger.error(
-                "Transport error while searching frequency %s: %s", frequency, exc
-            )
+        except RequestError:
+            logger.error("Transport error while searching frequency %s", frequency)
             raise TransportException(
                 "A transport error occurred while executing the search request."
-            ) from exc
+            ) from None
 
     async def __aenter__(self) -> Self:
         if self.session is None:
             logger.debug("Opening async client session in context manager")
-            self.session = AsyncClient(timeout=self.timeout, transport=self.transport)
+            self._open_session()
 
         return self
 
@@ -149,6 +123,8 @@ class BCChAsyncClient(BaseAsyncClient):
         exc_value: BaseException | None,
         traceback: TracebackType | None,
     ) -> None:
-        if self.session:
+        if self.session and self._owns_session:
             logger.debug("Closing async client session")
             await self.session.aclose()
+            self.session = None
+            self._owns_session = False
