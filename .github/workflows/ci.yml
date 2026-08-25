@@ -80,7 +80,7 @@ jobs:
         run: poetry run mkdocs build --strict
 
   codecov:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: test
     permissions:
       contents: read
