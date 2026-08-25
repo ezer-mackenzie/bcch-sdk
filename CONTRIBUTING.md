@@ -11,8 +11,9 @@ Thank you for your interest in contributing to this project. Contributions are w
 
 ## Development workflow
 
-- Use Python 3.14 or newer.
+- Use Python 3.12 or newer.
 - Prefer `poetry install` to install dependencies from `pyproject.toml`.
+- Run `poetry run pre-commit install` once after cloning the repository.
 - Keep the code compatible with the existing package structure.
 - If you add or change behavior, include a short example or doc update.
 
@@ -29,6 +30,8 @@ Thank you for your interest in contributing to this project. Contributions are w
 - Add unit tests for bug fixes and new features.
 - Keep tests readable and precise.
 - Prefer direct validation of API behavior, error conditions, and expected output.
+- Run `poetry run pytest -q` for the default test suite.
+- Run `poetry run pre-commit run --all-files` before opening a pull request.
 
 ## Documentation
 

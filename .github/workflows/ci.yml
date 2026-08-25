@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,8 +29,20 @@ jobs:
       - name: Run lint
         run: poetry run ruff check .
 
-      - name: Run tests
-        run: poetry run pytest -q
+      - name: Run tests with coverage
+        run: >-
+          poetry run pytest -q
+          --cov=bcch_sdk
+          --cov-report=term-missing
+          --cov-report=xml:coverage.xml
+
+      - name: Store coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Build package
         run: poetry build
@@ -38,3 +53,10 @@ jobs:
           /tmp/bcch-sdk-wheel-test/bin/python -m pip install --upgrade pip
           /tmp/bcch-sdk-wheel-test/bin/python -m pip install dist/*.whl
           /tmp/bcch-sdk-wheel-test/bin/python -c "import bcch_sdk; from bcch_sdk import BCChSyncSDK, BCChConfig, Frequency, SeriesInformation; print(bcch_sdk.__version__, BCChSyncSDK.__name__, BCChConfig.__name__, Frequency.DAILY.value, SeriesInformation.__name__)"
+
+  codecov:
+    needs: test
+    permissions:
+      contents: read
+    uses: ./.github/workflows/codecov.yml
+    secrets: inherit
