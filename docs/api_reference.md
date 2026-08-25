@@ -4,7 +4,7 @@ Esta página resume la API pública que debe usar cualquier consumidor del SDK.
 
 ## SDK público
 
-La API estable se importa desde `bcch_sdk` y sus subpaquetes públicos. Los módulos `builders`, `dto` y `mappers` son detalles internos y no tienen garantía de compatibilidad pública.
+La API estable se importa desde `bcch_sdk` y sus subpaquetes públicos. Los módulos `builders` y `mappers` son detalles internos y no tienen garantía de compatibilidad pública.
 
 ### Imports recomendados
 

@@ -6,13 +6,13 @@ Esta sección describe la organización del código, decisiones de diseño y pat
 
 - `clients/`: clientes HTTP sync y async, con gestión de `Timeout` y `RetryTransport`.
 - `builders/`: funciones puras que construyen parámetros, normalizan fechas y series.
-- `mappers/`: adaptadores entre `Internal` y `Query` representations o para transformar payloads a objetos/DF.
+- `mappers/`: transformaciones específicas de credenciales y modelos a DataFrames.
 - `models/`: modelos Pydantic que describen respuestas y sub-objetos con nombres idiomáticos.
 - `sdk/`: capa pública (convenience) que utiliza clientes, builders y concurrency helpers para ofrecer una API simple.
 
 ## Diseño de transportabilidad
 
-- Separación de responsabilidades: los clientes se encargan únicamente de transporte y validación de respuestas; los mappers y builders se encargan de la transformación de datos.
+- Separación de responsabilidades: los clientes gestionan el transporte y validan las respuestas directamente con modelos Pydantic; los mappers y builders realizan las demás transformaciones.
 - Uso de `httpx` para permitir sync y async con paridad de comportamientos.
 
 ## Logging y Telemetría
@@ -32,4 +32,4 @@ Esta sección describe la organización del código, decisiones de diseño y pat
 ## Modelos y nomenclatura
 
 - Los modelos Pydantic usan `snake_case` y nombres explícitos: `spanish_description`, `english_description`, `index_date`, `value`.
-- Esto simplifica el mapping desde el payload JSON original y facilita el uso desde código Python.
+- Los alias de validación de Pydantic convierten directamente el payload JSON original, sin una capa DTO intermedia, y facilitan el uso desde código Python.

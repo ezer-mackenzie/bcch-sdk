@@ -5,9 +5,7 @@ import pytest
 from pytest_benchmark.fixture import BenchmarkFixture
 
 from bcch_sdk.mappers.credentials import CredentialsMapper
-from bcch_sdk.mappers.web_service import WebServiceResponseMapper
 from bcch_sdk.builders.parameters import ParameterBuilder
-from bcch_sdk.dto.web_service import WebServiceResponseDTO
 from bcch_sdk.models.web_service import WebServiceResponse
 
 from bcch_sdk.types.auth import QueryCredentials
@@ -44,22 +42,9 @@ def test_parameter_builder_performance(benchmark: BenchmarkFixture) -> None:
 
 
 @pytest.mark.benchmark
-def test_web_service_response_mapper_performance(
+def test_web_service_response_model_performance(
     benchmark: BenchmarkFixture,
 ) -> None:
-    payload = build_api_series_payload()
-    observations = payload["Series"]["Obs"]
-    payload["Series"]["Obs"] = observations * 10_000
-    dto = WebServiceResponseDTO.model_validate(payload)
-
-    result = benchmark(WebServiceResponseMapper.from_api_to_domain, dto)
-
-    assert result.series is not None
-    assert len(result.series.observations) == 10_000
-
-
-@pytest.mark.benchmark
-def test_direct_domain_model_performance(benchmark: BenchmarkFixture) -> None:
     payload = build_api_series_payload()
     observations = payload["Series"]["Obs"]
     payload["Series"]["Obs"] = observations * 10_000

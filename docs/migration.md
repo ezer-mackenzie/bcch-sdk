@@ -9,7 +9,7 @@ Resumen rápido:
 - La reimplementación en `src/` separa responsabilidades en:
   - `clients/` — clientes sync/async con transporte y validación robusta.
   - `builders/` — construcción de parámetros y normalización de entradas.
-  - `mappers/` y `models/` — conversión de payloads a modelos tipados (Pydantic).
+  - `models/` — validación y conversión directa de payloads a modelos tipados (Pydantic).
   - `sdk/` — capa pública que ofrece conveniencias y concurrencia.
 
 Detalles por módulo
@@ -41,11 +41,11 @@ Detalles por módulo
   - Nueva: `src/bcch_sdk/builders/parameters.py` encapsula la construcción de parámetros y usa `CredentialsMapper` además de `DateBuilder`. La clave usada para las series es `timeseries` (coincide con legacy).
   - Importante: la API Python expone `time_series` como nombre de variable/argumento, y `ParameterBuilder` mappea a la clave HTTP `timeseries`.
 
-- Manejo de respuestas: implementación legacy vs `src/bcch_sdk/models/*` + `bcch_sdk/mappers/*`
+- Manejo de respuestas: implementación legacy vs `src/bcch_sdk/models/*`
 
   - Legacy: `WSResponse`, `GSResponse`, `SSResponse` con métodos para transformar a `pandas.Series` / `pandas.DataFrame`.
   - Nueva: modelos Pydantic (`src/bcch_sdk/models/web_service.py`, `src/bcch_sdk/models/series.py`, `src/bcch_sdk/models/series_information.py`, `src/bcch_sdk/models/observation_series.py`) que normalizan nombres de campos (camelCase → snake_case y traducciones más claras, p. ej. `descripEsp` → `spanish_description`).
-  - Razonamiento: modelos tipados mejoran la validación y la interoperabilidad con herramientas de tipado, permitiendo también que mappers generen DataFrames cuando se necesite.
+  - Razonamiento: los alias de validación de Pydantic eliminan la necesidad de DTOs duplicados, mejoran la interoperabilidad con herramientas de tipado y permiten que `DataFrameMapper` genere DataFrames cuando se necesite.
 
 Migración práctica — pasos recomendados para los usuarios del paquete legacy:
 
