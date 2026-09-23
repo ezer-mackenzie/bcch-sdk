@@ -34,7 +34,7 @@ jobs:
           --benchmark-columns=min,mean,stddev,median,ops,rounds
 
       - name: Upload benchmark results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-results
           path: benchmark-results.json
